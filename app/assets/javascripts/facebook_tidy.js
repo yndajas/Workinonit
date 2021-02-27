@@ -1,3 +1,4 @@
+// credit: https://stackoverflow.com/questions/7131909/facebook-callback-appends-to-return-url/7297873#7297873
 if (window.location.hash && window.location.hash == '#_=_') {
     if (window.history && history.pushState) {
         window.history.pushState("", document.title, window.location.pathname);
