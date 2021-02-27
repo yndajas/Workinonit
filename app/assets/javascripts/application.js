@@ -14,3 +14,6 @@
 //= require activestorage
 //= require turbolinks
 //= require_tree .
+
+// Workinonit scripts
+//= require facebook_tidy
