@@ -10,12 +10,12 @@ class SessionsController < ApplicationController
         # TODO
 
         # standard email/password login
-        user = User.find_by(email: params[:email])
-        if user.try(:authenticate, params[:password])
+        user = User.find_by(email: params[:user][:email])
+        if user.try(:authenticate, params[:user][:password])
             session[:user_id] = user.id
             redirect_to dashboard_path(user)
         else
-            redirect_to login_path, flash: { message: "Incorrect email and/or password. Please try again." }
+            redirect_to login_path, flash: { notice: "Incorrect email and/or password. Please try again." }
         end
     end
 
