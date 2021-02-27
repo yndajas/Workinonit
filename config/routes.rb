@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   get 'login' => 'sessions#new'
   resources :sessions, only: [:create, :destroy]
 
+  # OmniAuth
+  get 'auth/facebook/callback', to: 'sessions#create'
+
   # users
   get 'register' => 'users#new'
   get 'dashboard' => 'users#show'
