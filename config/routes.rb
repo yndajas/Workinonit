@@ -3,7 +3,8 @@ Rails.application.routes.draw do
 
   # sessions
   get 'login' => 'sessions#new'
-  resources :sessions, only: [:create, :destroy]
+  resources :sessions, only: [:create]
+  delete 'session' => 'sessions#destroy'
 
   # OmniAuth
   get 'auth/facebook/callback', to: 'sessions#create'
