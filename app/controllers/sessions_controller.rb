@@ -12,13 +12,13 @@ class SessionsController < ApplicationController
                 user.name = auth[:info][:name]
             end
             session[:user_id] = user.id
-            redirect_to dashboard_path
+            logged_in_redirect
         else
             # standard email/password login
             user = User.find_by(email: params[:email])
             if user.try(:authenticate, params[:password])
                 session[:user_id] = user.id
-                redirect_to dashboard_path
+                logged_in_redirect
             else
                 redirect_to login_path, flash: { notice: "Incorrect email and/or password. Please try again." }
             end
@@ -27,11 +27,24 @@ class SessionsController < ApplicationController
 
     def destroy
         session.delete :user_id
+        redirect_to login_path
     end
 
     private
 
     def auth
         @auth ||= request.env['omniauth.auth']
+    end
+
+    def logged_in_redirect
+        # if user was redirected to login via another route, return to that route
+        if session[:origin]
+            origin = session[:origin]
+            session.delete :origin
+            redirect_to origin
+        # if they came to login route normally, go to dashboard
+        else
+            redirect_to dashboard_path
+        end
     end
 end

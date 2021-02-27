@@ -8,4 +8,11 @@ class ApplicationController < ActionController::Base
     def current_user
         @user ||= User.find(session[:user_id])
     end
+
+    def redirect_if_not_logged_in
+        if !logged_in?
+            session[:origin] = request.env["REQUEST_PATH"]
+            redirect_to login_path
+        end
+    end
 end
