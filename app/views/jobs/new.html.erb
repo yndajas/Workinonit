@@ -1,0 +1,9 @@
+<%= form_tag jobs_searches_path do %>
+    <%= label_tag :keywords %>
+    <%= text_field_tag :'search[keywords]', "", id: 'keywords' %>
+    <%= label_tag :location %>
+    <%= text_field_tag :'search[location]', "", id: 'location' %>
+    <%= label_tag :country %>
+    <%= select_tag :'search[country_code]', options_from_collection_for_select(@countries, 'code', 'country_name', 'uk'), id: 'country' %>
+    <%= submit_tag "Search" %>
+<% end %>
