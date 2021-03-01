@@ -8,6 +8,7 @@ class SearchController < ApplicationController
     end
     
     def show
-
+        country_id = ProviderCountry.find_by(code: params[:country_code]).country_id
+        @jobs = JobScraper::scrape_search(params[:keywords], params[:location], country_id)
     end
 end
