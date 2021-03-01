@@ -37,9 +37,8 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'bootsnap', '>= 1.1.0', require: false
 
 # Workinonit gems
-gem 'omniauth-facebook'
-# use specific omniauth version because later versions are broken (at least in the local environment)
-gem 'omniauth', '~> 1.9.1'
+gem 'omniauth-facebook' # log in via Facebook
+gem 'omniauth', '~> 1.9.1' # use specific omniauth version because later versions are broken (at least in the local environment
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -54,7 +53,8 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   # Workinonit gems
-  gem 'pry'
+  gem 'pry' # open console with binding (when `binding.pry` is run)
+  gem 'rails-erd' # entity relationship diagrams
 end
 
 group :test do
