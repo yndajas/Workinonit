@@ -9,6 +9,23 @@ class JobScraper
         
         {Indeed: scrape_indeed_search(location, keywords), LinkedIn: scrape_linkedin_search(location, keywords), Reed: scrape_reed_search(location, keywords)}
     end
+    
+    def self.scrape_linkedin_search(location, keywords)
+        # open search page
+        search = Nokogiri::HTML(OpenURI.open_uri("https://www.linkedin.com/jobs/" + keywords + "-jobs-" + location))
+
+        # select jobs; limit to first 5
+        first_five_jobs = search.css("li.result-card")[0..4]
+
+        # iterate over jobs, collecting each job's attributes in a hash, then return an array of the hashes
+        first_five_jobs.collect do |job|
+            title = job.css("h3.result-card__title").text
+            company = job.css("h4.result-card__subtitle").text
+            id = job.attribute("data-id").value
+
+            {title: title, company: company, id: id}
+        end
+    end
 
     def self.scrape_reed_search(location, keywords)
         # open search page
