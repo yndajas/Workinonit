@@ -1,0 +1,2 @@
+class ProviderCountry < ApplicationRecord
+end
