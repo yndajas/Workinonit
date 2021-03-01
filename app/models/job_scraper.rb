@@ -26,10 +26,9 @@ class JobScraper
 
         # iterate over jobs, collecting each job's attributes in a hash, then return an array of the hashes
         first_five_jobs.collect do |job|
-            title_id = job.css("a.jobtitle")
-            title = title_id.attribute("title").value
-            id = title_id.attribute("id").value.gsub("jl_", "")
+            title = job.css("a.jobtitle").attribute("title").value
             company = job.css("span.company").text.strip
+            id = job.attribute("data-jk").value
 
             {title: title, company: company, id: id}
         end
