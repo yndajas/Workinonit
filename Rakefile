@@ -4,3 +4,12 @@
 require_relative 'config/application'
 
 Rails.application.load_tasks
+
+desc "Generate ERD" # wrapping for ERD generation (normal command `bundle exec erd`) - also opens files after generation
+task :erd => :environment do
+  Rake::Task[:erd_generate].invoke
+end
+
+task :erd_generate => ["erd:check_dependencies", "erd:options"] do
+  `cmd.exe /C start erd.pdf`
+end
