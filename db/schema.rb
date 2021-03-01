@@ -10,11 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_28_171807) do
+ActiveRecord::Schema.define(version: 2021_03_01_164341) do
 
   create_table "companies", force: :cascade do |t|
     t.string "name"
     t.string "website"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "countries", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -29,6 +35,14 @@ ActiveRecord::Schema.define(version: 2021_02_28_171807) do
     t.string "provider_job_slug"
     t.string "provider_job_id"
     t.integer "provider_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "provider_countries", force: :cascade do |t|
+    t.integer "provider_id"
+    t.integer "country_id"
+    t.string "code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
