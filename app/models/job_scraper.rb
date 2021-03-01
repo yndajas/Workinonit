@@ -10,6 +10,8 @@ class JobScraper
         {Indeed: scrape_indeed_search(keywords, location, country_id), LinkedIn: scrape_linkedin_search(keywords, location), Reed: scrape_reed_search(keywords, location)}
     end
 
+    private
+
     def self.scrape_indeed_search(keywords, location, country_id)
         # set base URL based on country
         if country_id == 60 # if country is USA
