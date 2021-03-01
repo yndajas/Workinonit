@@ -37,8 +37,12 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'bootsnap', '>= 1.1.0', require: false
 
 # Workinonit gems
+## OAuth
 gem 'omniauth-facebook' # log in via Facebook
 gem 'omniauth', '~> 1.9.1' # use specific omniauth version because later versions are broken (at least in the local environment
+## scraping
+gem 'open-uri' # for opening webpages (feeds into Nokogiri)
+gem 'nokogiri' # for scraping webpages
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
