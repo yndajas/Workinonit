@@ -3,6 +3,17 @@ class JobScraper
         {Indeed: scrape_indeed_search(keywords, location, country_id), LinkedIn: scrape_linkedin_search(keywords, location), Reed: scrape_reed_search(keywords, location)}
     end
 
+    def self.scrape_jobs_by_id_hash(hash)
+        # for all the providers in the hash
+        hash.keys.collect do |provider|
+            # iterate over the IDs from that provider
+            hash[provider].collect do |id|
+                # scrape attrbutes and return hash for each
+                self.send("scrape_#{provider.downcase}_job", id)
+            end
+        end.flatten # flatten resulting collection of attributes hashes and return 
+    end
+
     def self.scrape_job_by_url(url)
         # add https:// to the start if there's no 'scheme' (http or https)
         url = "https://#{url}" if URI.parse(url).scheme.nil?
@@ -83,13 +94,12 @@ class JobScraper
 
         # iterate over jobs, collecting each job's attributes in a hash, then return an array of the hashes
         first_five_jobs.collect do |job|
-            title_slug_id = job.css("h3.title a")
-            title = title_slug_id.attribute("title").value
-            id = title_slug_id.attribute("data-id").value
-            slug = title_slug_id.attribute("href").value.gsub("/jobs/", "").gsub(/\/#{id}.*/, "")
+            title_id = job.css("h3.title a")
+            title = title_id.attribute("title").value
+            id = title_id.attribute("data-id").value
             company = job.css("a.gtmJobListingPostedBy").text
 
-            {title: title, company: company, slug: slug, id: id}
+            {title: title, company: company, id: id}
         end
     end
 
@@ -182,7 +192,6 @@ class JobScraper
         slug_link_tag = page.css("div.description-container meta[itemprop='url']").attribute("content")
         slug = slug_link_tag.value.gsub(/\/#{id}/, "").gsub(/.*\//, "")
 
-        binding.pry
         true
     end
 end
