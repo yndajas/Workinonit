@@ -4,6 +4,9 @@ class JobScraper
     end
 
     def self.scrape_job_by_url(url)
+        # add https:// to the start if there's no 'scheme' (http or https)
+        url = "https://#{url}" if URI.parse(url).scheme.nil?
+
         valid_host = valid_host(url)
         if valid_host
             case valid_host
@@ -82,7 +85,6 @@ class JobScraper
     end
 
     def self.valid_host(url)
-        url = "https://#{url}" if URI.parse(url).scheme.nil?
         host = URI.parse(url).host.downcase
         if host.include?("indeed.com")
             "Indeed"
