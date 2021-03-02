@@ -43,6 +43,8 @@ gem 'omniauth', '~> 1.9.1' # use specific omniauth version because later version
 ## scraping
 gem 'open-uri' # for opening webpages (feeds into Nokogiri)
 gem 'nokogiri' # for scraping webpages
+## JQuery for additional JavaScript
+gem 'jquery-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
