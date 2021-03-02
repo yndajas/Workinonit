@@ -13,7 +13,11 @@
 //= require rails-ujs
 //= require activestorage
 //= require turbolinks
-//= require_tree .
 
-// Workinonit scripts
-//= require facebook_tidy
+// JQuery
+//= require jquery
+// leaving the requirement below commented out as rails-ujs should make it redundant
+// require jquery_ujs
+
+// load all scripts in folder
+//= require_tree .
