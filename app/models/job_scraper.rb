@@ -3,6 +3,22 @@ class JobScraper
         {Indeed: scrape_indeed_search(keywords, location, country_id), LinkedIn: scrape_linkedin_search(keywords, location), Reed: scrape_reed_search(keywords, location)}
     end
 
+    def self.scrape_job_by_url(url)
+        valid_host = valid_host(url)
+        if valid_host
+            case valid_host
+            when "Indeed"
+                scrape_indeed_job_by_url(url)
+            when "LinkedIn"
+                scrape_linkedin_job_by_url(url)
+            when "Reed"
+                scrape_reed_job_by_url(url)
+            end
+        else
+            false
+        end         
+    end
+
     private
 
     def self.scrape_indeed_search(keywords, location, country_id)
@@ -63,5 +79,33 @@ class JobScraper
 
             {title: title, company: company, slug: slug, id: id}
         end
+    end
+
+    def self.valid_host(url)
+        url = "https://#{url}" if URI.parse(url).scheme.nil?
+        host = URI.parse(url).host.downcase
+        if host.include?("indeed.com")
+            "Indeed"
+        elsif host.include?("linkedin.com")
+            "LinkedIn"
+        elsif host.include?("reed.co.uk")
+            "Reed"
+        else
+            false
+        end
+    end
+
+    def self.scrape_indeed_job_by_url(url)
+        true
+        # pass to scrape_indeed_job?
+        # build in false return if scrape fails (rather than error raising)
+    end
+
+    def self.scrape_linkedin_job_by_url(url)
+        true
+    end
+
+    def self.scrape_reed_job_by_url(url)
+        true
     end
 end
