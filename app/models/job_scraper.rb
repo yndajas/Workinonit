@@ -146,17 +146,43 @@ class JobScraper
         end
     end
 
-    def self.scrape_reed_job_page(url)
-        true
+    def self.scrape_reed_job_page(page)
+        # attempt to locate input tag that appears on genuine job listing pages
+        id_input_tag = page.css("input#JobId")
+
+        # if found, get the provider's ID for the job, else return an error message
+        if id_input_tag.length > 0
+            id = id_input_tag.attribute("value").value
+            scrape_reed_job(id)
+        else
+            "Unable to scrape job from Reed - ensure the URL is for a job"
+        end
     end
 
-    ##e scrape job listing pages
+    ## scrape job listing pages
 
     def self.scrape_indeed_job(id)
         true
     end
 
     def self.scrape_linkedin_job(id)
+        true
+    end
+
+    def self.scrape_reed_job(id)
+        # prepare a URL that will lead to the job's show page
+        ## while Reed's slug is in the model/database table, the part
+        ## of the path that contains the slug can actually contain
+        ## (seemingly) any text, so long as it contains something,
+        ## so here "j/" is used for all jobs in place of the slug
+        url = Provider.find_by(name: "Reed").base_show_url + "j/" + id
+        page = Nokogiri::HTML(OpenURI.open_uri(url))
+
+        # get job attributes
+        slug_link_tag = page.css("div.description-container meta[itemprop='url']").attribute("content")
+        slug = slug_link_tag.value.gsub(/\/#{id}/, "").gsub(/.*\//, "")
+
+        binding.pry
         true
     end
 end
