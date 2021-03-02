@@ -10,7 +10,7 @@
   </head>
 
   <header>
-      <% if !logged_in? %>
+    <% if !logged_in? %>
       <%= link_to "Register", register_path %>
       <%= link_to "Log in", login_path %>
     <% else %>
@@ -25,7 +25,7 @@
   
   <footer>
     <% if logged_in? %>
-      <p>Logged in as <%= current_user.name %> (<%= current_user.email %>)</p>
+      <%= content_tag(:p, "Logged in as #{current_user.name} (#{current_user.email})") %>
     <% end %>
   </footer>
 </html>
