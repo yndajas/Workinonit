@@ -179,10 +179,10 @@ class JobScraper
         true
     end
 
-    def self.scrape_reed_job(id)
-        # prepare a URL that will lead to the job's show page
+    def self.scrape_reed_job(id)        
         provider = Provider.find_by(name: "Reed")
 
+        # prepare a URL that will lead to the job's show page
         # while Reed's slug is in the model/database table and collected below,
         # the part of the path that contains the slug can actually contain
         # (seemingly) any text, so long as it contains something, so here "j/"
