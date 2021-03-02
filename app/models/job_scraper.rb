@@ -181,17 +181,34 @@ class JobScraper
 
     def self.scrape_reed_job(id)
         # prepare a URL that will lead to the job's show page
-        ## while Reed's slug is in the model/database table, the part
-        ## of the path that contains the slug can actually contain
-        ## (seemingly) any text, so long as it contains something,
-        ## so here "j/" is used for all jobs in place of the slug
-        url = Provider.find_by(name: "Reed").base_show_url + "j/" + id
+        provider = Provider.find_by(name: "Reed")
+
+        # while Reed's slug is in the model/database table and collected below,
+        # the part of the path that contains the slug can actually contain
+        # (seemingly) any text, so long as it contains something, so here "j/"
+        # is used for all jobs in place of the slug for simplicity
+        url = provider.base_show_url + "j/" + id
         page = Nokogiri::HTML(OpenURI.open_uri(url))
 
-        # get job attributes
-        slug_link_tag = page.css("div.description-container meta[itemprop='url']").attribute("content")
-        slug = slug_link_tag.value.gsub(/\/#{id}/, "").gsub(/.*\//, "")
+        # get company name to be used in find_or_create_by
+        company_name = page.css("span[itemprop='hiringOrganization'] span[itemprop='name']").text
 
-        true
+        # get remaining job attributes for creating new job associated with company
+        title = page.css("h1").text
+        location = page.css("span[itemprop='addressLocality']").text
+        salary = page.css("span[data-qa='salaryLbl']").text
+        contract = page.css("span[itemprop='employmentType']").text
+
+        # t.text "description"
+        description = page.css("span[itemprop='description']").inner_html
+
+        # collect slug to create links in the same style as Reed, even though the value makes no difference to their routing
+        slug_link_tag = page.css("div.description-container meta[itemprop='url']").attribute("content")
+        provider_job_slug = slug_link_tag.value.gsub(/\/#{id}/, "").gsub(/.*\//, "")
+        
+        provider_job_id = id
+        provider_id = provider.id
+
+        {company_name: company_name, title: title, location: location, salary: salary, contract: contract, description: description, provider_job_slug: provider_job_slug, provider_job_id: provider_job_id, provider_id: provider_id}
     end
 end
