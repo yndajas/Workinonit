@@ -12,4 +12,10 @@
  *
  *= require_tree .
  *= require_self
+ *= require search
  */
+
+body {
+    color: #2D2D2D;
+}
+
