@@ -18,8 +18,8 @@ class JobScraper
                 scrape_reed_job_by_url(url)
             end
         else
-            false
-        end         
+            "URL not recognised. Only indeed.com, linkedin.com and reed.co.uk URLs are supported"
+        end
     end
 
     private
@@ -98,9 +98,15 @@ class JobScraper
     end
 
     def self.scrape_indeed_job_by_url(url)
-        true
-        # pass to scrape_indeed_job?
-        # build in false return if scrape fails (rather than error raising)
+        # open job listing page
+        listing = Nokogiri::HTML(OpenURI.open_uri(url))
+        share_url_meta_tag = listing.css("meta#indeed-share-url")
+        if share_url_meta_tag.length > 0
+            id = share_url_meta_tag.attribute("content").value.gsub(/.*jk\=/, "")
+            scrape_indeed_job(id)
+        else
+            "Unable to scrape job from Indeed - ensure the URL is an individual job, not search results"
+        end
     end
 
     def self.scrape_linkedin_job_by_url(url)
@@ -108,6 +114,10 @@ class JobScraper
     end
 
     def self.scrape_reed_job_by_url(url)
+        true
+    end
+
+    def self.scrape_indeed_job(id)
         true
     end
 end
