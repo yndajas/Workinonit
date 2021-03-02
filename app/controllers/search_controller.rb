@@ -1,4 +1,6 @@
 class SearchController < ApplicationController
+    before_action :redirect_if_not_logged_in
+
     def create        
         keywords = Slugifiable::slugify(params[:search][:keywords])
         location = Slugifiable::slugify(params[:search][:location])
