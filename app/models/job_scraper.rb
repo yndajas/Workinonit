@@ -172,10 +172,18 @@ class JobScraper
     ## scrape job listing pages
 
     def self.scrape_indeed_job(id)
+        provider = Provider.find_by(name: "Indeed")
+
+        page = show_page(provider, id)
+
         true
     end
 
     def self.scrape_linkedin_job(id)
+        provider = Provider.find_by(name: "LinkedIn")
+
+        page = show_page(provider, id)
+
         true
     end
 
@@ -187,8 +195,7 @@ class JobScraper
         # the part of the path that contains the slug can actually contain
         # (seemingly) any text, so long as it contains something, so here "j/"
         # is used for all jobs in place of the slug for simplicity
-        url = provider.base_show_url + "j/" + id
-        page = Nokogiri::HTML(OpenURI.open_uri(url))
+        page = show_page(provider, id, "j/")
 
         # get company name to be used in find_or_create_by
         company_name = page.css("span[itemprop='hiringOrganization'] span[itemprop='name']").text
@@ -210,5 +217,10 @@ class JobScraper
         provider_id = provider.id
 
         {company_name: company_name, title: title, location: location, salary: salary, contract: contract, description: description, provider_job_slug: provider_job_slug, provider_job_id: provider_job_id, provider_id: provider_id}
+    end
+
+    def self.show_page(provider, id, slug = "")
+        url = provider.base_show_url + slug + id
+        Nokogiri::HTML(OpenURI.open_uri(url))
     end
 end
