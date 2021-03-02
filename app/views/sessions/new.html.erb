@@ -1,13 +1,13 @@
 <% if flash[:notice] %>
-    <div class="notice"><%= flash[:notice] %></div>
+    <%= content_tag(:div, flash[:notice], class: "notice") %>
 <% end %>
 
 <%= link_to "Log in via Facebook", "/auth/facebook" %>
 
 <%= form_tag sessions_path do %>
-    <%= label_tag 'email' %>
-    <%= email_field_tag 'email' %>
-    <%= label_tag 'password' %>
+    <%= label_tag :email %>
+    <%= email_field_tag :email %>
+    <%= label_tag :password %>
     <%= password_field_tag %>
     <%= submit_tag "Log in" %>
 <% end %>
