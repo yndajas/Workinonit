@@ -21,4 +21,9 @@ class Job < ApplicationRecord
         UserJob.find_or_create_by(user_id: user.id, job_id: job.id)
         job
     end
+
+    def provider_job_url
+        slug = self.provider_job_slug.try("+", "/") || ""
+        self.provider.base_show_url + slug + self.provider_job_id
+    end
 end
