@@ -1,1 +1,16 @@
-<%= @jobs.inspect %>
+<%= content_tag(:h2, "Job results") %>
+<%= content_tag(:p, "Select which jobs to save") %>
+<%= form_tag jobs_path do %>
+    <% @jobs.each do |provider, jobs| %>
+        <% if jobs.length > 0 %>
+            <%= content_tag(:h3, provider) %>
+            <% jobs.each_with_index do |job, index| %>
+                <%= check_box_tag :"jobs[#{provider}][]", job[:id] + (job.has_key?(:slug) ? ",#{job[:slug]}" : ""), false, id: "job_#{provider}_#{index}" %>
+                <%= label_tag :"job_#{provider}_#{index}", "#{job[:title]} // #{job[:company]}" %>
+                <br>
+            <% end %>
+        <% end %>
+    <% end %>
+    <br>
+    <%= submit_tag "Save jobs" %>
+<% end %>
