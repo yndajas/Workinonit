@@ -131,12 +131,12 @@ class JobScraper
     ## check if provider page is a valid job listing page, get id and/or slug and send to scraper if so
 
     def self.scrape_indeed_job_page(page)
-        # attempt to locate meta tag that appears on genuine job listing pages
-        share_url_meta_tag = page.css("meta#indeed-share-url")
+        # attempt to locate meta element that appears on genuine job listing pages
+        share_url_meta_element = page.css("meta#indeed-share-url")
 
         # if found, get the provider's ID for the job, else return an error message
-        if share_url_meta_tag.length > 0
-            id = share_url_meta_tag.attribute("content").value.gsub(/.*jk\=/, "")
+        if share_url_meta_element.length > 0
+            id = share_url_meta_element.attribute("content").value.gsub(/.*jk\=/, "")
             scrape_indeed_job(id)
         else
             "Unable to scrape job from Indeed - ensure the URL is for an individual job, not search results"
@@ -144,12 +144,12 @@ class JobScraper
     end
 
     def self.scrape_linkedin_job_page(page)
-        # attempt to locate code tag that appears on genuine job listing pages (and search results pages with a job selected - the method works for both)
-        id_comment_code_tag = page.css("code#decoratedJobPostingId")
+        # attempt to locate code element that appears on genuine job listing pages (and search results pages with a job selected - the method works for both)
+        id_comment_code_element = page.css("code#decoratedJobPostingId")
 
         # if found, get the provider's ID for the job, else return an error message
-        if id_comment_code_tag.length > 0
-            id = id_comment_code_tag.inner_html.gsub(/[^0-9]+/i, "")
+        if id_comment_code_element.length > 0
+            id = id_comment_code_element.inner_html.gsub(/[^0-9]+/i, "")
             scrape_linkedin_job(id)
         else
             "Unable to scrape job from LinkedIn - ensure the URL is for an individual job (either a job-specific page or search results with the job selected)"
@@ -157,12 +157,12 @@ class JobScraper
     end
 
     def self.scrape_reed_job_page(page)
-        # attempt to locate input tag that appears on genuine job listing pages
-        id_input_tag = page.css("input#JobId")
+        # attempt to locate input element that appears on genuine job listing pages
+        id_input_element = page.css("input#JobId")
 
         # if found, get the provider's ID for the job, else return an error message
-        if id_input_tag.length > 0
-            id = id_input_tag.attribute("value").value
+        if id_input_element.length > 0
+            id = id_input_element.attribute("value").value
             scrape_reed_job(id)
         else
             "Unable to scrape job from Reed - ensure the URL is for a job"
@@ -176,20 +176,30 @@ class JobScraper
 
         page = show_page(provider, id)
 
+        company_and_location_div_element = page.css("div.jobsearch-CompanyInfoWithoutHeaderImage div div")
+
         # get company name to be used in find_or_create_by
-        # t.integer "company_id"
+        company_name = company_and_location_div_element.css("div div.icl-u-lg-mr--sm").text
 
         # get remaining job attributes for creating new job associated with company
-        # t.string "title"
-        # t.string "location"
-        # t.string "salary"
-        # t.string "contract"
-        # t.text "description"
-        # t.string "provider_job_id"
-        # t.integer "provider_id"
+        title = page.css("h1.jobsearch-JobInfoHeader-title").text
+        location = company_and_location_div_element.css("div.jobsearch-InlineCompanyRating + div").text
+
+        salary_and_contract_div_element = page.css("div.jobsearch-JobMetadataHeader-item")
+
+        if salary_and_contract_div_element
+            salary_span_element = salary_and_contract_div_element.css("span.icl-u-xs-mr--xs")
+            salary = salary_span_element.text if salary_span_element.length > 0
+            
+            contract_span_element = salary_and_contract_div_element.css("span.jobsearch-JobMetadataHeader-item")
+            contract = contract_span_element.text.gsub(" - ", "").strip if contract_span_element.length > 0
+        end
+
+        description = page.css("div#jobDescriptionText").text
+        provider_job_id = id
+        provider_id = provider.id
     
         {company_name: company_name, title: title, location: location, salary: salary, contract: contract, description: description, provider_job_id: provider_job_id, provider_id: provider_id}
-        true
     end
 
     def self.scrape_linkedin_job(id)
@@ -234,8 +244,8 @@ class JobScraper
         description = page.css("span[itemprop='description']").inner_html
 
         # collect slug to create links in the same style as Reed, even though the value makes no difference to their routing
-        slug_link_tag = page.css("div.description-container meta[itemprop='url']").attribute("content")
-        provider_job_slug = slug_link_tag.value.gsub(/\/#{id}/, "").gsub(/.*\//, "")
+        slug_link_element = page.css("div.description-container meta[itemprop='url']").attribute("content")
+        provider_job_slug = slug_link_element.value.gsub(/\/#{id}/, "").gsub(/.*\//, "")
         
         provider_job_id = id
         provider_id = provider.id
