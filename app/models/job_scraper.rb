@@ -7,15 +7,22 @@ class JobScraper
         # add https:// to the start if there's no 'scheme' (http or https)
         url = "https://#{url}" if URI.parse(url).scheme.nil?
 
+        # check the host is *indeed.com, *linkedin.com or *reed.co.uk, return error message if not
         valid_host = valid_host(url)
         if valid_host
-            case valid_host
-            when "Indeed"
-                scrape_indeed_job_by_url(url)
-            when "LinkedIn"
-                scrape_linkedin_job_by_url(url)
-            when "Reed"
-                scrape_reed_job_by_url(url)
+            # try to open page, return error message if it's a 404
+            page = valid_page(url)
+            if page
+                case valid_host
+                when "Indeed"
+                    scrape_indeed_job_page(page)
+                when "LinkedIn"
+                    scrape_linkedin_job_page(page)
+                when "Reed"
+                    scrape_reed_job_page(page)
+                end
+            else
+                "Unable to scrape job - page not found"
             end
         else
             "URL not recognised. Only indeed.com, linkedin.com and reed.co.uk URLs are supported"
@@ -23,6 +30,8 @@ class JobScraper
     end
 
     private
+
+    # scrape specific provider search pages
 
     def self.scrape_indeed_search(keywords, location, country_id)
         # set base URL based on country
@@ -84,6 +93,10 @@ class JobScraper
         end
     end
 
+    # scrape by URL helpers
+
+    ## valid URL/page checkers
+
     def self.valid_host(url)
         host = URI.parse(url).host.downcase
         if host.include?("indeed.com")
@@ -97,27 +110,53 @@ class JobScraper
         end
     end
 
-    def self.scrape_indeed_job_by_url(url)
-        # open job listing page
-        listing = Nokogiri::HTML(OpenURI.open_uri(url))
-        share_url_meta_tag = listing.css("meta#indeed-share-url")
+    def self.valid_page(url)
+        begin 
+            Nokogiri::HTML(OpenURI.open_uri(url))
+        rescue
+            false
+        end
+    end    
+
+    ## check if provider page is a valid job listing page, get id and/or slug and send to scraper if so
+
+    def self.scrape_indeed_job_page(page)
+        # attempt to locate meta tag that appears on genuine job listing pages
+        share_url_meta_tag = page.css("meta#indeed-share-url")
+
+        # if found, get the provider's ID for the job, else return an error message
         if share_url_meta_tag.length > 0
             id = share_url_meta_tag.attribute("content").value.gsub(/.*jk\=/, "")
             scrape_indeed_job(id)
         else
-            "Unable to scrape job from Indeed - ensure the URL is an individual job, not search results"
+            "Unable to scrape job from Indeed - ensure the URL is for an individual job, not search results"
         end
     end
 
-    def self.scrape_linkedin_job_by_url(url)
+    def self.scrape_linkedin_job_page(page)
+        # attempt to locate code tag that appears on genuine job listing pages (and search results pages with a job selected - the method works for both)
+        id_comment_code_tag = page.css("code#decoratedJobPostingId")
+
+        # if found, get the provider's ID for the job, else return an error message
+        if id_comment_code_tag.length > 0
+            id = id_comment_code_tag.inner_html.gsub(/[^0-9]+/i, "")
+            scrape_linkedin_job(id)
+        else
+            "Unable to scrape job from LinkedIn - ensure the URL is for an individual job (either a job-specific page or search results with the job selected)"
+        end
+    end
+
+    def self.scrape_reed_job_page(url)
         true
     end
 
-    def self.scrape_reed_job_by_url(url)
-        true
-    end
+    ##e scrape job listing pages
 
     def self.scrape_indeed_job(id)
+        true
+    end
+
+    def self.scrape_linkedin_job(id)
         true
     end
 end
