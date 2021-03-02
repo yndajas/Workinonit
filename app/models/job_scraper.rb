@@ -175,6 +175,20 @@ class JobScraper
         provider = Provider.find_by(name: "Indeed")
 
         page = show_page(provider, id)
+
+        # get company name to be used in find_or_create_by
+        # t.integer "company_id"
+
+        # get remaining job attributes for creating new job associated with company
+        # t.string "title"
+        # t.string "location"
+        # t.string "salary"
+        # t.string "contract"
+        # t.text "description"
+        # t.string "provider_job_id"
+        # t.integer "provider_id"
+    
+        {company_name: company_name, title: title, location: location, salary: salary, contract: contract, description: description, provider_job_id: provider_job_id, provider_id: provider_id}
         true
     end
 
@@ -182,6 +196,20 @@ class JobScraper
         provider = Provider.find_by(name: "LinkedIn")
 
         page = show_page(provider, id)
+
+        # get company name to be used in find_or_create_by
+        # t.integer "company_id"
+
+        # get remaining job attributes for creating new job associated with company
+        # t.string "title"
+        # t.string "location"
+        # t.string "salary"
+        # t.string "contract"
+        # t.text "description"
+        # t.string "provider_job_id"
+        # t.integer "provider_id"
+    
+        {company_name: company_name, title: title, location: location, salary: salary, contract: contract, description: description, provider_job_id: provider_job_id, provider_id: provider_id}
         true
     end
 
@@ -203,8 +231,6 @@ class JobScraper
         location = page.css("span[itemprop='addressLocality']").text
         salary = page.css("span[data-qa='salaryLbl']").text
         contract = page.css("span[itemprop='employmentType']").text
-
-        # t.text "description"
         description = page.css("span[itemprop='description']").inner_html
 
         # collect slug to create links in the same style as Reed, even though the value makes no difference to their routing
