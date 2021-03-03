@@ -199,7 +199,7 @@ class JobScraper
 
         salary_and_contract_div_element = page.css("div.jobsearch-JobMetadataHeader-item")
 
-        if salary_and_contract_div_element
+        if salary_and_contract_div_element.length > 0
             salary_span_element = salary_and_contract_div_element.css("span.icl-u-xs-mr--xs")
             salary = salary_span_element.text if salary_span_element.length > 0
             
@@ -220,19 +220,21 @@ class JobScraper
         page = show_page(provider, id)
 
         # get company name to be used in find_or_create_by
-        # t.integer "company_id"
+        company_name = page.css("a.topcard__org-name-link").text
 
         # get remaining job attributes for creating new job associated with company
-        # t.string "title"
-        # t.string "location"
-        # t.string "salary"
-        # t.string "contract"
-        # t.text "description"
-        # t.string "provider_job_id"
-        # t.integer "provider_id"
+        title = page.css("h1.topcard__title").text
+        location = page.css("span.topcard__flavor.topcard__flavor--bullet").text
+
+        salary_div_element = page.css("div.compensation__salary-range div.salary.compensation__salary")
+        salary = salary_div_element.text if salary_div_element.length > 0
+
+        contract = page.css("li.job-criteria__item:nth-child(2) span").text
+        description = page.css("div.show-more-less-html__markup").inner_html.strip
+        provider_job_id = id
+        provider_id = provider.id
     
         {company_name: company_name, title: title, location: location, salary: salary, contract: contract, description: description, provider_job_id: provider_job_id, provider_id: provider_id}
-        true
     end
 
     def self.scrape_reed_job(id)        
