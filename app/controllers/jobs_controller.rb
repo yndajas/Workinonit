@@ -6,7 +6,7 @@ class JobsController < ApplicationController
     end
 
     def create
-        country_id = params[:country_id]
+        country_id = params[:country_id].to_i
         url = params[:job_url]
 
         # if here from user providing URL on /jobs/new
