@@ -32,7 +32,7 @@ class JobScraper
                 when "Indeed"
                     # get country
                     scheme_and_code = url.gsub(/indeed\.com.*/, "").gsub(".", "")
-                    code = scheme_and_code.gsub(/.*\/\//, "")
+                    code = scheme_and_code.gsub(/.*\/\//, "").gsub("www", "")
                     if code == ""
                         country_id = 60
                     else
@@ -191,21 +191,37 @@ class JobScraper
         company_and_location_div_element = page.css("div.jobsearch-CompanyInfoWithoutHeaderImage div div")
 
         # get company name to be used in find_or_create_by
-        company_name = company_and_location_div_element.css("div div.icl-u-lg-mr--sm").text
+        company_name = company_and_location_div_element.css("div div.icl-u-lg-mr--sm.icl-u-xs-mr--xs").text
 
         # get remaining job attributes for creating new job associated with company
         title = page.css("h1.jobsearch-JobInfoHeader-title").text
         location = company_and_location_div_element.css("div.jobsearch-InlineCompanyRating + div").text
 
-        salary_and_contract_div_element = page.css("div.jobsearch-JobMetadataHeader-item")
+        # this seems unnecessary and doesn't work for US pages, so commenting out (including the corresponding parts of the if block below) but leaving it here for now
+        # salary_and_contract_div_element = page.css("div.jobsearch-JobMetadataHeader-item")
+        # if salary_and_contract_div_element.length > 0
+            # salary_span_element = salary_and_contract_div_element.css("span.icl-u-xs-mr--xs")
+            # contract_span_element = salary_and_contract_div_element.css("span.jobsearch-JobMetadataHeader-item")
+        # end
 
-        if salary_and_contract_div_element.length > 0
-            salary_span_element = salary_and_contract_div_element.css("span.icl-u-xs-mr--xs")
-            salary = salary_span_element.text if salary_span_element.length > 0
-            
-            contract_span_element = salary_and_contract_div_element.css("span.jobsearch-JobMetadataHeader-item")
-            contract = contract_span_element.text.gsub(" - ", "").strip if contract_span_element.length > 0
+        salary_span_element = page.css("span.icl-u-xs-mr--xs")
+        salary = salary_span_element.text if salary_span_element.length > 0
+        
+        # UK and maybe all non-US versions of the site?
+        contract_span_element = page.css("span.jobsearch-JobMetadataHeader-item")
+        # US version
+        contract_parent_div_element = page.css("div.jobsearch-JobDescriptionSection-sectionItem:nth-child(3)")
+
+        # if UK/all non-US?
+        if contract_span_element.length > 0
+            contract = contract_span_element.text.gsub(" - ", "").strip
+        # if US
+        elsif contract_parent_div_element.length > 0
+            contract_child_div_elements = contract_parent_div_element.css("div div")[1..-1]
+            contract = contract_child_div_elements.collect {|div| div.text}.join(", ")
         end
+
+        binding.pry
 
         description = page.css("div#jobDescriptionText").inner_html.strip
         provider_job_id = id
@@ -226,7 +242,7 @@ class JobScraper
         title = page.css("h1.topcard__title").text
         location = page.css("span.topcard__flavor.topcard__flavor--bullet").text
 
-        salary_div_element = page.css("div.compensation__salary-range div.salary.compensation__salary")
+        salary_div_element = page.css("div.compensation__salary")
         salary = salary_div_element.text if salary_div_element.length > 0
 
         contract = page.css("li.job-criteria__item:nth-child(2) span").text
