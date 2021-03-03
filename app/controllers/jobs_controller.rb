@@ -6,6 +6,7 @@ class JobsController < ApplicationController
     end
 
     def create
+        country_id = params[:country_id]
         url = params[:job_url]
 
         # if here from user providing URL on /jobs/new
@@ -21,7 +22,7 @@ class JobsController < ApplicationController
             end
         # if here from search results (save jobs)
         else
-            attributes_hashes = JobScraper.scrape_jobs_by_id_hash(params[:job_ids])
+            attributes_hashes = JobScraper.scrape_jobs_by_id_hash(params[:job_ids], country_id)
             attributes_hashes.each do |attributes|
                 Job.find_or_create_by_scraped_attributes_with_user(attributes, current_user)
             end
