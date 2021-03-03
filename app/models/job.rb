@@ -4,6 +4,7 @@ class Job < ApplicationRecord
 
     belongs_to :company
     belongs_to :provider
+    belongs_to :country, optional: true
     has_many :user_jobs
     has_many :users, through: :user_jobs
 
@@ -23,7 +24,9 @@ class Job < ApplicationRecord
     end
 
     def provider_job_url
+        country_id = self.country_id || 59
+        base_show_url = self.provider.base_show_url_by_country(country_id)
         slug = self.provider_job_slug.try("+", "/") || ""
-        self.provider.base_show_url + slug + self.provider_job_id
+        base_show_url + slug + self.provider_job_id
     end
 end
