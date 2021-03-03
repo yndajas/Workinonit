@@ -3,13 +3,17 @@ class JobScraper
         {Indeed: scrape_indeed_search(keywords, location, country_id), LinkedIn: scrape_linkedin_search(keywords, location), Reed: scrape_reed_search(keywords, location)}
     end
 
-    def self.scrape_jobs_by_id_hash(hash)
+    def self.scrape_jobs_by_id_hash(hash, country_id = 59)
         # for all the providers in the hash
         hash.keys.collect do |provider|
             # iterate over the IDs from that provider
             hash[provider].collect do |id|
-                # scrape attrbutes and return hash for each
-                self.send("scrape_#{provider.downcase}_job", id)
+                # scrape attrbutes and return hash for each; if provider is Indeed, pass in country ID
+                if provider == "Indeed"
+                    self.scrape_indeed_job(id, country_id)
+                else
+                    self.send("scrape_#{provider.downcase}_job", id)
+                end
             end
         end.flatten # flatten resulting collection of attributes hashes and return 
     end
@@ -26,7 +30,15 @@ class JobScraper
             if page
                 case valid_host
                 when "Indeed"
-                    scrape_indeed_job_page(page)
+                    # get country
+                    scheme_and_code = url.gsub(/indeed\.com.*/, "").gsub(".", "")
+                    code = scheme_and_code.gsub(/.*\/\//, "")
+                    if code == ""
+                        country_id = 60
+                    else
+                        country_id = ProviderCountry.find_by(code: code).country_id
+                    end
+                    scrape_indeed_job_page(page, country_id)
                 when "LinkedIn"
                     scrape_linkedin_job_page(page)
                 when "Reed"
@@ -130,14 +142,14 @@ class JobScraper
 
     ## check if provider page is a valid job listing page, get id and/or slug and send to scraper if so
 
-    def self.scrape_indeed_job_page(page)
+    def self.scrape_indeed_job_page(page, country_id = 59)
         # attempt to locate meta element that appears on genuine job listing pages
         share_url_meta_element = page.css("meta#indeed-share-url")
 
         # if found, get the provider's ID for the job, else return an error message
         if share_url_meta_element.length > 0
             id = share_url_meta_element.attribute("content").value.gsub(/.*jk\=/, "")
-            scrape_indeed_job(id)
+            scrape_indeed_job(id, country_id)
         else
             "Unable to scrape job from Indeed - ensure the URL is for an individual job, not search results"
         end
@@ -171,10 +183,10 @@ class JobScraper
 
     ## scrape job listing pages
 
-    def self.scrape_indeed_job(id)
+    def self.scrape_indeed_job(id, country_id = 59)
         provider = Provider.find_by(name: "Indeed")
 
-        page = show_page(provider, id)
+        page = show_page(provider, id, country_id: country_id)
 
         company_and_location_div_element = page.css("div.jobsearch-CompanyInfoWithoutHeaderImage div div")
 
@@ -195,11 +207,11 @@ class JobScraper
             contract = contract_span_element.text.gsub(" - ", "").strip if contract_span_element.length > 0
         end
 
-        description = page.css("div#jobDescriptionText").text
+        description = page.css("div#jobDescriptionText").inner_html.strip
         provider_job_id = id
         provider_id = provider.id
     
-        {company_name: company_name, title: title, location: location, salary: salary, contract: contract, description: description, provider_job_id: provider_job_id, provider_id: provider_id}
+        {company_name: company_name, title: title, location: location, salary: salary, contract: contract, description: description, provider_job_id: provider_job_id, provider_id: provider_id, country_id: country_id}
     end
 
     def self.scrape_linkedin_job(id)
@@ -231,7 +243,7 @@ class JobScraper
         # the part of the path that contains the slug can actually contain
         # (seemingly) any text, so long as it contains something, so here "j/"
         # is used for all jobs in place of the slug for simplicity
-        page = show_page(provider, id, "j/")
+        page = show_page(provider, id, slug: "j/")
 
         # get company name to be used in find_or_create_by
         company_name = page.css("span[itemprop='hiringOrganization'] span[itemprop='name']").text
@@ -241,7 +253,7 @@ class JobScraper
         location = page.css("span[itemprop='addressLocality']").text
         salary = page.css("span[data-qa='salaryLbl']").text
         contract = page.css("span[itemprop='employmentType']").text
-        description = page.css("span[itemprop='description']").inner_html
+        description = page.css("span[itemprop='description']").inner_html.strip
 
         # collect slug to create links in the same style as Reed, even though the value makes no difference to their routing
         slug_link_element = page.css("div.description-container meta[itemprop='url']").attribute("content")
@@ -253,8 +265,9 @@ class JobScraper
         {company_name: company_name, title: title, location: location, salary: salary, contract: contract, description: description, provider_job_slug: provider_job_slug, provider_job_id: provider_job_id, provider_id: provider_id}
     end
 
-    def self.show_page(provider, id, slug = "")
-        url = provider.base_show_url + slug + id
+    def self.show_page(provider, id, slug: "", country_id: 59)
+        base_show_url = provider.base_show_url_by_country(country_id)
+        url = base_show_url + slug + id
         Nokogiri::HTML(OpenURI.open_uri(url))
     end
 end
