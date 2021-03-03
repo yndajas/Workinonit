@@ -5,11 +5,20 @@ require_relative 'config/application'
 
 Rails.application.load_tasks
 
-desc "Generate ERD" # wrapping for ERD generation (normal command `bundle exec erd`) - also opens files after generation
+# wrapping for ERD generation (normal command `bundle exec erd`) - also opens files after generation
+desc "Generate ERD" 
 task :erd => :environment do
   Rake::Task[:erd_generate].invoke
 end
 
 task :erd_generate => ["erd:check_dependencies", "erd:options"] do
   `cmd.exe /C start erd.pdf`
+end
+
+# reset database - drop, migrate, seed
+task :resetdb do
+  Rake::Task["db:drop"].execute
+  # Rake::Task["db:create"].execute
+  Rake::Task["db:migrate"].execute 
+  Rake::Task["db:seed"].execute 
 end
