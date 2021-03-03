@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 2021_03_01_164341) do
     t.string "provider_job_slug"
     t.string "provider_job_id"
     t.integer "provider_id"
+    t.integer "country_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
