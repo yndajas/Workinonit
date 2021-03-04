@@ -6,5 +6,9 @@ class CreateProviders < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
+
+    Provider.create(name: "Indeed", base_show_url: "https://uk.indeed.com/viewjob?jk=")
+    Provider.create(name: "LinkedIn", base_show_url: "https://www.linkedin.com/jobs/view/")
+    Provider.create(name: "Reed", base_show_url: "https://www.reed.co.uk/jobs/")
   end
 end
