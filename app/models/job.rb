@@ -7,6 +7,7 @@ class Job < ApplicationRecord
     belongs_to :country, optional: true
     has_many :user_jobs
     has_many :users, through: :user_jobs
+    has_many :applications
 
     def self.find_or_create_by_attributes_hash(attributes_hash)
         # find or create the company
