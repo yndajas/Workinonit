@@ -10,7 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_01_164341) do
+ActiveRecord::Schema.define(version: 2021_03_04_191649) do
+
+  create_table "applications", force: :cascade do |t|
+    t.boolean "checked_job_requirements"
+    t.boolean "researched_company"
+    t.boolean "made_contact"
+    t.boolean "prepared_cv"
+    t.boolean "prepared_cover_letter"
+    t.integer "status_id"
+    t.date "date_found"
+    t.date "date_applied"
+    t.date "interview_date"
+    t.date "date_outcome_received"
+    t.text "notes"
+    t.text "feedback"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "companies", force: :cascade do |t|
     t.string "name"
@@ -51,6 +68,22 @@ ActiveRecord::Schema.define(version: 2021_03_01_164341) do
   create_table "providers", force: :cascade do |t|
     t.string "name"
     t.string "base_show_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "statuses", force: :cascade do |t|
+    t.string "name"
+    t.integer "order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "user_company_informations", force: :cascade do |t|
+    t.string "website"
+    t.text "notes"
+    t.integer "user_id"
+    t.integer "company_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
