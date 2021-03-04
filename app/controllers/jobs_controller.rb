@@ -3,30 +3,39 @@ class JobsController < ApplicationController
 
     def new
         @countries = ProviderCountry.all
+        @job = Job.new
     end
 
     def create
-        country_id = params[:country_id].to_i
-        url = params[:job_url]
-
         # if here from user providing URL on /jobs/new
-        if url
-            attributes = JobScraper.scrape_job_by_url(url)
+        if params[:job_url]
+            attributes_or_error = JobScraper.scrape_job_by_url(params[:job_url])
 
-            # if attributes variable is a string, process as an error message, else use to create job (and associate with current user) and redirect to show
-            if attributes.is_a?(String)
-                redirect_to new_job_path, flash: { notice: attributes }
+            # if attributes_or_error variable is a string, process as an error message, else use to create job (and associate with current user) and redirect to show
+            if attributes_or_error.is_a?(String)
+                redirect_to new_job_path, flash: { notice: attributes_or_error }
             else
-                job = Job.find_or_create_by_scraped_attributes_with_user(attributes, current_user)
+                job = Job.find_or_create_by_attributes_hash_with_user(attributes_or_error, current_user)
                 redirect_to job_path(job)
             end
+        # if here from user manually entering job details on /jobs/new
+        elsif params[:job]
+            job = Job.find_or_create_by_attributes_hash_with_user(job_params, current_user)
+            redirect_to job_path(job)
         # if here from search results (save jobs)
         else
+            country_id = params[:country_id].to_i
             attributes_hashes = JobScraper.scrape_jobs_by_id_hash(params[:job_ids], country_id)
             attributes_hashes.each do |attributes|
-                Job.find_or_create_by_scraped_attributes_with_user(attributes, current_user)
+                Job.find_or_create_by_attributes_hash_with_user(attributes, current_user)
             end
             redirect_to jobs_path
         end
+    end
+
+    private
+
+    def job_params
+        params.require(:job).permit(:title, :company_name, :location, :salary, :contract, :description, :custom_url)
     end
 end
