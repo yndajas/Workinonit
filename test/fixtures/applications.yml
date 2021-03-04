@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  checked_job_requirements: false
+  researched_company: false
+  made_contact: false
+  prepared_cv: false
+  prepared_cover_letter: false
+  status_id: 1
+  date_found: 2021-03-04
+  date_applied: 2021-03-04
+  interview_date: 2021-03-04
+  date_outcome_received: 2021-03-04
+  notes: MyText
+  feedback: MyText
+
+two:
+  checked_job_requirements: false
+  researched_company: false
+  made_contact: false
+  prepared_cv: false
+  prepared_cover_letter: false
+  status_id: 1
+  date_found: 2021-03-04
+  date_applied: 2021-03-04
+  interview_date: 2021-03-04
+  date_outcome_received: 2021-03-04
+  notes: MyText
+  feedback: MyText
