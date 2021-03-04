@@ -11,6 +11,7 @@ class CreateJobs < ActiveRecord::Migration[5.2]
       t.string :provider_job_id
       t.integer :provider_id
       t.integer :country_id
+      t.string :custom_url
 
       t.timestamps
     end
