@@ -14,7 +14,6 @@ ActiveRecord::Schema.define(version: 2021_03_01_164341) do
 
   create_table "companies", force: :cascade do |t|
     t.string "name"
-    t.string "website"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -36,6 +35,7 @@ ActiveRecord::Schema.define(version: 2021_03_01_164341) do
     t.string "provider_job_id"
     t.integer "provider_id"
     t.integer "country_id"
+    t.string "custom_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
