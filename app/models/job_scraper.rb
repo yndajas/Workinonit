@@ -221,8 +221,6 @@ class JobScraper
             contract = contract_child_div_elements.collect {|div| div.text}.join(", ")
         end
 
-        binding.pry
-
         description = page.css("div#jobDescriptionText").inner_html.strip
         provider_job_id = id
         provider_id = provider.id
