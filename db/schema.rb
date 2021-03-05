@@ -13,6 +13,8 @@
 ActiveRecord::Schema.define(version: 2021_03_04_191649) do
 
   create_table "applications", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "job_id"
     t.boolean "checked_job_requirements"
     t.boolean "researched_company"
     t.boolean "made_contact"
