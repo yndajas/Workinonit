@@ -39,6 +39,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 # Workinonit gems
 ## OAuth
 gem 'omniauth-facebook' # log in via Facebook
+gem 'omniauth-google-oauth2' # log in via Google
 gem 'omniauth', '~> 1.9.1' # use specific omniauth version because later versions are broken (at least in the local environment
 ## scraping
 gem 'open-uri' # for opening webpages (feeds into Nokogiri)
