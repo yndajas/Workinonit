@@ -4,6 +4,8 @@
 
 <%= link_to "Log in via Facebook", "/auth/facebook" %>
 
+<%= link_to "Log in via Google", "/auth/google_oauth2" %>
+
 <%= form_tag sessions_path do %>
     <%= label_tag :email %>
     <%= email_field_tag :email %>
