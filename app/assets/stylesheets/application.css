@@ -17,5 +17,17 @@
 
 body {
     color: #2D2D2D;
+    font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+input[type=text], input[type=email], input[type=password], input[type=date], select, textarea {
+    padding: 10px;
+    border: 2px solid rgba(0,0,0,.25);
+    border-radius: .25rem;
+    box-sizing: border-box;
+    margin: 10px 0px;
+}
+
+input[type=text], input[type=email], input[type=password], input[type=date], select {
+    height: 45px;
+}
