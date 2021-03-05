@@ -16,8 +16,10 @@ Rails.application.routes.draw do
   resources :users, only: [:create, :update, :destroy]
 
   # search
-  get 'jobs/search/:country_code/:location/:keywords', to: 'search#show', as: 'jobs_search', constraints: {country_code: /[a-z]+/, location: /[a-z0-9\-]+/, keywords: /[a-z0-9\-]+/} # constraints so it only matches with country codes of lower case letters, and locations and keywords of lower case letters, numbers and hyphens
-  post 'jobs/search', to: 'search#create', as: 'jobs_searches'
+  scope '/jobs' do
+    get 'search/:country_code/:location/:keywords', to: 'search#show', as: 'jobs_search', constraints: {country_code: /[a-z]+/, location: /[a-z0-9\-]+/, keywords: /[a-z0-9\-]+/} # constraints so it only matches with country codes of lower case letters, and locations and keywords of lower case letters, numbers and hyphens
+    post 'search', to: 'search#create', as: 'jobs_searches'
+  end
   
   # jobs
   resources :jobs
