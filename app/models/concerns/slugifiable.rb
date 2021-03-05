@@ -1,7 +1,7 @@
 module Slugifiable
     module InstanceMethods
         def slug
-            Slugifiable::slugify(self.name || self.title)
+            Slugifiable::slugify(self.try(:name) || self.try(:title))
         end
     end
 
