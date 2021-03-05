@@ -38,9 +38,11 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
 # Workinonit gems
 ## OAuth
+gem 'omniauth' # OmniAuth for managing OAuth
+gem 'omniauth-rails_csrf_protection' # version 2+ of OmniAuth requires post requests (in link to strategy) to be used by default - this gem is required in order to permit these requests (info: https://stackoverflow.com/questions/65783394/no-route-matches-get-auth-google-oauth2-error-keeps-coming-up/65785932#65785932)
 gem 'omniauth-facebook' # log in via Facebook
+gem 'omniauth-github', github: 'omniauth/omniauth-github', branch: 'master' # log in via GitHub
 gem 'omniauth-google-oauth2' # log in via Google
-gem 'omniauth', '~> 1.9.1' # use specific omniauth version because later versions are broken (at least in the local environment
 ## scraping
 gem 'open-uri' # for opening webpages (feeds into Nokogiri)
 gem 'nokogiri' # for scraping webpages
