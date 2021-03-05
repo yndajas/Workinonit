@@ -1,10 +1,19 @@
 class UsersController < ApplicationController
-    before_action :redirect_if_not_logged_in, only: [:show]
-
-    # get 'register' => 'users#new'
-    # get 'account' => 'users#edit'
-    # resources :users, only: [:create, :update, :destroy]
+    before_action :redirect_if_not_logged_in, except: [:new, :create]
 
     def show
+    end
+
+    def edit
+    end
+
+    def destroy
+        [Application, UserCompanyInformation, UserJob].each do |cclass|
+            cclass.where(user_id: current_user.id).destroy_all
+        end
+
+        current_user.destroy
+        session.delete :user_id
+        redirect_to login_path
     end
 end
