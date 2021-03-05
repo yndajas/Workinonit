@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   # OmniAuth
   get 'auth/facebook/callback', to: 'sessions#create'
+  get 'auth/google_oauth2/callback', to: 'sessions#create'
 
   # users
   get 'register', to: 'users#new'
