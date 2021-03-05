@@ -1,6 +1,8 @@
 class CreateApplications < ActiveRecord::Migration[5.2]
   def change
     create_table :applications do |t|
+      t.integer :user_id
+      t.integer :job_id
       t.boolean :checked_job_requirements
       t.boolean :researched_company
       t.boolean :made_contact
