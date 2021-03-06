@@ -5,7 +5,13 @@ class UsersController < ApplicationController
     end
 
     def create
-        raise params.inspect
+        if User.find_by(email: user_params[:email])
+            redirect_to login_path, flash: {type: 'warning', content: "User with email #{user_params[:email]} already exists. Try logging in"}
+        else
+            user = User.create(user_params)
+            session[:user_id] = user.id
+            redirect_to dashboard_path, flash: {type: 'success', content: "Account created. Time to get Workinonit!"}
+        end        
     end
 
     def show
@@ -22,5 +28,11 @@ class UsersController < ApplicationController
         current_user.destroy
         session.delete :user_id
         redirect_to login_path
+    end
+
+    private
+
+    def user_params
+        params.permit(:name, :email, :password)
     end
 end
