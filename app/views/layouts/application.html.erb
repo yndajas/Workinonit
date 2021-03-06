@@ -67,6 +67,7 @@
           </div>
       <% end %>
       <%= yield %>
+      <p id="video-container"><iframe id="video" allow="autoplay" allowfullscreen></iframe></p>
     </main>
     
     <footer>
@@ -75,6 +76,10 @@
           <%# email displayed if logged in %>
           <ul class="navbar-nav d-none d-md-block">
             <li class="nav-item"><span class="navbar-text"><%= logged_in? ? "Logged in as #{current_user.name} (#{current_user.email})" : "" %></span></li>
+          </ul>
+          <%# Dilla %>
+          <ul class="navbar-nav d-none d-md-block">
+            <li class="nav-item"><button type="button" class="navbar-text btn btn-light" onclick="playDilla();">Play Dilla 🍩 Eat Donuts</button></li>
           </ul>
           <%# copyright %>
           <ul class="navbar-nav d-none d-md-block">
