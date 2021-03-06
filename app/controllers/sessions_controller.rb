@@ -7,6 +7,7 @@ class SessionsController < ApplicationController
             # OmniAuth
             user = User.where(email: auth[:info][:email]).first_or_create do |user|          
                 user.password = SecureRandom.hex
+                user.random_password = true
                 user.provider = auth[:provider]
                 user.uid = auth[:uid]
                 user.name = auth[:info][:name]
