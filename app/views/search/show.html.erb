@@ -1,18 +1,22 @@
-<%= content_tag(:h2, "Job results") %>
-<%= content_tag(:p, "Select which jobs to save") %>
+<% content_for :title, "Job search results" %>
+
+<%= content_tag :h2, "Job search results" %>
+
+<%= content_tag :p, "Select which jobs to save" %>
+
 <%= form_tag jobs_path, id: 'search-results-form' do %>
     <% @jobs.each do |provider, jobs| %>
         <% if jobs.length > 0 %>
-            <%= content_tag(:h3, provider) %>
+            <%= content_tag :h3, provider  %>
             <% jobs.each do |job| %>
-                <%= label_tag(:"job_#{provider}_#{job[:id]}", class: 'checkbox-container') do %>
+                <%= label_tag :"job_#{provider}_#{job[:id]}", class: 'checkbox-container' do %>
                     <%= check_box_tag :"job_ids[#{provider}][]", job[:id], false, id: "job_#{provider}_#{job[:id]}" %>
-                    <span class="checkmark"></span>
-                    <span class="text">
+                    <%= content_tag :span, "", class: 'checkmark' %>
+                    <%= content_tag :span, class: 'text' do %>
                         <%= job[:title] %>
-                        <%= content_tag(:span, "//", class: 'search-result divider') %>
-                        <%= content_tag(:span, job[:company], class: 'search-result company') %>
-                    </span>
+                        <%= content_tag :span, "//", class: 'slash-divider' %>
+                        <%= content_tag :span, job[:company], class: 'red-text' %>
+                    <% end %>
                 <% end %>
             <% end %>
             <br>
