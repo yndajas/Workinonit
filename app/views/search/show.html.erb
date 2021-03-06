@@ -1,8 +1,6 @@
 <% content_for :title, "Job search results" %>
 
-<%= content_tag :h2, "Job search results" %>
-
-<%= content_tag :p, "Select which jobs to save" %>
+<%= content_tag :p, "Select which jobs to save." %>
 
 <%= form_tag jobs_path, id: 'search-results-form' do %>
     <% @jobs.each do |provider, jobs| %>
