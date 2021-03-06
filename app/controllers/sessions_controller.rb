@@ -21,7 +21,7 @@ class SessionsController < ApplicationController
                 session[:user_id] = user.id
                 logged_in_redirect
             else
-                redirect_to login_path, flash: { type: 'danger', content: "Incorrect email and/or password. Please try again." }
+                redirect_to login_path, flash: {type: 'danger', content: "Incorrect email and/or password. Please try again."}
             end
         end
     end

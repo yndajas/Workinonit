@@ -13,7 +13,7 @@ class JobsController < ApplicationController
 
             # if attributes_or_error variable is a string, process as an error message, else use to create job (and associate with current user) and redirect to show
             if attributes_or_error.is_a?(String)
-                redirect_to new_job_path, flash: { type: 'danger', content: attributes_or_error }
+                redirect_to new_job_path, flash: {type: 'danger', content: attributes_or_error}
             else
                 job = Job.find_or_create_by_attributes_hash_with_user(attributes_or_error, current_user)
                 redirect_to job_path(job)
