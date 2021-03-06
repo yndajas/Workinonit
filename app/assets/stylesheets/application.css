@@ -15,19 +15,79 @@
  *= require search
  */
 
+html {
+    position: relative;
+    min-height: 100%;
+}
+
 body {
+    padding-bottom: 60px;
     color: #2D2D2D;
-    font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+header {
+    background-color: #f0f0a6;
+    border-bottom: 1px solid rgba(0,0,0,.25);
+}
+
+nav .navbar-brand {
+    font-size: 2.5rem;
+}
+
+nav img {
+    max-height: 75px;
+    padding: 10px 0px;
+    margin-right: 20px;
+}
+
+main {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+main li {
+    list-style-type: none;
+    padding-left: 10px;
+}
+
+main li::before {
+    content: "\2605";
+    color: red;
+    margin-left: -27px;
+    margin-right: 10px; 
+    font-size: 0.75rem;
+    vertical-align: middle;
+}
+
+
+input[type=text], input[type=email], input[type=password], input[type=date], input[type=submit], select, textarea {
+    padding: 10px;
+    margin: 8px 0px;
+    border-radius: .25rem;
+    box-sizing: border-box;
+}
+
+input[type=text], input[type=email], input[type=password], input[type=date], select, input[type=submit] {
+    height: 50px;
 }
 
 input[type=text], input[type=email], input[type=password], input[type=date], select, textarea {
-    padding: 10px;
     border: 2px solid rgba(0,0,0,.25);
-    border-radius: .25rem;
-    box-sizing: border-box;
-    margin: 10px 0px;
 }
 
-input[type=text], input[type=email], input[type=password], input[type=date], select {
-    height: 45px;
+input[type=submit] {
+    font-weight: bold;
+}
+
+textarea {
+    max-width: 100%;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #f1bfdc;
+    border-top: 1px solid rgba(0,0,0,.25);
 }
