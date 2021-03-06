@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  root 'users#show'
+  # static
+  root 'static#home'
+  get 'about', to: 'static#about'
 
   # sessions
   get 'login', to: 'sessions#new'
