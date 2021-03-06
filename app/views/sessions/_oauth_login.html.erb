@@ -1,0 +1,8 @@
+<% [{name: "Facebook"}, {name: "GitHub"}, {name: "Google", oauth: "google_oauth2"}].each do |strategy| %>
+    <%= link_to "/auth/#{strategy[:oauth].try(:downcase) || strategy[:name].downcase}", method: :post do %>
+        <%= content_tag :div, class: "strategy #{strategy[:name].downcase} align-middle" do %>
+            <%= image_tag image_path("oauth/#{strategy[:name]}.png") %>
+            <span>Continue with <%= strategy[:name] %></span>
+        <% end %>
+    <% end %>
+<% end %>

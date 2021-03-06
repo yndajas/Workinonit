@@ -1,20 +1,5 @@
 <% content_for :title, "Log in" %>
 <% content_for :main_align, 'center' %>
 
-<%= content_tag :div, id: 'login' do %>
-    <%= form_tag sessions_path do %>
-        <%= email_field_tag :email, "", placeholder: "Email" %>
-        <%= password_field_tag :password, "", placeholder: "Password" %>
-        <br>
-        <%= submit_tag "Log in", class: 'btn btn-primary' %>
-    <% end %>
-    <hr>
-    <% [{name: "Facebook"}, {name: "GitHub"}, {name: "Google", oauth: "google_oauth2"}].each do |strategy| %>
-        <%= link_to "/auth/#{strategy[:oauth].try(:downcase) || strategy[:name].downcase}", method: :post do %>
-            <%= content_tag :div, class: "strategy #{strategy[:name].downcase} align-middle" do %>
-                <%= image_tag image_path("oauth/#{strategy[:name]}.png") %>
-                <span>Continue with <%= strategy[:name] %></span>
-            <% end %>
-        <% end %>
-    <% end %>
-<% end %>
+<%= content_tag :h2, "Log in" %>
+<%= render 'log_in_or_register', id: 'login' %>

@@ -1,0 +1,20 @@
+<% if id == 'login' %>
+    <% path = sessions_path %>
+    <% submit_value = "Log in" %>
+    <% button_style = 'primary' %>
+<% else %>
+    <% path = users_path %>
+    <% submit_value = "Register" %>
+    <% button_style = 'success' %>
+<% end %>
+
+<%= content_tag :div, id: id do %>
+    <%= form_tag path do %>
+        <%= email_field_tag :email, "", placeholder: "Email", required: 'required' %>
+        <%= password_field_tag :password, "", placeholder: "Password", required: 'required' %>
+        <br>
+        <%= submit_tag submit_value, class: "btn btn-#{button_style}" %>
+    <% end %>
+    <hr>
+    <%= render 'sessions/oauth_login' %>
+<% end %>
