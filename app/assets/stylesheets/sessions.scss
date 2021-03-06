@@ -1,3 +1,5 @@
+@import 'colours';
+
 @mixin strategy-colours($primary: null, $border: null, $font: null) {
     border: 2px solid;
     @if ($primary) {
@@ -40,11 +42,11 @@ div {
     }
 
     &.google {
-        @include strategy-colours($border: #BFBFBF);
+        @include strategy-colours($border: $base-light);
     }
 }
 
 hr {
     border: 0;
-    border-top: 1px solid #BFBFBF;
+    border-top: 1px solid $base-light;
 }

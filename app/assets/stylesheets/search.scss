@@ -1,10 +1,11 @@
+@import 'colours';
+
 span.search-result {
-    &.divider {
-        color: #D32F2F;
-        font-weight: bold;
+    &.divider, &.company {
+        color: $base-red;
     }
 
-    &.company {
-        color: #D32F2F;
+    &.divider {
+        font-weight: bold;
     }
 }
