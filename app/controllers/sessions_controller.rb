@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+    before_action :logged_in_redirect, except: [:destroy]
+
     def new
     end
 
@@ -35,17 +37,5 @@ class SessionsController < ApplicationController
 
     def auth
         @auth ||= request.env['omniauth.auth']
-    end
-
-    def logged_in_redirect
-        # if user was redirected to login via another route, return to that route
-        if session[:origin]
-            origin = session[:origin]
-            session.delete :origin
-            redirect_to origin
-        # if they came to login route normally, go to dashboard
-        else
-            redirect_to dashboard_path
-        end
     end
 end
