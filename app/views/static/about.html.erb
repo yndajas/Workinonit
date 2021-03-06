@@ -1,0 +1,26 @@
+<% content_for :title, "About" %>
+<% content_for :'main_heading', "About Workinonit" %>
+
+<%= content_tag :h3, "Demo (PLACEHOLDER - TO BE UPDATED)" %>
+
+<%= content_tag :div, class: 'embed-responsive embed-responsive-16by9 iframe_container' do %>
+  <%= content_tag :iframe, "", class: 'embed-responsive-item', src: 'https://www.youtube.com/embed/nK35Tuxfkso', frameborder: 0, allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture', allowfullscreen: 'allowfullscreen' %>
+<% end %>
+
+<hr>
+
+<%= content_tag :h3, "Creator and GitHub repository" %>
+
+<%= content_tag :ul do%>
+  <%= content_tag :li do %>
+    Ynda Jas (
+    <%= link_to "they", "https://pronoun.is/they/.../themself" %>
+    ):&nbsp;
+    <%= link_to "GitHub", "https://github.com/yndajas" %>
+    &nbsp;|&nbsp;
+    <%= link_to "website", "https://yndajas.co" %>
+  <% end %>
+  <%= content_tag :li do %>
+    <%= link_to "GitHub repository", "https://github.com/yndajas/Workinonit" %>
+  <% end %>
+<% end %>
