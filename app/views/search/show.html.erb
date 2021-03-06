@@ -5,17 +5,19 @@
         <% if jobs.length > 0 %>
             <%= content_tag(:h3, provider) %>
             <% jobs.each do |job| %>
-                <%= check_box_tag :"job_ids[#{provider}][]", job[:id], false, id: "job_#{provider}_#{job[:id]}" %>
-                <%= label_tag(:"job_#{provider}_#{job[:id]}") do %>
-                    <%= job[:title] %>
-                    <%= content_tag(:span, "//", class: 'search-result divider') %>
-                    <%= content_tag(:span, job[:company], class: 'search-result company') %>
+                <%= label_tag(:"job_#{provider}_#{job[:id]}", class: 'checkbox-container') do %>
+                    <%= check_box_tag :"job_ids[#{provider}][]", job[:id], false, id: "job_#{provider}_#{job[:id]}" %>
+                    <span class="checkmark"></span>
+                    <span class="text">
+                        <%= job[:title] %>
+                        <%= content_tag(:span, "//", class: 'search-result divider') %>
+                        <%= content_tag(:span, job[:company], class: 'search-result company') %>
+                    </span>
                 <% end %>
-                <br>
             <% end %>
+            <br>
         <% end %>
     <% end %>
-    <br>
     <%= hidden_field_tag :country_id, @country_id %>
-    <%= submit_tag "Save jobs", disabled: 'disabled' %>
+    <%= submit_tag "Save jobs", disabled: 'disabled', class: 'btn btn-success' %>
 <% end %>
