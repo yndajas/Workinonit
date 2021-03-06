@@ -59,31 +59,6 @@ footer {
     background-color: $base-dark;
     border-top: 1px solid $base-light;
 
-    // use flex box to center the middle element of the footer
-    // the default `justify-content: between` will 'flex' based on the size of the content,
-    // pushing the central element right if the left element is bigger than the right element
-    // see: https://stackoverflow.com/questions/32378953/keep-the-middle-item-centered-when-side-items-have-different-widths
-    nav div {
-        display: flex;
-
-        // make every ul the same width
-        ul {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            
-            &:nth-child(2) li {
-                text-align: center;
-            }
-            
-            &:last-child li {
-                text-align: right;
-            }            
-        }
-
-
-    }
-
     button.navbar-text.btn.btn-light {
         color: $base-dark;
     }
