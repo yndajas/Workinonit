@@ -16,7 +16,6 @@ if (window.location.hash && window.location.hash == '#_=_') {
 }
 
 // removes '#' from Google callback (own code)
-
 var last_character_index = window.location.href.length - 1
 var last_character = window.location.href.charAt(last_character_index)
 
