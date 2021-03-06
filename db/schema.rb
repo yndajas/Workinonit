@@ -100,6 +100,7 @@ ActiveRecord::Schema.define(version: 2021_03_04_191649) do
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "password_digest"
+    t.boolean "random_password", default: false
     t.string "provider"
     t.string "uid"
     t.string "name"
