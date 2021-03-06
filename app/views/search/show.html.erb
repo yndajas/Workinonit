@@ -8,8 +8,8 @@
                 <%= check_box_tag :"job_ids[#{provider}][]", job[:id], false, id: "job_#{provider}_#{job[:id]}" %>
                 <%= label_tag(:"job_#{provider}_#{job[:id]}") do %>
                     <%= job[:title] %>
-                    <%= content_tag(:span, "//", class: 'search-result-divider') %>
-                    <%= content_tag(:span, job[:company], class: 'search-result-company') %>
+                    <%= content_tag(:span, "//", class: 'search-result divider') %>
+                    <%= content_tag(:span, job[:company], class: 'search-result company') %>
                 <% end %>
                 <br>
             <% end %>
