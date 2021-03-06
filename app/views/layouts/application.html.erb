@@ -60,15 +60,13 @@
       </nav>
     </header>
 
-    <main class="container">
+    <main class="container text-<%= (yield :main_align).empty? ? 'left' : (yield :main_align) %>">
       <% if flash[:content] %>
           <div class="alert alert-<%= flash[:type] %>" role="alert"> <%# format alert according to message type %>
             <%= flash[:content] %> <%# message content %>
           </div>
       <% end %>
-      <div class="d-flex justify-content-<%= (yield :main_align).empty? ? 'start' : (yield :main_align) %>">
-        <%= yield %>
-      </div>
+      <%= yield %>
     </main>
     
     <footer>
