@@ -22,6 +22,3 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
-
-
-logo/favicon source: https://pixabay.com/vectors/and-class-communism-hammer-1293054
