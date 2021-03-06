@@ -45,6 +45,7 @@ main {
     padding-bottom: 20px;
 }
 
+/* custom bullets */
 main li {
     list-style-type: none;
     padding-left: 10px;
@@ -90,4 +91,19 @@ footer {
     height: 60px;
     background-color: #f1bfdc;
     border-top: 1px solid rgba(0,0,0,.25);
+}
+
+/* sessions and users forms */
+div#login, div#registration {
+    width: 400px;
+    margin: 0 auto;
+}
+
+div#login a, div#registration a {
+    text-decoration: none;
+    color: #2D2D2D;
+}
+
+div#login input, div#registration input {
+    width: 100%;
 }
