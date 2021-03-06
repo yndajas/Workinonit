@@ -20,10 +20,10 @@
 
   <body>
     <header>
-      <nav class="navbar navbar-expand-md navbar-light">
+      <nav class="navbar navbar-expand-md navbar-dark">
         <div class="container">
-          <%= image_tag image_path('logo.png'), alt: "Workinonit logo, a red star with hammer and sickle", title: "Workinonit logo" %>
-          <a class="navbar-brand h1" href="/">Workinonit</a>
+          <a href='/'><%= image_tag image_path('logo.png'), alt: "Workinonit logo, a red star with hammer and sickle", title: "Workinonit logo" %></a>
+          <a class="navbar-brand" href="/"><h1>Workinonit</h1></a>
           <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar" data-toggle="collapse" type="button">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -70,7 +70,7 @@
     </main>
     
     <footer>
-      <nav class="navbar navbar-light">
+      <nav class="navbar navbar-dark">
         <div class="container d-flex justify-content-between">
           <%# email displayed if logged in %>
           <ul class="navbar-nav d-none d-md-block">
