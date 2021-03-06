@@ -1,34 +1,89 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Workinonit</title>
+    <title>Workinonit<%= " - #{yield :title}" if !(yield :title).empty? %></title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <%# load Bootstrap stylesheet  %>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <%# load all app stylesheets %>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%# load app JavaScript files (and JQuery - needs loading before Bootstrap JavaScript) %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%# load Bootstrap dependency JavaScript files %>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <%# load favicons %>
     <%= render 'layouts/favicon_meta' %>
   </head>
 
   <body>
     <header>
-      <% if !logged_in? %>
-        <%= link_to "Register", register_path %>
-        <%= link_to "Log in", login_path %>
-      <% else %>
-        <%= link_to "Dashboard", dashboard_path %>
-        <%= link_to "Log out", session_path, method:'delete' %>
-      <% end %>
+      <nav class="navbar navbar-expand-md navbar-light">
+        <div class="container">
+          <%= image_tag image_path('logo.png'), alt: "Workinonit logo, a red star with hammer and sickle", title: "Workinonit logo" %>
+          <a class="navbar-brand h1" href="/">Workinonit</a>
+          <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar" data-toggle="collapse" type="button">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbar">
+            <% if logged_in? %>
+              <%# top nav links if logged in %>
+              <ul class="navbar-nav mr-auto mt-2">
+                <li class="nav-item"><%= link_to "Dashboard", dashboard_path, class: 'nav-link' %></li>
+                <li class="nav-item"><a class="nav-link" href="/applications">Applications</a></li>
+                <li class="nav-item"><a class="nav-link" href="/jobs">Jobs</a></li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More</a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/companies">Companies</a>
+                    <a class="dropdown-item" href="/feedback">Feedback</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/about">About Workinonit</a>
+                  </div>
+                </li>
+              </ul>
+              <ul class="navbar-nav ml-auto mt-2">
+                <li class="nav-item"><a class="nav-link" href="/account">Account</a></li>
+                <li class="nav-item"><%= link_to "Log out", session_path, method:'delete', class: 'nav-link' %></li>
+              </ul>
+            <%# top nav links if logged out %>
+            <% else %>
+              <ul class="navbar-nav ml-auto mt-2">
+                <li class="nav-item"><%= link_to "Register", register_path, class: 'nav-link' %></li>
+                <li class="nav-item"><%= link_to "Log in", login_path, class: 'nav-link' %></li>
+              </ul>
+            <% end %>
+          </div>
+        </div>
+      </nav>
     </header>
 
-    <main>
-      <%= yield %>
+    <main class="container">
+      <% if flash[:content] %>
+          <div class="alert alert-<%= flash[:type] %>" role="alert"> <%# format alert according to message type %>
+            <%= flash[:content] %> <%# message content %>
+          </div>
+      <% end %>
+      <div class="d-flex justify-content-<%= (yield :main_align).empty? ? 'start' : (yield :main_align) %>">
+        <%= yield %>
+      </div>
     </main>
     
     <footer>
-      <% if logged_in? %>
-        <%= content_tag(:p, "Logged in as #{current_user.name} (#{current_user.email})") %>
-      <% end %>
+      <nav class="navbar navbar-light">
+        <div class="container d-flex justify-content-between">
+          <%# email displayed if logged in %>
+          <ul class="navbar-nav d-none d-md-block">
+            <li class="nav-item"><span class="navbar-text"><%= logged_in? ? "Logged in as #{current_user.name} (#{current_user.email})" : "" %></span></li>
+          </ul>
+          <%# copyright %>
+          <ul class="navbar-nav d-none d-md-block">
+            <li class="nav-item"><span class="navbar-text">© Ynda Jas <%= DateTime.now.strftime('%Y') %></span></li>
+          </ul>
+        </div>
+      </nav>
     </footer>
   </body>
 </html>
