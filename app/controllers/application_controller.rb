@@ -15,4 +15,18 @@ class ApplicationController < ActionController::Base
             redirect_to login_path
         end
     end
+
+    def logged_in_redirect
+        if logged_in?
+            # if user was redirected to login via another route, return to that route
+            if session[:origin]
+                origin = session[:origin]
+                session.delete :origin
+                redirect_to origin
+            # if they came to login route normally, go to dashboard
+            else
+                redirect_to dashboard_path
+            end
+        end
+    end
 end
