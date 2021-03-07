@@ -1,0 +1,52 @@
+<% content_for :title, @job.title %>
+<% content_for :'main_heading', @job.title %>
+
+<% if @user_generated %>
+    <%= link_to edit_job_path(@job, @job.slug) do %><%= content_tag :button, "Edit job", type: 'button', class: 'btn btn-primary' %><% end %>
+<% end %>
+
+<% if @application %>
+    <%= link_to application_path(@application) do %><%= content_tag :button, "Review application", type: 'button', class: 'btn btn-primary' %><% end %><br>
+<% elsif @user_job %>
+    <%= link_to new_application_by_job_path(@job, @job.slug) do %><%= content_tag :button, "Start application", type: 'button', class: 'btn btn-success' %><% end %><br>
+<% else %>
+    <%= form_tag jobs_path do %>
+        <%= hidden_field_tag :job_id, @job.id %>
+        <%= submit_tag "Save job", class: 'btn btn-success' %>
+    <% end %>
+<% end %>
+
+<br>
+
+<%= content_tag :p do %>
+    <%= @job.company_name %>
+    <% if @job.location %>
+        &nbsp;<%= content_tag :span, "★", class: 'star-divider' %> <%= @job.location %>
+    <% end %>
+<% end %>
+
+<% if @job.salary || @job.contract %>
+    <%= content_tag :p do %>
+        <% if @job.salary %>
+            <%= content_tag :strong, "MuNNY:" %>
+            <%= @job.salary %>
+            <br>
+        <% end %>
+        <% if @job.contract %>
+            <%= content_tag :strong, "Contract:" %>
+            <%= @job.contract %>
+        <% end %>
+    <% end %>
+<% end %>
+
+<% if @job.url %>
+    <%= content_tag :p do %>
+        <%= link_to "View listing", @job.url, target: '_blank' %>
+    <% end %>
+<% end %>
+
+<% if @job.description %>
+    <hr>
+
+    <%= content_tag :div, (sanitize @job.description) %>
+<% end %>
