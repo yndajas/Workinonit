@@ -31,7 +31,6 @@
             <% if logged_in? %>
               <%# top nav links if logged in %>
               <ul class="navbar-nav mr-auto mt-2">
-                <li class="nav-item"><%= link_to "Dashboard", dashboard_path, class: 'nav-link' %></li>
                 <li class="nav-item"><a class="nav-link" href="/applications">Applications</a></li>
                 <li class="nav-item"><a class="nav-link" href="/jobs">Jobs</a></li>
                 <li class="nav-item dropdown">
@@ -50,6 +49,9 @@
               </ul>
             <%# top nav links if logged out %>
             <% else %>
+              <ul class="navbar-nav mr-auto mt-2">
+                <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+              </ul>
               <ul class="navbar-nav ml-auto mt-2">
                 <li class="nav-item"><%= link_to "Register", register_path, class: 'nav-link' %></li>
                 <li class="nav-item"><%= link_to "Log in", login_path, class: 'nav-link' %></li>
@@ -78,9 +80,11 @@
       <nav class="navbar navbar-dark">
         <div class="container d-flex justify-content-between">
           <%# email displayed if logged in %>
-          <ul class="navbar-nav d-none d-lg-block">
-            <li class="nav-item"><span class="navbar-text"><%= logged_in? ? "Logged in as #{current_user.name} (#{current_user.email})" : "" %></span></li>
-          </ul>
+          <% if logged_in? %>
+            <ul class="navbar-nav d-none d-lg-block">
+              <li class="nav-item"><span class="navbar-text">Logged in as <%= current_user.name %></span></li>
+            </ul>
+          <% end %>
           <%# Dilla %>
           <ul class="navbar-nav d-none d-sm-block">
             <li class="nav-item"><button type="button" class="navbar-text btn btn-light" onclick="playDilla();">Play Dilla 🍩 Eat Donuts</button></li>
