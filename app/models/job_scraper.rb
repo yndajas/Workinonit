@@ -57,15 +57,11 @@ class JobScraper
     # scrape specific provider search pages
 
     def self.scrape_indeed_search(keywords, location, country_id)
-        # set base URL based on country
-        if country_id == 60 # if country is USA
-            base_url = "https://indeed.com/"
-        else
-            base_url = "https://" + ProviderCountry.find_by(country_id: country_id).code + ".indeed.com/"
-        end
+        # get search URL
+        url = indeed_search_url(keywords, location, country_id)
 
         # open search page
-        search = Nokogiri::HTML(OpenURI.open_uri(base_url + keywords + "-jobs-in-" + location))
+        search = Nokogiri::HTML(OpenURI.open_uri(url))
 
         # select jobs; limit to first 5
         first_five_jobs = search.css("div.jobsearch-SerpJobCard")[0..4]
@@ -81,8 +77,11 @@ class JobScraper
     end
 
     def self.scrape_linkedin_search(keywords, location)
+        # get search URL
+        url = linkedin_search_url(keywords, location)
+
         # open search page
-        search = Nokogiri::HTML(OpenURI.open_uri("https://www.linkedin.com/jobs/" + keywords + "-jobs-" + location))
+        search = Nokogiri::HTML(OpenURI.open_uri(url))
 
         # select jobs; limit to first 5
         first_five_jobs = search.css("li.result-card")[0..4]
@@ -98,8 +97,11 @@ class JobScraper
     end
 
     def self.scrape_reed_search(keywords, location)
+        # get search URL
+        url = reed_search_url(keywords, location)
+
         # open search page
-        search = Nokogiri::HTML(OpenURI.open_uri("https://www.reed.co.uk/jobs/" + keywords + "-jobs-in-" + location))
+        search = Nokogiri::HTML(OpenURI.open_uri(url))
 
         # select jobs; limit to first 5
         first_five_jobs = search.css("article.job-result")[0..4]
@@ -113,6 +115,25 @@ class JobScraper
 
             {title: title, company: company, id: id}
         end
+    end
+
+    def self.indeed_search_url(keywords, location, country_id)
+        # set base URL based on country
+        if country_id == 60 # if country is USA
+            base_url = "https://indeed.com/"
+        else
+            base_url = "https://" + ProviderCountry.find_by(country_id: country_id).code + ".indeed.com/"
+        end
+
+        base_url + keywords + "-jobs-in-" + location        
+    end
+
+    def self.linkedin_search_url(keywords, location)
+        "https://www.linkedin.com/jobs/" + keywords + "-jobs-" + location
+    end
+
+    def self.reed_search_url(keywords, location)
+        "https://www.reed.co.uk/jobs/" + keywords + "-jobs-in-" + location
     end
 
     # scrape by URL helpers
