@@ -36,17 +36,20 @@ main {
     padding-top: 20px;
     padding-bottom: 20px;
     
+    // bullet point styling
+    ul {
+        padding-inline-start: 0px;
+    }
+    
     li {
+        display: flex;
+        margin-left: 18px;
         list-style-type: none;
-        padding-left: 10px;
 
         &::before {
+            margin-right: 10px;
             content: "\2605";
             color: $base-red;
-            margin-left: -27px;
-            margin-right: 10px; 
-            font-size: 0.75rem;
-            vertical-align: middle;
         }
     }
 }
@@ -80,7 +83,7 @@ nav {
 }
 
 // inputs
-input[type=text], input[type=email], input[type=password], input[type=date], select, input[type=submit], textarea {
+input[type=text], input[type=email], input[type=password], input[type=date], input[type=url], select, input[type=submit], textarea {
     padding: 10px;
     margin: 8px 0px;
     border-radius: .25rem;
