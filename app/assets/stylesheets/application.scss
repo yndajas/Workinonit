@@ -93,24 +93,27 @@ nav {
 }
 
 // inputs
-input[type=text], input[type=email], input[type=password], input[type=date], input[type=url], select, input[type=submit], textarea {
-    padding: 10px;
-    margin: 8px 0px;
+input[type=text], input[type=email], input[type=password], input[type=date], input[type=url], select, textarea, input[type=submit] {
+    padding: 6px 12px;
     border-radius: .25rem;
     box-sizing: border-box;
 
     &:not(input[type=submit]) {
         border: 2px solid $base-secondary;
     }
+}
 
-    &:not(textarea) {
+div#login, div#registration {
+    input {
         height: 50px;
+        padding: 10px;
+        margin: 8px 0px;
+    
+        &[type=submit] {
+            font-weight: bold;
+        }
     }
-}
-
-input[type=submit] {
-    font-weight: bold;
-}
+} 
 
 textarea {
     max-width: 100%;
