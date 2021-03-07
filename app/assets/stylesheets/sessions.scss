@@ -42,11 +42,6 @@ div {
     }
 
     &.google {
-        @include strategy-colours($border: $base-light);
+        @include strategy-colours($border: $base-secondary);
     }
-}
-
-hr {
-    border: 0;
-    border-top: 1px solid $base-light;
 }
