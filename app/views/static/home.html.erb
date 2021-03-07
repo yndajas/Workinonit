@@ -1,12 +1,39 @@
 <% content_for :'main_heading', "Welcome!" %>
 
-<%# <h3>What is Racqueteer?</h3>
-<p>A lightweight web app for:</p>
-<ul>
-    <li>keeping track of your racquet sports activities</li>
-    <li>recording and reviewing your matches, coaching and racquets</li>
-    <li>accessing breakdowns of each by sport, opponent, coach and more!</li>
-</ul>
-<p>You can view a <a href="https://www.youtube.com/watch?v=nK35Tuxfkso" target="_blank">short demo on YouTube</a></p>
-<h3>... who are you?</h2>
-<p><a href="/register">Register</a> or <a href="/login">log in</a> to start racqueteering</p> %>
+<%= content_tag :h3, "What is Workinonit?" %>
+
+<%= content_tag :p, "A song by J Dilla... and also a web app for managing your job search! With Workinonit, you can:" %>
+<%= content_tag :ul do %>
+    <%= content_tag :li do %>
+        <%= content_tag :span do %>
+            find jobs by keywords (e.g. job title) and location<%= content_tag :span, "*", class: 'red-text' %>
+        <% end %>
+    <% end %>
+    <%= content_tag :li do %>
+        <%= content_tag :span do %>
+            add jobs by URL<%= content_tag :span, "*", class: 'red-text' %> or manual entry
+        <% end %>
+    <% end %>
+    <%= content_tag :li, "keep track of your progress on job applications" %>
+    <%= content_tag :li, "save and review feedback from and notes on companies" %>
+<% end %>
+<%= content_tag :p do %>
+    You can view a
+    <%= link_to "short demo on YouTube", "https://www.youtube.com/watch?v=nK35Tuxfkso", target: '_blank' %>. [TO BE ADDED - PLACEHOLDER LINK]
+<% end %>
+
+<%= content_tag :h3, "Get started!" %>
+
+<%= content_tag :p do %>
+    <%= link_to "Register", register_path %>
+    or
+    <%= link_to "log in", login_path %>
+    to start Workinonit today!
+<% end %>
+
+<hr>
+
+<%= content_tag :p do %>
+    <%= content_tag :span, "*", class: 'red-text' %>
+    these features support jobs on Indeed, LinkedIn and Reed
+<% end %>
