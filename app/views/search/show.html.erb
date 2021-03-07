@@ -1,11 +1,19 @@
 <% content_for :title, "Job search results" %>
 
-<%= content_tag :p, "Select which jobs to save." %>
+<%= content_tag :ul do %>
+    <%= content_tag :li do %>
+        <%= content_tag :span, "Select which jobs to save" %>
+    <% end %>
+<% end %>
 
 <%= form_tag jobs_path, id: 'search-results-form' do %>
     <% @jobs.each do |provider, jobs| %>
         <% if jobs.length > 0 %>
             <%= content_tag :h3, provider  %>
+            <%= content_tag :p do %>
+                View more results on
+                <%= link_to provider, @provider_search_urls[provider], target: '_blank' %><%= content_tag :span, "*", class: 'red-text' %>
+            <% end %>
             <% jobs.each do |job| %>
                 <%= label_tag :"job_#{provider}_#{job[:id]}", class: 'checkbox-container' do %>
                     <%= check_box_tag :"job_ids[#{provider}][]", job[:id], false, id: "job_#{provider}_#{job[:id]}" %>
@@ -22,4 +30,10 @@
     <% end %>
     <%= hidden_field_tag :country_id, @country_id %>
     <%= submit_tag "Save jobs", disabled: 'disabled', class: 'btn btn-success' %>
+<% end %>
+<hr>
+<%= content_tag :p do %>
+    <%= content_tag :span, "*", class: 'red-text' %>
+    you can import additional jobs by URL via the
+    <%= link_to "new job page", new_job_path %>
 <% end %>
