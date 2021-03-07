@@ -13,9 +13,11 @@
 
 <%= content_tag :ul do%>
   <%= content_tag :li do %>
-    Ynda Jas (<%= link_to "they", "https://pronoun.is/they/.../themself", target: '_blank' %>):
+    Ynda Jas (
+    <%= link_to "they", "https://pronoun.is/they/.../themself", target: '_blank' %>
+    ):&nbsp;
     <%= link_to "GitHub", "https://github.com/yndajas", target: '_blank' %>
-    |
+    &nbsp;|&nbsp;
     <%= link_to "website", "https://yndajas.co", target: '_blank' %>
   <% end %>
   <%= content_tag :li do %>
