@@ -11,6 +11,15 @@ class SearchController < ApplicationController
     
     def show
         @country_id = ProviderCountry.find_by(code: params[:country_code]).country_id
-        @jobs = JobScraper::scrape_search(params[:keywords], params[:location], @country_id)
+        @jobs = JobScraper.scrape_search(params[:keywords], params[:location], @country_id)
+        
+        @provider_search_urls = {}
+        @jobs.each do |provider, jobs|
+            if jobs.length > 0
+                arguments = [params[:keywords], params[:location]]
+                arguments << @country_id if provider == :Indeed
+                @provider_search_urls[provider] = JobScraper.send("#{provider.downcase}_search_url", *arguments)
+            end
+        end
     end
 end
