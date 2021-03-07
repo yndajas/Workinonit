@@ -12,7 +12,7 @@
             <%= content_tag :h3, provider  %>
             <%= content_tag :p do %>
                 View more results on
-                <%= link_to provider, @provider_search_urls[provider], target: '_blank' %><%= content_tag :span, "*", class: 'red-text' %>
+                <%= link_to provider, @provider_search_urls[provider], target: '_blank' %><%= content_tag :span, "*", class: 'secondary-text' %>
             <% end %>
             <% jobs.each do |job| %>
                 <%= label_tag :"job_#{provider}_#{job[:id]}", class: 'checkbox-container' do %>
@@ -20,8 +20,8 @@
                     <%= content_tag :span, "", class: 'checkmark' %>
                     <%= content_tag :span, class: 'text' do %>
                         <%= job[:title] %>
-                        <%= content_tag :span, "//", class: 'slash-divider' %>
-                        <%= content_tag :span, job[:company], class: 'red-text' %>
+                        <%= content_tag :span, "★", class: 'star-divider' %>
+                        <%= content_tag :span, job[:company], class: 'secondary-text' %>
                     <% end %>
                 <% end %>
             <% end %>
@@ -33,7 +33,7 @@
 <% end %>
 <hr>
 <%= content_tag :p do %>
-    <%= content_tag :span, "*", class: 'red-text' %>
+    <%= content_tag :span, "*", class: 'secondary-text' %>
     you can import additional jobs by URL via the
     <%= link_to "new job page", new_job_path %>
 <% end %>
