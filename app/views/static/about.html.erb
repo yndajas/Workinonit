@@ -13,14 +13,12 @@
 
 <%= content_tag :ul do%>
   <%= content_tag :li do %>
-    Ynda Jas (
-    <%= link_to "they", "https://pronoun.is/they/.../themself" %>
-    ):&nbsp;
-    <%= link_to "GitHub", "https://github.com/yndajas" %>
-    &nbsp;|&nbsp;
-    <%= link_to "website", "https://yndajas.co" %>
+    Ynda Jas (<%= link_to "they", "https://pronoun.is/they/.../themself", target: '_blank' %>):
+    <%= link_to "GitHub", "https://github.com/yndajas", target: '_blank' %>
+    |
+    <%= link_to "website", "https://yndajas.co", target: '_blank' %>
   <% end %>
   <%= content_tag :li do %>
-    <%= link_to "GitHub repository", "https://github.com/yndajas/Workinonit" %>
+    <%= link_to "GitHub repository", "https://github.com/yndajas/Workinonit", target: '_blank' %>
   <% end %>
 <% end %>
