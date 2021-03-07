@@ -24,12 +24,13 @@ html {
 
 body {
     padding-bottom: 60px;
+    background-color: $base-light;
     color: $base-dark;
 }
 
 header {
     background-color: $base-dark;
-    border-bottom: 1px solid $base-light;
+    border-bottom: 1px solid $base-secondary;
 }
 
 main {
@@ -49,7 +50,16 @@ main {
         &::before {
             margin-right: 10px;
             content: "\2605";
-            color: $base-red;
+            color: $base-accent;
+            font-weight: bold;
+        }
+    }
+
+    a {
+        color: $base-accent;
+
+        &:hover {
+            color: #B71C1C;
         }
     }
 }
@@ -60,7 +70,7 @@ footer {
     width: 100%;
     height: 60px;
     background-color: $base-dark;
-    border-top: 1px solid $base-light;
+    border-top: 1px solid $base-secondary;
 
     button.navbar-text.btn.btn-light {
         color: $base-dark;
@@ -71,7 +81,7 @@ footer {
 nav {
     .navbar-brand h1 {
         font-size: 2.5rem;
-        color: white;
+        color: $base-light;
         margin-bottom: 0;
     }
 
@@ -90,7 +100,7 @@ input[type=text], input[type=email], input[type=password], input[type=date], inp
     box-sizing: border-box;
 
     &:not(input[type=submit]) {
-        border: 2px solid $base-light;
+        border: 2px solid $base-secondary;
     }
 
     &:not(textarea) {
@@ -128,20 +138,20 @@ textarea {
         height: 20px;
         width: 20px;
         padding: 0px 8px;
-        border: 2px solid $base-light;
+        border: 2px solid $base-secondary;
         border-radius: .25rem;
         box-sizing: border-box;  
     }
 
     // custom checkmark when hovered over checkbox (unchecked)
     &:hover .checkmark {
-        background-color: $base-light;
+        background-color: $base-secondary;
     }
 
     // custom checkmark when checked
     input:checked ~ .checkmark {
-        border-color: $base-red;
-        background-color: $base-red;
+        border-color: $base-accent;
+        background-color: $base-accent;
     }
 
     .text {
@@ -188,12 +198,12 @@ p#video-container {
     }
 }
 
-// flourishes
-.red-text {
-    color: $base-red;
+// accent and secondary text
+.secondary-text {
+    color: $base-secondary;
 }
 
-.slash-divider {
-    color: $base-red;
+.star-divider {
+    color: $base-accent;
     font-weight: bold;
 }
