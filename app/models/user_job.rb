@@ -10,13 +10,13 @@ class UserJob < ApplicationRecord
     end
 
     def self.find_by_user_and_company_reverse_chronological(user, company)
-        self.by_user_reverse_chronological(user).collect do |user_job|
+        self.find_by_user_reverse_chronological(user).collect do |user_job|
             user_job if user_job.company == company
         end.compact
     end
 
     def self.find_by_user_and_unapplied_reverse_chronological(user)
-        self.by_user_reverse_chronological(user).collect do |user_job|
+        self.find_by_user_reverse_chronological(user).collect do |user_job|
             user_job if Application.user_job(user_job).length == 0
         end.compact
     end
