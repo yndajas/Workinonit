@@ -116,8 +116,12 @@ class JobsController < ApplicationController
 
     def destroy
         user_job = UserJob.find_by_user_and_job(current_user, Job.find(params:[id]))
+        job = user_job.job
+
         user_job.application.try(:destroy)
         user_job.destroy
+        job.destroy if job.user_generated?
+        
         redirect_to jobs_path
     end
 
