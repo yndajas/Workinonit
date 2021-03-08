@@ -96,10 +96,35 @@ input[type=text], input[type=email], input[type=password], input[type=date], inp
     padding: 6px 12px;
     border-radius: .25rem;
     box-sizing: border-box;
+    max-width: 100%;
+
+    &:not(input[type=url]):not(select):not(textarea):not(input[type=submit]) {
+        width: 250px;
+    }
 
     &:not(input[type=submit]) {
         border: 2px solid $base-secondary;
     }
+}
+
+@media screen and (min-width: 300px) {
+    select {
+        min-width: 250px;
+    }
+}
+
+input[type=url] {
+    width: 500px;
+}
+
+textarea {
+    width: 750px;
+    height: 250px;
+    resize: both;
+}
+
+label:not(.checkbox-container) {
+    font-weight: bold;
 }
 
 div#login, div#registration {
@@ -112,10 +137,6 @@ div#login, div#registration {
             font-weight: bold;
         }
     }
-} 
-
-textarea {
-    max-width: 100%;
 }
 
 // inputs: checkmarks
@@ -200,13 +221,17 @@ p#video-container {
     }
 }
 
-// accent and secondary text
+// basic font class styling
 .secondary-text {
     color: $base-secondary;
 }
 
 .star-divider {
     color: $base-accent;
+    font-weight: bold;
+}
+
+.bold {
     font-weight: bold;
 }
 
