@@ -1,17 +1,27 @@
-function playDilla() {
-    // unhide the p container
-    document.getElementById("video-container").style.display = "block";
+$(document).ready(function(){
+    $("#dilla_button").click(function(e){
+        // get the container
+        var video_container = document.getElementById("video-container")
 
-    //add the source to the iframe (autoplaying YouTube video; originally uww2R-Cql1o but changed due to embed permissions)
-    var video = document.getElementById("video");
-    video.setAttribute("src","https://www.youtube.com/embed/videoseries?list=PL9dk_xtWpAkKXxzv_TfLWmlJj6G3quWQ2&autoplay=1");
+        // add a new br before the container
+        var new_br = document.createElement("br");
+        var main = document.getElementsByTagName("main")[0];
+        main.insertBefore(new_br, video_container);
 
-    //scroll to just above the video
+        // unhide the container
+        video_container.style.display = "block";
 
-    videoPosition = video.getBoundingClientRect().top;
+        //add the source to the iframe (autoplaying YouTube video; originally uww2R-Cql1o but changed due to embed permissions)
+        var video = document.getElementById("video");
+        video.setAttribute("src","https://www.youtube.com/embed/videoseries?list=PL9dk_xtWpAkKXxzv_TfLWmlJj6G3quWQ2&autoplay=1");
 
-    window.scrollTo({
-         top: videoPosition - 10,
-         behavior: "smooth"
+        //scroll to just above the video
+
+        videoPosition = video.getBoundingClientRect().top;
+
+        window.scrollTo({
+            top: videoPosition - 10,
+            behavior: "smooth"
+        });
     });
-}
+})
