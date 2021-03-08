@@ -63,10 +63,33 @@ class JobsController < ApplicationController
     end
 
     def index
-        # get current user's user_job records order by created at (when the user saved a job to their account) 
+        # get current user's user_job records ordered by created at (when the user saved a job to their account)
         user_jobs = current_user.user_jobs.order(created_at: :desc)
 
-        # get the jobs those user_jobs are associated with
+        # if here from /companies/:id/:slug/jobs
+        if params[:id]
+            @company = Company.find_by(id: params[:id])
+            
+            if @company
+                # filter user_jobs by company
+                user_jobs = user_jobs.collect do |user_job|
+                    user_job if user_job.job.company == @company
+                end.compact
+            else
+                redirect_to companies_path, flash: {type: 'warning', content: "Company not found"}
+            end
+        # if here from /jobs/unapplied        
+        elsif request.path == "/jobs/unapplied"
+            # filter user_jobs by unapplied
+            user_jobs = user_jobs.collect do |user_job|
+                user_job if !Application.find_by(user_id: current_user.id, job_id: user_job.job_id)
+            end.compact
+        # if here from /jobs
+        else
+            @companies = current_user.companies.order(:name)
+        end
+
+        # get the jobs and applications associated with the user_jobs
         @job_activities = user_jobs.collect do |user_job|
             user_job_saved_at = user_job.created_at
             job = user_job.job
@@ -75,16 +98,26 @@ class JobsController < ApplicationController
             {user_job_saved_at: user_job_saved_at, job: job, application: application}
         end
 
-        @companies = current_user.companies.order(:name)
+        # if here from /companies/:id/:slug/jobs, render special view (else default to regular index)
+        if params[:id]
+            render :index_by_company
+        # if here from /jobs/unapplied        
+        elsif request.path == "/jobs/unapplied"
+            render :index_by_unapplied
+        end
     end
 
     def filter
-        raise params.inspect
-
-        # extract "Saved jobs" section of index into partial
-        # filter by company: redirect to /companies/:id/:slug/jobs, which should use the same logic as the index above (abstract @job_activities collect into a helper method) but filtered by company, then render a page using the saved jobs partial
-        # filter by not applied to: similar, but redirect to /jobs/unapplied
-        # filter by applied: just redirect to /applications? (if applications index has a similar style)
+        if params[:company_id]
+            company = Company.find(params[:company_id])
+            redirect_to company_jobs_path(company, company.slug)
+        else
+            if params[:status] == "Application started"
+                redirect_to applications_path
+            else
+                redirect_to unapplied_jobs_path
+            end
+        end
     end
 
     def destroy
