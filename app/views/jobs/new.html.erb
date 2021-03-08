@@ -1,27 +1,52 @@
 <% content_for :title, "New job" %>
 <% content_for :'main_heading', "Add a new job" %>
 
-<%= content_tag :h3, "Search for jobs" %>
+<%= content_tag :div, id: 'accordion' do %>
+  <%= content_tag :div, class: 'card' do %>
+    <%= content_tag :div, class: 'card-header', id: 'headingOne' do %>
+      <%= content_tag :button, class: 'btn', :'data-toggle' => 'collapse', :'data-target' => '#collapseOne', :'aria-expanded' => 'true', :'aria-controls' => 'collapseOne' do %>
+        <%# heading one %>
+        <%= content_tag :h3 do %><%= content_tag :span, "★", class: 'star-divider' %> Search for jobs<% end %>
+      <% end %>
+    <% end %>
 
-<%= form_tag jobs_searches_path do %>
-    <%= label_tag :keywords %>
-    <%= text_field_tag :'search[keywords]', "", id: 'keywords' %>
-    <%= label_tag :location %>
-    <%= text_field_tag :'search[location]', "", id: 'location' %>
-    <%= label_tag :country %>
-    <%= select_tag :'search[country_code]', options_from_collection_for_select(@countries, 'code', 'country_name', 'uk'), id: 'country' %>
-    <%= submit_tag "Search" %>
+    <%= content_tag :div, class: 'collapse show', id: 'collapseOne', :'aria-labelledby' => 'headingOne', :'data-parent' => '#accordion' do %>
+      <%= content_tag :div, class: 'card-body' do %>
+        <%# body one %>
+        <%= render 'new_by_search' %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <%= content_tag :div, class: 'card' do %>
+    <%= content_tag :div, class: 'card-header', id: 'headingTwo' do %>
+      <%= content_tag :button, class: 'btn collapsed', :'data-toggle' => 'collapse', :'data-target' => '#collapseTwo', :'aria-expanded' => 'false', :'aria-controls' => 'collapseTwo' do %>
+        <%# heading two %>
+        <%= content_tag :h3 do %><%= content_tag :span, "★", class: 'star-divider' %> Add job by URL<% end %>
+      <% end %>
+    <% end %>
+
+    <%= content_tag :div, class: 'collapse', id: 'collapseTwo', :'aria-labelledby' => 'headingTwo', :'data-parent' => '#accordion' do %>
+      <%= content_tag :div, class: 'card-body' do %>
+        <%# body two %>
+        <%= render 'new_by_url' %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <%= content_tag :div, class: 'card' do %>
+    <%= content_tag :div, class: 'card-header', id: 'headingThree' do %>
+      <%= content_tag :button, class: 'btn collapsed', :'data-toggle' => 'collapse', :'data-target' => '#collapseThree', :'aria-expanded' => 'false', :'aria-controls' => 'collapseThree' do %>
+        <%# heading three %>
+        <%= content_tag :h3 do %><%= content_tag :span, "★", class: 'star-divider' %> Add job manually<% end %>
+      <% end %>
+    <% end %>
+
+    <%= content_tag :div, class: 'collapse', id: 'collapseThree', :'aria-labelledby' => 'headingThree', :'data-parent' => '#accordion' do %>
+      <%= content_tag :div, class: 'card-body' do %>
+        <%# body three %>
+        <%= render 'user_generated_job_form', submit_text: "Save job" %>
+      <% end %>
+    <% end %>
+  <% end %>
 <% end %>
-
-<%= content_tag :h3, "Add job by URL" %>
-
-<%= content_tag :p, "Supports Indeed, LinkedIn and Reed" %>
-<%= form_tag jobs_path do %>
-    <%= label_tag :job_url, "URL" %>
-    <%= url_field_tag :job_url %>
-    <%= submit_tag "Save job" %>
-<% end %>
-
-<%= content_tag :h3, "Add job manually" %>
-
-<%= render 'user_generated_job_form', submit_text: "Save job" %>
