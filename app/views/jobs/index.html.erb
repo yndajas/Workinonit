@@ -3,21 +3,7 @@
 <%= link_to new_job_path do %><%= content_tag :button, "Add new job", type: 'button', class: 'btn btn-success' %><% end %>
 <br><br>
 <%= content_tag :h3, "Saved jobs" %>
-
-<%= content_tag :ul do %>
-    <% @job_activities.each do |job_activity| %>
-        <%= content_tag :li do %>
-            <%= content_tag :span, class: 'text' do %>
-                <%= link_to job_activity[:job].title, job_path(job_activity[:job], job_activity[:job].slug) %> at
-                <%= content_tag :span, job_activity[:job].company_name %>
-                <%= content_tag :span, "(saved on #{job_activity[:user_job_saved_at].strftime("%e %B %Y")})", class: 'secondary-text' %>
-                <% if job_activity[:application] %>
-                    [<%= link_to "review application", application_path(job_activity[:application]) %>]
-                <% end %>
-            <% end %>
-        <% end %>
-    <% end %>
-<% end %>
+<%= render 'saved_jobs' %>
 <hr>
 <%= form_tag filtered_jobs_path do %>
     <%= select_tag :status, options_for_select(["Application started", "Application not started"]), required: 'required', include_blank: true %>
@@ -26,7 +12,7 @@
 <% end %>
 <br>
 <%= form_tag filtered_jobs_path do %>
-    <%= select_tag :company, options_from_collection_for_select(@companies, :id, :name), required: 'required', include_blank: true %>
+    <%= select_tag :company_id, options_from_collection_for_select(@companies, :id, :name), required: 'required', include_blank: true %>
     &nbsp;
     <%= submit_tag "Filter by company", class: 'btn btn-primary' %>
 <% end %>
