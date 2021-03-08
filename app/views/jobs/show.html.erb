@@ -1,5 +1,4 @@
 <% content_for :title, @job.title %>
-<% content_for :'main_heading', @job.title %>
 
 <% if @user_generated %>
     <%= link_to edit_job_path(@job, @job.slug) do %><%= content_tag :button, "Edit job", type: 'button', class: 'btn btn-primary' %><% end %>
@@ -21,7 +20,7 @@
 <%= content_tag :p do %>
     <%= @job.company_name %>
     <% if @job.location %>
-        &nbsp;<%= content_tag :span, "★", class: 'star-divider' %> <%= @job.location %>
+        <%= content_tag :span, "★", class: 'star-divider' %> <%= @job.location %>
     <% end %>
 <% end %>
 
