@@ -44,7 +44,7 @@
     <% end %>
 <% end %>
 
-<% if @job.url %>
+<% if !@job.url.empty? %>
     <%= content_tag :p do %>
         <%= link_to "View listing", @job.url, target: '_blank' %>
     <% end %>
