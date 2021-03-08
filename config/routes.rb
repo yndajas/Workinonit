@@ -31,6 +31,9 @@ Rails.application.routes.draw do
   get 'jobs/:id/:slug/edit', to: 'jobs#edit', as: 'edit_job'
   patch 'jobs/:id/:slug', to: 'jobs#update'
   delete 'jobs/:id/:slug', to: 'jobs#destroy'
+  post '/jobs/filter', to: 'jobs#filter', as: 'filtered_jobs'
+
+  # jobs/applications
   get 'jobs/:id/:slug/apply', to: 'applications#new',as: 'new_application_by_job'
 
   # applications
