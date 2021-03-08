@@ -1,4 +1,5 @@
 class Job < ApplicationRecord
+    extend Findable::ClassMethods
     include Slugifiable::InstanceMethods
 
     belongs_to :company
