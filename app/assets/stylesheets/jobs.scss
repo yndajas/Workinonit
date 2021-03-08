@@ -1,3 +1,20 @@
+@import 'colours';
+
 form.job-action {
     display: inline;
+}
+
+div#accordion div.card {
+    div.card-header  {
+        background-color: $base-dark;
+
+        h3 {
+            color: $base-light;
+            margin: 0px;
+        }
+    }
+
+    div.collapse {
+        background-color: $base-light;
+    }
 }
