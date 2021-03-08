@@ -21,13 +21,17 @@ class UsersController < ApplicationController
     end
 
     def destroy
-        [Application, UserCompanyInformation, UserJob].each do |cclass|
-            cclass.where(user_id: current_user.id).destroy_all
+        current_user.jobs.each do |job|
+            job.destroy if job.user_generated?
+        end
+
+        [:applications, :user_company_information, :user_jobs].each do |collection|
+            current_user.send(collection).destroy_all
         end
 
         current_user.destroy
         session.delete :user_id
-        redirect_to login_path
+        redirect_to login_path, flash: {type: 'success', content: "Account successfully deleted"}
     end
 
     private
