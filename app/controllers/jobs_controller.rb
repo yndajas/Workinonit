@@ -77,6 +77,7 @@ class JobsController < ApplicationController
         # if here from /jobs/unapplied        
         elsif request.path == "/jobs/unapplied"
             user_jobs = UserJob.find_by_user_and_unapplied_reverse_chronological(current_user)
+            redirect_to jobs_path, flash: {type: 'warning', content: "No saved jobs without applications"} if user_jobs.length == 0
         # if here from /jobs
         else
             @companies = current_user.companies_alphabetical
@@ -92,12 +93,11 @@ class JobsController < ApplicationController
             {user_job_saved_at: user_job_saved_at, job: job, application: application}
         end
 
-        # if here from /companies/:id/:slug/jobs, render special view (else default to regular index)
-        if params[:id]
-            render :index_by_company
-        # if here from /jobs/unapplied        
-        elsif request.path == "/jobs/unapplied"
-            render :index_by_unapplied
+        # if here from /companies/:id/:slug/jobs or /jobs/unapplied, render special view (else default to regular index)
+        # added second check on user_jobs length here even though there are conditional redirects based on this above as Rails complains about calling render/redirect too many times when there are no user jobs
+        if user_jobs.length > 0 && (params[:id] || request.path == "/jobs/unapplied")
+            @title = (params[:id] ? "Jobs at #{@company.name}" : "Jobs without applications")
+            render 'filtered_index'
         end
     end
 
@@ -142,7 +142,7 @@ class JobsController < ApplicationController
         user_job.destroy
         job.destroy if job.user_generated?
         
-        redirect_to jobs_path, flash: {type: 'success', content: "Job successfully removed"}
+        redirect_to jobs_path, flash: {type: 'success', content: "Job successfully deleted"}
     end
 
     private
