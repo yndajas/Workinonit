@@ -210,3 +210,8 @@ p#video-container {
     color: $base-accent;
     font-weight: bold;
 }
+
+// Bootstrap button overrides
+.btn {
+    vertical-align: baseline;
+}
