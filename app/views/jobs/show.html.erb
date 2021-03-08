@@ -17,7 +17,7 @@
 
 <% if @user_job %>
     <%= form_for @job, method: :delete, html: {id: 'delete_record', class: 'edit_job job-action'} do |f| %>
-        <%= submit_tag "Delete job", class: 'btn btn-danger' %>
+        <%= f.submit "Delete job", class: 'btn btn-danger' %>
     <% end %>
 <% end %>
 

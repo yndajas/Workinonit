@@ -10,5 +10,5 @@
 <% end %>
 
 <%= form_for current_user, method: :delete, html: {id: 'delete_record'} do |f| %>
-    <%= submit_tag "Delete account", class: 'btn btn-danger' %>
+    <%= f.submit "Delete account", class: 'btn btn-danger' %>
 <% end %>
