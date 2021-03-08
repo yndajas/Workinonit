@@ -55,7 +55,7 @@ class JobsController < ApplicationController
         if @job && (!@user_generated || @user_job.try(:user) == current_user)
             # if @user_job is not already set, find it
             @user_job = UserJob.find_by_user_and_job(current_user, @job) if !@user_job
-            @application = Application.find_by_user_job(@user_job)
+            @application = Application.find_by_user_job(@user_job) if @user_job
             render :show
         else
             redirect_to jobs_path, flash: {type: 'warning', content: "Job not found"}
