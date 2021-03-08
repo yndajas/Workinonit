@@ -32,12 +32,19 @@ Rails.application.routes.draw do
   patch 'jobs/:id/:slug', to: 'jobs#update'
   delete 'jobs/:id/:slug', to: 'jobs#destroy'
   post '/jobs/filter', to: 'jobs#filter', as: 'filtered_jobs'
+  get '/jobs/unapplied', to: 'jobs#index', as: 'unapplied_jobs'
 
   # jobs/applications
-  get 'jobs/:id/:slug/apply', to: 'applications#new',as: 'new_application_by_job'
+  get 'jobs/:id/:slug/apply', to: 'applications#new', as: 'new_application_by_job'
 
   # applications
   resources :applications
+
+  # companies
+  resources :companies
+
+  # companies/jobs
+  get 'companies/:id/:slug/jobs', to: 'jobs#index', as: 'company_jobs'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
