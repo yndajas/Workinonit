@@ -3,6 +3,7 @@ class UserJob < ApplicationRecord
     belongs_to :job
 
     scope :user, ->(user) {where(user_id: user.id)}
+    scope :job, ->(job) {where(job_id: job.id)}
 
     def self.by_user_reverse_chronological(user)
         self.user(user).order(created_at: :desc)
