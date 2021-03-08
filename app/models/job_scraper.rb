@@ -212,11 +212,11 @@ class JobScraper
         company_and_location_div_element = page.css("div.jobsearch-CompanyInfoWithoutHeaderImage div div")
 
         # get company name to be used in find_or_create_by
-        company_name = company_and_location_div_element.css("div div.icl-u-lg-mr--sm.icl-u-xs-mr--xs").text
+        company_name = company_and_location_div_element.css("div div.icl-u-lg-mr--sm.icl-u-xs-mr--xs").text.strip
 
         # get remaining job attributes for creating new job associated with company
         title = page.css("h1.jobsearch-JobInfoHeader-title").text
-        location = company_and_location_div_element.css("div.jobsearch-InlineCompanyRating + div").text
+        location = company_and_location_div_element.css("div.jobsearch-InlineCompanyRating + div").text.strip
 
         # this seems unnecessary and doesn't work for US pages, so commenting out (including the corresponding parts of the if block below) but leaving it here for now
         # salary_and_contract_div_element = page.css("div.jobsearch-JobMetadataHeader-item")
@@ -226,7 +226,7 @@ class JobScraper
         # end
 
         salary_span_element = page.css("span.icl-u-xs-mr--xs")
-        salary = salary_span_element.text if salary_span_element.length > 0
+        salary = salary_span_element.text.strip if salary_span_element.length > 0
         
         # UK and maybe all non-US versions of the site?
         contract_span_element = page.css("span.jobsearch-JobMetadataHeader-item")
@@ -239,7 +239,7 @@ class JobScraper
         # if US
         elsif contract_parent_div_element.length > 0
             contract_child_div_elements = contract_parent_div_element.css("div div")[1..-1]
-            contract = contract_child_div_elements.collect {|div| div.text}.join(", ")
+            contract = contract_child_div_elements.collect {|div| div.text.strip}.join(", ")
         end
 
         description = page.css("div#jobDescriptionText").inner_html.strip
@@ -255,16 +255,16 @@ class JobScraper
         page = show_page(provider, id)
 
         # get company name to be used in find_or_create_by
-        company_name = page.css("a.topcard__org-name-link").text
+        company_name = page.css("a.topcard__org-name-link").text.strip
 
         # get remaining job attributes for creating new job associated with company
-        title = page.css("h1.topcard__title").text
-        location = page.css("span.topcard__flavor.topcard__flavor--bullet").text
+        title = page.css("h1.topcard__title").text.strip
+        location = page.css("span.topcard__flavor.topcard__flavor--bullet").text.strip
 
         salary_div_element = page.css("div.compensation__salary")
-        salary = salary_div_element.text if salary_div_element.length > 0
+        salary = salary_div_element.text.strip if salary_div_element.length > 0
 
-        contract = page.css("li.job-criteria__item:nth-child(2) span").text
+        contract = page.css("li.job-criteria__item:nth-child(2) span").text.strip
         description = page.css("div.show-more-less-html__markup").inner_html.strip
         provider_job_id = id
         provider_id = provider.id
@@ -283,13 +283,13 @@ class JobScraper
         page = show_page(provider, id, slug: "j/")
 
         # get company name to be used in find_or_create_by
-        company_name = page.css("span[itemprop='hiringOrganization'] span[itemprop='name']").text
+        company_name = page.css("span[itemprop='hiringOrganization'] span[itemprop='name']").text.strip
 
         # get remaining job attributes for creating new job associated with company
-        title = page.css("h1").text
-        location = page.css("span[itemprop='addressLocality']").text
-        salary = page.css("span[data-qa='salaryLbl']").text
-        contract = page.css("span[itemprop='employmentType']").text
+        title = page.css("h1").text.strip
+        location = page.css("span[itemprop='addressLocality']").text.strip
+        salary = page.css("span[data-qa='salaryLbl']").text.strip
+        contract = page.css("span[itemprop='employmentType']").text.strip
         description = page.css("span[itemprop='description']").inner_html.strip
 
         # collect slug to create links in the same style as Reed, even though the value makes no difference to their routing
