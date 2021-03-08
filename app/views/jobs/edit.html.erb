@@ -1,3 +1,15 @@
 <% content_for :title, "Update job" %>
 
 <%= render 'user_generated_job_form', submit_text: "Update job" %>
+
+<hr>
+
+<%= content_tag :h3, "Delete job" %>
+<br>
+<%= content_tag :p do %>
+    <%= content_tag :span, "Warning:", class: 'bold' %> deleting a job cannot be undone. Deleting a job will also delete any associated application data.
+<% end %>
+
+<%= form_for @job, method: :delete, html: {id: 'delete_record'} do |f| %>
+    <%= submit_tag "Delete job", class: 'btn btn-danger' %>
+<% end %>
