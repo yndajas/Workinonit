@@ -1,9 +1,5 @@
 <% content_for :title, @job.title %>
 
-<% if @user_generated %>
-    <%= link_to edit_job_path(@job, @job.slug) do %><%= content_tag :button, "Edit job", type: 'button', class: 'btn btn-primary' %><% end %>
-<% end %>
-
 <% if @application %>
     <%= link_to application_path(@application) do %><%= content_tag :button, "Review application", type: 'button', class: 'btn btn-primary' %><% end %>
 <% elsif @user_job %>
@@ -15,8 +11,12 @@
     <% end %>
 <% end %>
 
+<% if @user_generated %>
+    <%= link_to edit_job_path(@job, @job.slug) do %><%= content_tag :button, "Edit job", type: 'button', class: 'btn btn-primary' %><% end %>
+<% end %>
+
 <% if @user_job %>
-    <%= form_for @job, method: :delete, html: {class: 'edit_job job-action'} do |f| %>
+    <%= form_for @job, method: :delete, html: {id: 'delete_record', class: 'edit_job job-action'} do |f| %>
         <%= submit_tag "Delete job", class: 'btn btn-danger' %>
     <% end %>
 <% end %>
@@ -25,32 +25,32 @@
 
 <%= content_tag :p do %>
     <%= @job.company_name %>
-    <% if @job.location %>
+    <% if @job.has_value_for?(:location) %>
         <%= content_tag :span, "★", class: 'star-divider' %> <%= @job.location %>
     <% end %>
 <% end %>
 
-<% if @job.salary || @job.contract %>
+<% if @job.has_value_for?(:salary) || @job.has_value_for?(:contract) %>
     <%= content_tag :p do %>
-        <% if @job.salary %>
+        <% if @job.has_value_for?(:salary) %>
             <%= content_tag :strong, "MuNNY:" %>
             <%= @job.salary %>
             <br>
         <% end %>
-        <% if @job.contract %>
+        <% if @job.has_value_for?(:contract) %>
             <%= content_tag :strong, "Contract:" %>
             <%= @job.contract %>
         <% end %>
     <% end %>
 <% end %>
 
-<% if !@job.url.empty? %>
+<% if @job.has_value_for?(:url) %>
     <%= content_tag :p do %>
         <%= link_to "View listing", @job.url, target: '_blank' %>
     <% end %>
 <% end %>
 
-<% if @job.description %>
+<% if @job.has_value_for?(:description) %>
     <hr>
 
     <%= content_tag :div, (sanitize @job.description) %>
