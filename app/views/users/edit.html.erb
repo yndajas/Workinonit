@@ -2,4 +2,14 @@
 <% content_for :main_align, 'center' %>
 
 <%# add edit email/password/name if account is not associated with a 'provider'/OAuth strategy - maybe update name should be allowed either way? %>
-<%= link_to "Delete account", user_path(current_user), method: :delete, data: { confirm: "Are you sure you wish to delete your account and all associated data? This cannot be undone." }  %>
+
+
+<%= content_tag :h3, "Delete account" %>
+<br>
+<%= content_tag :p do %>
+    <%= content_tag :span, "Warning:", class: 'bold' %> deleting your account cannot be undone. You will lose all data, including saved jobs and applications.
+<% end %>
+
+<%= form_for current_user, method: :delete, html: {id: 'delete_record'} do |f| %>
+    <%= submit_tag "Delete account", class: 'btn btn-danger' %>
+<% end %>
