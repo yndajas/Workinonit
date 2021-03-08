@@ -23,13 +23,6 @@ class Job < ApplicationRecord
         job
     end
 
-    def provider_job_url
-        country_id = self.country_id || 59
-        base_show_url = self.provider.base_show_url_by_country(country_id)
-        slug = self.provider_job_slug.try("+", "/") || ""
-        base_show_url + slug + self.provider_job_id
-    end
-
     def company_name=(name)
         self.company = Company.find_or_create_by(name: name)
     end
@@ -38,7 +31,18 @@ class Job < ApplicationRecord
         self.company.try(:name)
     end
 
+    def provider_job_url
+        country_id = self.country_id || 59
+        base_show_url = self.provider.base_show_url_by_country(country_id)
+        slug = self.provider_job_slug.try("+", "/") || ""
+        base_show_url + slug + self.provider_job_id
+    end
+
     def url
         self.custom_url || self.provider_job_url
+    end
+
+    def user_generated?
+        !self.provider_id
     end
 end
