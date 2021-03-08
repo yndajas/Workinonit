@@ -3,16 +3,21 @@
 <%= link_to new_job_path do %><%= content_tag :button, "Add new job", type: 'button', class: 'btn btn-success' %><% end %>
 <br><br>
 <%= content_tag :h3, "Saved jobs" %>
-<%= render 'saved_jobs' %>
-<hr>
-<%= form_tag filtered_jobs_path do %>
-    <%= select_tag :status, options_for_select(["Application started", "Application not started"]), required: 'required', include_blank: true %>
-    &nbsp;
-    <%= submit_tag "Filter by application status", class: 'btn btn-primary' %>
-<% end %>
-<br>
-<%= form_tag filtered_jobs_path do %>
-    <%= select_tag :company_id, options_from_collection_for_select(@companies, :id, :name), required: 'required', include_blank: true %>
-    &nbsp;
-    <%= submit_tag "Filter by company", class: 'btn btn-primary' %>
+
+<% if @job_activities.length > 0 %>
+    <%= render 'saved_jobs' %>
+    <hr>
+    <%= form_tag filtered_jobs_path do %>
+        <%= select_tag :status, options_for_select(["Application started", "Application not started"]), required: 'required', include_blank: true %>
+        &nbsp;
+        <%= submit_tag "Filter by application status", class: 'btn btn-primary' %>
+    <% end %>
+    <br>
+    <%= form_tag filtered_jobs_path do %>
+        <%= select_tag :company_id, options_from_collection_for_select(@companies, :id, :name), required: 'required', include_blank: true %>
+        &nbsp;
+        <%= submit_tag "Filter by company", class: 'btn btn-primary' %>
+    <% end %>
+<% else %>
+    <%= content_tag :p, "You currently have no jobs saved!" %>
 <% end %>
