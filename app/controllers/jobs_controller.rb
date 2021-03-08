@@ -41,7 +41,7 @@ class JobsController < ApplicationController
     end
 
     def show
-        @job = Job.find_by(id: params[:id])
+        @job = Job.find_by_id(params[:id])
 
         # if job exists, check if it's user generated
         if @job
@@ -114,6 +114,26 @@ class JobsController < ApplicationController
         end
     end
 
+    def edit
+        @job = Job.find_by_id(params[:id])
+
+        if @job.user_generated?
+            # if user generated but not by current user (else pass through to normal edit action behaviour)
+            if UserJob.find_by_job(@job).user != current_user
+                redirect_to jobs_path, flash: {type: 'warning', content: "Job not found"}
+            end
+        # if provider-based job
+        else
+            redirect_to job_path(@job, @job.slug), flash: {type: 'warning', content: "You cannot edit this job"}
+        end
+    end
+
+    def update
+        job = Job.find_by_id(params[:id])
+        job.update(job_params)
+        redirect_to job_path(job, job.slug), flash: {type: 'success', content: "Job successfully updated"}
+    end
+
     def destroy
         user_job = UserJob.find_by_user_and_job(current_user, Job.find(params[:id]))
         job = user_job.job
@@ -122,7 +142,7 @@ class JobsController < ApplicationController
         user_job.destroy
         job.destroy if job.user_generated?
         
-        redirect_to jobs_path, flash: {type: 'success', content: "Successfully removed job"}
+        redirect_to jobs_path, flash: {type: 'success', content: "Job successfully removed"}
     end
 
     private
