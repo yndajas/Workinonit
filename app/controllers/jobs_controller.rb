@@ -63,37 +63,31 @@ class JobsController < ApplicationController
     end
 
     def index
-        # get current user's user_job records ordered by created at (when the user saved a job to their account)
-        user_jobs = current_user.user_jobs.order(created_at: :desc)
-
+        # get filtered and ordered company/ies and user jobs
         # if here from /companies/:id/:slug/jobs
         if params[:id]
             @company = Company.find_by(id: params[:id])
             
             if @company
-                # filter user_jobs by company
-                user_jobs = user_jobs.collect do |user_job|
-                    user_job if user_job.job.company == @company
-                end.compact
+                user_jobs = UserJob.by_user_and_company_reverse_chronological(current_user, @company)
+                redirect_to companies_path, flash: {type: 'warning', content: "No saved jobs found at company"} if user_jobs.length == 0
             else
                 redirect_to companies_path, flash: {type: 'warning', content: "Company not found"}
             end
         # if here from /jobs/unapplied        
         elsif request.path == "/jobs/unapplied"
-            # filter user_jobs by unapplied
-            user_jobs = user_jobs.collect do |user_job|
-                user_job if !Application.find_by(user_id: current_user.id, job_id: user_job.job_id)
-            end.compact
+            user_jobs = UserJob.unapplied_by_user_reverse_chronological(current_user)
         # if here from /jobs
         else
-            @companies = current_user.companies.order(:name)
+            @companies = current_user.companies_alphabetical
+            user_jobs = UserJob.by_user_reverse_chronological(current_user)
         end
 
-        # get the jobs and applications associated with the user_jobs
+        # get jobs and applications associated with the user jobs
         @job_activities = user_jobs.collect do |user_job|
             user_job_saved_at = user_job.created_at
             job = user_job.job
-            application = Application.find_by(user_id: current_user.id, job_id: job.id)
+            application = Application.user_job(user_job)[0]
             
             {user_job_saved_at: user_job_saved_at, job: job, application: application}
         end
