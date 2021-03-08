@@ -9,6 +9,8 @@ class Job < ApplicationRecord
     has_many :users, through: :user_jobs
     has_many :applications
 
+    scope :user, ->(user) {where(user_id: user.id)}
+
     def self.find_or_create_by_attributes_hash(attributes_hash)
         # find or create the company
         company = Company.find_or_create_by(name: attributes_hash[:company_name])
@@ -45,5 +47,9 @@ class Job < ApplicationRecord
 
     def user_generated?
         !self.provider_id
+    end
+
+    def has_value_for?(attribute)
+        !!self.send(attribute).try(:length).try(:>, 0)
     end
 end
