@@ -63,7 +63,28 @@ class JobsController < ApplicationController
     end
 
     def index
-        @jobs = current_user.jobs
+        # get current user's user_job records order by created at (when the user saved a job to their account) 
+        user_jobs = current_user.user_jobs.order(created_at: :desc)
+
+        # get the jobs those user_jobs are associated with
+        @job_activities = user_jobs.collect do |user_job|
+            user_job_saved_at = user_job.created_at
+            job = user_job.job
+            application = Application.find_by(user_id: current_user.id, job_id: job.id)
+            
+            {user_job_saved_at: user_job_saved_at, job: job, application: application}
+        end
+
+        @companies = current_user.companies.order(:name)
+    end
+
+    def filter
+        raise params.inspect
+
+        # extract "Saved jobs" section of index into partial
+        # filter by company: redirect to /companies/:id/:slug/jobs, which should use the same logic as the index above (abstract @job_activities collect into a helper method) but filtered by company, then render a page using the saved jobs partial
+        # filter by not applied to: similar, but redirect to /jobs/unapplied
+        # filter by applied: just redirect to /applications? (if applications index has a similar style)
     end
 
     def destroy
