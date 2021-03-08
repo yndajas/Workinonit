@@ -24,20 +24,4 @@
 
 <%= content_tag :h3, "Add job manually" %>
 
-<%= form_for @job do |f| %>
-    <%= f.label :title %>
-    <%= f.text_field :title, required: 'required' %>
-    <%= f.label :company_name, "Company" %>
-    <%= f.text_field :company_name, required: 'required' %>
-    <%= f.label :location %>
-    <%= f.text_field :location %>
-    <%= f.label :salary %>
-    <%= f.text_field :salary %>
-    <%= f.label :contract, "Contract type" %>
-    <%= f.text_field :contract %>
-    <%= f.label :description %>
-    <%= f.text_area :description %>
-    <%= f.label :custom_url, "URL" %>
-    <%= f.url_field :custom_url %>
-    <%= submit_tag "Save job" %>
-<% end %>
+<%= render 'user_generated_job_form', submit_text: "Save job" %>
