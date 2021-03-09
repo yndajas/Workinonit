@@ -11,4 +11,12 @@ class Application < ApplicationRecord
     def self.find_by_user_job(user_job)
         self.user_job(user_job)[0]
     end
+
+    def job_title
+        self.job.title
+    end
+
+    def job_slug
+        self.job.slug
+    end
 end
