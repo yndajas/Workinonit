@@ -42,6 +42,10 @@ class Job < ApplicationRecord
         self.company.try(:name)
     end
 
+    def title_and_company
+        "#{self.title} at #{self.company_name}"        
+    end
+
     def provider_job_url
         country_id = self.country_id || 59
         base_show_url = self.provider.base_show_url_by_country(country_id)
