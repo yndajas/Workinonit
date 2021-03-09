@@ -1,0 +1,14 @@
+<% content_for :title, "Update application" %>
+
+<%= render 'form', submit_text: "Update application" %>
+
+<%= tag.hr %>
+
+<%= content_tag :h3, "Delete application" %>
+<%= content_tag :p do %>
+    <%= content_tag :span, "Warning:", class: 'bold' %> deleting an application cannot be undone.
+<% end %>
+
+<%= form_for @application, method: :delete, html: {id: 'delete_record'} do |f| %>
+    <%= f.submit "Delete application", class: 'btn btn-danger' %>
+<% end %>
