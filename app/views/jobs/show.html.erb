@@ -53,5 +53,5 @@
 <% if @job.has_value_for?(:description) %>
     <hr>
 
-    <%= content_tag :div, (sanitize @job.description) %>
+    <%= content_tag :div, @description, class: 'job-description' %>
 <% end %>
