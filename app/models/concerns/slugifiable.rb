@@ -5,6 +5,12 @@ module Slugifiable
         end
     end
 
+    module ClassMethods
+        def find_by_slug(slug)
+            self.all.find { |instance| instance.slug == slug.downcase }
+        end
+    end
+
     def self.slugify(string)
         string.downcase.gsub(' ', '-').gsub(/[^\w-]/, '').gsub(/\-+/, '-')
     end
