@@ -1,39 +1,48 @@
 <%= form_for @application do |f| %>
-    <%= f.label :job_id, "Job" %><br>
+    <%= f.label :job_id, "Job" %>
+    <%= tag.br %>
     <% if @job %>
-        <%= f.hidden_field :job_id, value: @job.id %>
-        <%= f.text_field :job_title, value: @job.title, readonly: true %>
+        <%# <%= f.hidden_field :job_id, value: @job.id %>
+        <%= f.collection_select :job_id, [@job], :id, :title_and_company, {}, disabled: true %>
+        <%# <%= f.text_field :job_title, value: @job.title_and_company, readonly: true %>
     <% else %>
-        <%= f.collection_select :job_id, @jobs, :id, :title, include_blank: true, required: 'required' %>
+        <%= f.collection_select :job_id, @jobs, :id, :title_and_company, include_blank: true, required: 'required' %>
     <% end %>
 
-    <br><br>
+    <% 2.times do %><%= tag.br %><% end %>
 
     <%= content_tag :h3, "Progress" %>
-    <%= f.label :status_id, "Status" %><br>
-    <%= f.collection_select :status_id, @statuses, :id, :name, required: 'required' %><br><br>
-    <% @progress_booleans.each do |attribute, label| %>
-        <%= f.label attribute, class: 'checkbox-container' do %>
-            <%= f.check_box attribute %>
-            <%= content_tag :span, "", class: 'checkmark' %>
-            <%= content_tag :span, label, class: 'text' %>
-        <% end %>
-    <% end %>
+    <%= f.label :status_id, "Status" %>
+    <%= tag.br %>
+    <%= f.collection_select :status_id, @statuses, :id, :name, required: 'required' %>
 
-    <br>
+    <% 2.times do %><%= tag.br %><% end %>
+    
+    <%= render 'progress_booleans', f: f, disabled: false %>
+
+    <%= tag.br %>
 
     <%= content_tag :h3, "Dates" %>
     <% @dates.each do |attribute, label| %>
-        <%= f.label attribute, label %><br>
-        <%= f.date_field attribute %><br><br>
+        <%= f.label attribute, label %>
+        <%= tag.br %>
+        <%= f.date_field attribute %>
+        <% 2.times do %><%= tag.br %><% end %>
     <% end %>
 
     <%= content_tag :h3, "Notes and feedback" %>
-    <%= f.label :notes %><br>
-    <%= f.text_area :notes %><br><br>
+    <%= f.label :notes %>
+    <%= tag.br %>
+    <%= f.text_area :notes %>
+
+    <% 2.times do %><%= tag.br %><% end %>
+
     <%= content_tag :div, id: 'feedback_container' do %>
-        <%= f.label :feedback %><br>
-        <%= f.text_area :feedback %><br><br>
+        <%= f.label :feedback %>
+        <%= tag.br %>
+        <%= f.text_area :feedback %>
+        <% 2.times do %><%= tag.br %><% end %>
     <% end %>
-    <%= f.submit "Save application", class: 'btn btn-success' %>
+    
+    <%= f.submit submit_text, class: 'btn btn-success' %>
 <% end %>
