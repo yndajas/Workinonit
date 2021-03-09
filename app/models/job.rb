@@ -1,5 +1,7 @@
 class Job < ApplicationRecord
     extend Findable::ClassMethods
+    include Attributable::InstanceMethods
+    include FormatAndSanitizable::InstanceMethods
     include Slugifiable::InstanceMethods
 
     belongs_to :company
@@ -26,6 +28,12 @@ class Job < ApplicationRecord
         job
     end
 
+    def self.find_by_user_and_unapplied_alphabetical(user)
+        user.user_jobs.collect do |user_job|
+            user_job.job if !Application.find_by_user_job(user_job)
+        end.compact.sort_by(&:title)
+    end
+
     def company_name=(name)
         self.company = Company.find_or_create_by(name: name)
     end
@@ -47,9 +55,5 @@ class Job < ApplicationRecord
 
     def user_generated?
         !self.provider_id
-    end
-
-    def has_value_for?(attribute)
-        !!self.send(attribute).try(:length).try(:>, 0)
     end
 end
