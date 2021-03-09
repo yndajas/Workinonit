@@ -39,12 +39,15 @@ Rails.application.routes.draw do
 
   # applications
   resources :applications
+  post '/applications/filter', to: 'applications#filter', as: 'filtered_applications'
+  get '/applications/status/:slug', to: 'applications#index', as: 'applications_by_status'
 
   # companies
   resources :companies
 
-  # companies/jobs
+  # companies nested routes/resources
   get 'companies/:id/:slug/jobs', to: 'jobs#index', as: 'company_jobs'
+  get 'companies/:id/:slug/applications', to: 'applications#index', as: 'company_applications'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
