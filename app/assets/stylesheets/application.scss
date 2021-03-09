@@ -45,7 +45,7 @@ main {
         display: flex;
         margin-left: 18px;
         list-style-type: none;
-
+        
         &::before {
             margin-right: 10px;
             content: "\2605";
@@ -161,9 +161,10 @@ div#login, div#registration {
         height: 20px;
         width: 20px;
         padding: 0px 8px;
+        background-color: white;
         border: 2px solid $base-secondary;
         border-radius: .25rem;
-        box-sizing: border-box;  
+        box-sizing: border-box;
     }
 
     // custom checkmark when hovered over checkbox (unchecked)
@@ -218,6 +219,15 @@ p#video-container {
         position: absolute;
         top: 0;
         left: 0;
+    }
+}
+
+// scraped text overrides
+div.job-description {
+    li {
+        display: list-item;        
+        text-indent: -23px;
+        padding-left: 23px;
     }
 }
 
