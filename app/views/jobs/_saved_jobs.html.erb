@@ -4,7 +4,7 @@
             <%= content_tag :span, class: 'text' do %>
                 <%= link_to job_activity[:job].title, job_path(job_activity[:job], job_activity[:job].slug) %> at
                 <%= content_tag :span, job_activity[:job].company_name %>
-                <%= content_tag :span, "(saved on #{job_activity[:user_job_saved_at].strftime("%e %B %Y")})", class: 'secondary-text' %>
+                <%= content_tag :span, "(saved on #{format_date(job_activity[:user_job_saved_at])})", class: 'secondary-text' %>
                 <% if job_activity[:application] %>
                     [<%= link_to "review application", application_path(job_activity[:application]) %>]
                 <% end %>
