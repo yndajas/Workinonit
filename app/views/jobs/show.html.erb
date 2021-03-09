@@ -21,7 +21,7 @@
     <% end %>
 <% end %>
 
-<br><br>
+<% 2.times do %><%= tag.br %><% end %>
 
 <%= content_tag :p do %>
     <%= @job.company_name %>
@@ -30,16 +30,14 @@
     <% end %>
 <% end %>
 
-<% if @job.has_value_for?(:salary) || @job.has_value_for?(:contract) %>
+<% if @salary_and_contract.collect { |attribute, properties| true if properties[:has_value] }.count(true) > 0 %>
     <%= content_tag :p do %>
-        <% if @job.has_value_for?(:salary) %>
-            <%= content_tag :strong, "MuNNY:" %>
-            <%= @job.salary %>
-            <br>
-        <% end %>
-        <% if @job.has_value_for?(:contract) %>
-            <%= content_tag :strong, "Contract:" %>
-            <%= @job.contract %>
+        <% @salary_and_contract.each do |attribute, properties| %>
+            <% if properties[:has_value] %>
+                <%= content_tag :span, properties[:label], class: 'bold' %>
+                <%= @job.send(attribute) %>
+                <%= tag :br if attribute == :salary && @salary_and_contract[:contract][:has_value] %>
+            <% end %>
         <% end %>
     <% end %>
 <% end %>
@@ -51,7 +49,7 @@
 <% end %>
 
 <% if @job.has_value_for?(:description) %>
-    <hr>
+    <%= tag.hr %>
 
     <%= content_tag :div, @description, class: 'job-description' %>
 <% end %>
