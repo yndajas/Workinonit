@@ -25,13 +25,13 @@
                     <% end %>
                 <% end %>
             <% end %>
-            <br>
+            <%= tag.br %>
         <% end %>
     <% end %>
     <%= hidden_field_tag :country_id, @country_id %>
     <%= submit_tag "Save jobs", disabled: 'disabled', class: 'btn btn-success' %>
 <% end %>
-<hr>
+<%= tag.hr %>
 <%= content_tag :p do %>
     <%= content_tag :span, "*", class: 'secondary-text' %>
     you can import additional jobs by URL via the

@@ -13,9 +13,9 @@
         <%= (text_field_tag :name, "", placeholder: "Name", required: 'required') if id == 'registration' %>
         <%= email_field_tag :email, "", placeholder: "Email", required: 'required' %>
         <%= password_field_tag :password, "", placeholder: "Password", required: 'required' %>
-        <br>
+        <%= tag.br %>
         <%= submit_tag submit_value, class: "btn btn-#{button_style}" %>
     <% end %>
-    <hr>
+    <%= tag.hr %>
     <%= render 'sessions/oauth_login' %>
 <% end %>
