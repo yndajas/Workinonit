@@ -25,6 +25,10 @@ body {
     padding-bottom: 60px;
     background-color: $base-light;
     color: $base-dark;
+
+    .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI Semibold", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    }
 }
 
 header {
@@ -105,6 +109,11 @@ input[type=text], input[type=email], input[type=password], input[type=date], inp
     &:not(input[type=submit]) {
         border: 2px solid $base-secondary;
     }
+
+    // add margin-top to input + br + br + h3s (except for checkboxes) in order to make spacing consistent with the margin-bottom on checkbox containers
+    + br + br + h3 {
+        margin-top: 8px;
+    }
 }
 
 @media screen and (min-width: 300px) {
@@ -161,19 +170,23 @@ div#login, div#registration {
         height: 20px;
         width: 20px;
         padding: 0px 8px;
-        background-color: white;
         border: 2px solid $base-secondary;
         border-radius: .25rem;
         box-sizing: border-box;
+
+        // background colour when checkable but unchecked
+        &:not(.disabled) {
+            background-color: white;
+        }
     }
 
-    // custom checkmark when hovered over checkbox (unchecked)
-    &:hover .checkmark {
+    // background colour when hovered over a checkable but unchecked checkbox
+    &:hover input:not(:checked) + .checkmark:not(.disabled) {
         background-color: $base-secondary;
     }
 
     // custom checkmark when checked
-    input:checked ~ .checkmark {
+    input:checked + .checkmark {
         border-color: $base-accent;
         background-color: $base-accent;
     }
@@ -202,6 +215,13 @@ div {
     }
 }
 
+// job and application controls
+form {
+    &.job-action, &.application-action {
+        display: inline;
+    }
+}
+
 // Dilla
 p#video-container {
     display: none;
@@ -225,7 +245,7 @@ p#video-container {
 // scraped text overrides
 div.job-description {
     li {
-        display: list-item;        
+        display: list-item;
         text-indent: -23px;
         padding-left: 23px;
     }
