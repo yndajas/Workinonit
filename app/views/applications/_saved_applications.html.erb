@@ -1,0 +1,11 @@
+<%= content_tag :ul do %>
+    <% @applications.each do |application| %>
+        <%= content_tag :li do %>
+            <%= content_tag :span, class: 'text' do %>
+                <%= link_to application.job_title, application_path(application) %> at
+                <%= content_tag :span, application.company_name %>
+                <%= content_tag :span, "(updated on #{format_date(application.updated_at)})", class: 'secondary-text' %>
+            <% end %>
+        <% end %>
+    <% end %>
+<% end %>
