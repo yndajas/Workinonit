@@ -17,7 +17,7 @@ class UserJob < ApplicationRecord
 
     def self.find_by_user_and_unapplied_reverse_chronological(user)
         self.find_by_user_reverse_chronological(user).collect do |user_job|
-            user_job if Application.user_job(user_job).length == 0
+            user_job if !Application.find_by_user_job(user_job)
         end.compact
     end
 
