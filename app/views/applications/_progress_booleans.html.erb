@@ -1,0 +1,7 @@
+<% @progress_booleans.each do |attribute, label| %>
+    <%= f.label attribute, class: 'checkbox-container' do %>
+        <%= f.check_box attribute, disabled: disabled %>
+        <%= content_tag :span, "", class: "checkmark#{" disabled" if disabled}" %>
+        <%= content_tag :span, label, class: 'text' %>
+    <% end %>
+<% end %>
