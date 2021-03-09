@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Workinonit<%= " - #{yield :title}" if !(yield :title).empty? %></title>
+    <title><%= "#{yield :title} - " if !(yield :title).empty? %>Workinonit</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -71,7 +71,7 @@
       <%# if a main heading has been provided, set that as the content fot the H2 below; else default to the page title %>
       <% main_heading = (yield :'main_heading').empty? ? (yield :title) : (yield :'main_heading') %>
       <%= content_tag :h2, main_heading %>
-      <br>
+      <%= tag.br %>
       <%= yield %>
       <p id="video-container"><iframe id="video" allow="autoplay" allowfullscreen></iframe></p>
     </main>
