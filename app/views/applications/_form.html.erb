@@ -1,0 +1,39 @@
+<%= form_for @application do |f| %>
+    <%= f.label :job_id, "Job" %><br>
+    <% if @job %>
+        <%= f.hidden_field :job_id, value: @job.id %>
+        <%= f.text_field :job_title, value: @job.title, readonly: true %>
+    <% else %>
+        <%= f.collection_select :job_id, @jobs, :id, :title, include_blank: true, required: 'required' %>
+    <% end %>
+
+    <br><br>
+
+    <%= content_tag :h3, "Progress" %>
+    <%= f.label :status_id, "Status" %><br>
+    <%= f.collection_select :status_id, @statuses, :id, :name, required: 'required' %><br><br>
+    <% @progress_booleans.each do |attribute, label| %>
+        <%= f.label attribute, class: 'checkbox-container' do %>
+            <%= f.check_box attribute %>
+            <%= content_tag :span, "", class: 'checkmark' %>
+            <%= content_tag :span, label, class: 'text' %>
+        <% end %>
+    <% end %>
+
+    <br>
+
+    <%= content_tag :h3, "Dates" %>
+    <% @dates.each do |attribute, label| %>
+        <%= f.label attribute, label %><br>
+        <%= f.date_field attribute %><br><br>
+    <% end %>
+
+    <%= content_tag :h3, "Notes and feedback" %>
+    <%= f.label :notes %><br>
+    <%= f.text_area :notes %><br><br>
+    <%= content_tag :div, id: 'feedback_container' do %>
+        <%= f.label :feedback %><br>
+        <%= f.text_area :feedback %><br><br>
+    <% end %>
+    <%= f.submit "Save application", class: 'btn btn-success' %>
+<% end %>
