@@ -1,4 +1,7 @@
 class Application < ApplicationRecord
+    include Attributable::InstanceMethods
+    include FormatAndSanitizable::InstanceMethods
+
     belongs_to :user
     belongs_to :job
     belongs_to :status
