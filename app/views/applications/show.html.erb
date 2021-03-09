@@ -1,0 +1,45 @@
+<% content_for :title, "Application for #{@application.job_title}" %>
+
+<%= link_to job_path(@application.job, @application.job_slug) do %><%= content_tag :button, "View job", type: 'button', class: 'btn btn-primary' %><% end %>
+<%= link_to edit_application_path(@application) do %><%= content_tag :button, "Edit application", type: 'button', class: 'btn btn-primary' %><% end %>
+<%= form_for @application, method: :delete, html: {id: 'delete_record', class: 'edit_application application-action'} do |f| %>
+    <%= f.submit "Delete application", class: 'btn btn-danger' %>
+<% end %>
+
+<% 2.times do %><%= tag.br %><% end %>
+
+<%= content_tag :p do %>
+    <%= @application.company_name %>
+    <% if @application.has_value_for?(:location) %>
+        <%= content_tag :span, "★", class: 'star-divider' %> <%= @application.location %>
+    <% end %>
+<% end %>
+
+<%= content_tag :p do %>
+    <%= content_tag :span, "Status:", class: 'bold' %>
+    <%= @application.status_name %>
+    <% @dates.each do |attribute, label| %>
+        <% if @application.has_value_for?(attribute) %>
+            <%= tag.br %>
+            <%= content_tag :span, label, class: 'bold' %>:
+            <%= format_date(@application.send(attribute)) %>
+        <% end %>
+    <% end %>
+<% end %>
+
+<%= form_for @application do |f| %>
+    <%= render 'progress_booleans', f: f, disabled: true %>
+<% end %>
+
+<% if @application.has_value_for?(:notes) || @application.has_value_for?(:feedback) %>
+    <% [:notes, :feedback].each do |attribute| %>
+
+        <% if @application.has_value_for?(attribute) %>
+            <%= tag.hr %>
+
+            <%= content_tag :h3, attribute.to_s.titleize %>
+
+            <%= content_tag :div, @application.format_and_sanitize(attribute) %>
+        <% end %>
+    <% end %>
+<% end %>
