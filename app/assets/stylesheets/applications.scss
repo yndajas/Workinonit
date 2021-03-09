@@ -1,0 +1,21 @@
+@import 'colours';
+
+// override default disabled input styling
+form.edit_application {
+    select#application_job_id:disabled,  {
+        background-color: white;
+        color: $base-dark;
+        opacity: 1;
+
+        // hide dropdown arrow on Chrome and Safari?
+        -webkit-appearance: none;
+
+        // hide on Firefox and Opera? the webkit attribute above seems to work on Firefox, but this may help with compatibility
+        -moz-appearance: none;
+
+        // hide on IE10?
+        &::-ms-expand {
+            display: none;
+        }
+    }
+}
