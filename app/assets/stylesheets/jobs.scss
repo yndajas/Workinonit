@@ -1,11 +1,5 @@
 @import 'colours';
 
-form {
-    &.job-action, &.application-action {
-        display: inline;
-    }
-}
-
 div#accordion div.card {
     div.card-header  {
         background-color: $base-dark;
