@@ -1,7 +1,9 @@
 @import 'colours';
 
-form.job-action {
-    display: inline;
+form {
+    &.job-action, &.application-action {
+        display: inline;
+    }
 }
 
 div#accordion div.card {
