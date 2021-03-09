@@ -1,6 +1,10 @@
 <%= content_tag :p, "Supports Indeed, LinkedIn and Reed" %>
 <%= form_tag jobs_path do %>
-    <%= label_tag :job_url, "URL" %><br>
-    <%= url_field_tag :job_url %><br><br>
+    <%= label_tag :job_url, "URL" %>
+    <%= tag.br %>
+    <%= url_field_tag :job_url %>
+    
+    <% 2.times do %><%= tag.br %><% end %>
+
     <%= submit_tag "Save job", class: 'btn btn-success' %>
 <% end %>

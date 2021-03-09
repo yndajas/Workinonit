@@ -1,9 +1,21 @@
 <%= form_tag jobs_searches_path do %>
-    <%= label_tag :keywords %><br>
-    <%= text_field_tag :'search[keywords]', "", id: 'keywords' %><br><br>
-    <%= label_tag :location %><br>
-    <%= text_field_tag :'search[location]', "", id: 'location' %><br><br>
-    <%= label_tag :country %><br>
-    <%= select_tag :'search[country_code]', options_from_collection_for_select(@countries, 'code', 'country_name', 'uk'), id: 'country' %><br><br>
+    <%= label_tag :keywords %>
+    <%= tag.br %>
+    <%= text_field_tag :'search[keywords]', "", id: 'keywords' %>
+
+    <% 2.times do %><%= tag.br %><% end %>
+    
+    <%= label_tag :location %>
+    <%= tag.br %>
+    <%= text_field_tag :'search[location]', "", id: 'location' %>
+    
+    <% 2.times do %><%= tag.br %><% end %>
+    
+    <%= label_tag :country %>
+    <%= tag.br %>
+    <%= select_tag :'search[country_code]', options_from_collection_for_select(@countries, 'code', 'country_name', 'uk'), id: 'country' %>
+    
+    <% 2.times do %><%= tag.br %><% end %>
+    
     <%= submit_tag "Search", class: 'btn btn-primary' %>
 <% end %>
