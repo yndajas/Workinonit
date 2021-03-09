@@ -1,17 +1,45 @@
 <%= form_for @job do |f| %>
-    <%= f.label :title %> <%= content_tag :span, "(required)", class: 'secondary-text' %><br>
-    <%= f.text_field :title, required: 'required' %><br><br>
-    <%= f.label :company_name, "Company" %> <%= content_tag :span, "(required)", class: 'secondary-text' %><br>
-    <%= f.text_field :company_name, required: 'required' %><br><br>
-    <%= f.label :location %><br>
-    <%= f.text_field :location %><br><br>
-    <%= f.label :salary %><br>
-    <%= f.text_field :salary %><br><br>
-    <%= f.label :contract, "Contract type" %><br>
-    <%= f.text_field :contract %><br><br>
-    <%= f.label :custom_url, "URL" %><br>
-    <%= f.url_field :custom_url %><br><br>
-    <%= f.label :description %><br>
-    <%= f.text_area :description %><br><br>
+    <%= f.label :title %> <%= content_tag :span, "(required)", class: 'secondary-text' %>
+    <%= tag.br %>
+    <%= f.text_field :title, required: 'required' %>
+    
+    <% 2.times do %><%= tag.br %><% end %>
+
+    <%= f.label :company_name, "Company" %> <%= content_tag :span, "(required)", class: 'secondary-text' %>
+    <%= tag.br %>
+    <%= f.text_field :company_name, required: 'required' %>
+    
+    <% 2.times do %><%= tag.br %><% end %>
+
+    <%= f.label :location %>
+    <%= tag.br %>
+    <%= f.text_field :location %>
+    
+    <% 2.times do %><%= tag.br %><% end %>
+
+    <%= f.label :salary %>
+    <%= tag.br %>
+    <%= f.text_field :salary %>
+    
+    <% 2.times do %><%= tag.br %><% end %>
+
+    <%= f.label :contract, "Contract type" %>
+    <%= tag.br %>
+    <%= f.text_field :contract %>
+    
+    <% 2.times do %><%= tag.br %><% end %>
+
+    <%= f.label :custom_url, "URL" %>
+    <%= tag.br %>
+    <%= f.url_field :custom_url %>
+    
+    <% 2.times do %><%= tag.br %><% end %>
+
+    <%= f.label :description %>
+    <%= tag.br %>
+    <%= f.text_area :description %>
+    
+    <% 2.times do %><%= tag.br %><% end %>
+
     <%= f.submit submit_text, class: 'btn btn-success' %>
 <% end %>
