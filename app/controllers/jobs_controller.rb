@@ -61,7 +61,7 @@ class JobsController < ApplicationController
             # if @user_job is not already set, find it
             @user_job = UserJob.find_by_user_and_job(current_user, @job) if !@user_job
             @application = Application.find_by_user_job(@user_job) if @user_job
-            render :show
+            @salary_and_contract = {salary: {has_value: @job.has_value_for?(:salary), label: "MuNNY:"}, contract: {has_value: @job.has_value_for?(:contract), label: "Contract:"}}
         else
             redirect_to jobs_path, flash: {type: 'warning', content: "Job not found"}
         end
@@ -74,19 +74,19 @@ class JobsController < ApplicationController
             @company = Company.find_by_id(params[:id])
             
             if @company
-                user_jobs = UserJob.find_by_user_and_company_reverse_chronological(current_user, @company)
+                user_jobs = UserJob.find_by_user_and_company_reverse_by_date(current_user, @company, :created_at)
                 redirect_to companies_path, flash: {type: 'warning', content: "No saved jobs found at company"} if user_jobs.length == 0
             else
                 redirect_to companies_path, flash: {type: 'warning', content: "Company not found"}
             end
         # if here from /jobs/unapplied        
-        elsif request.path == "/jobs/unapplied"
-            user_jobs = UserJob.find_by_user_and_unapplied_reverse_chronological(current_user)
+        elsif request.path.downcase == "/jobs/unapplied"
+            user_jobs = UserJob.find_by_user_and_unapplied_reverse_by_date(current_user, :created_at)
             redirect_to jobs_path, flash: {type: 'warning', content: "No saved jobs without applications"} if user_jobs.length == 0
         # if here from /jobs
         else
             @companies = current_user.companies_alphabetical
-            user_jobs = UserJob.find_by_user_reverse_chronological(current_user)
+            user_jobs = UserJob.find_by_user_reverse_by_date(current_user, :created_at)
         end
 
         # get jobs and applications associated with the user jobs
@@ -100,7 +100,7 @@ class JobsController < ApplicationController
 
         # if here from /companies/:id/:slug/jobs or /jobs/unapplied, render special view (else default to regular index)
         # added second check on user_jobs length here even though there are conditional redirects based on this above as Rails complains about calling render/redirect too many times when there are no user jobs
-        if user_jobs.length > 0 && (params[:id] || request.path == "/jobs/unapplied")
+        if user_jobs.length > 0 && (params[:id] || request.path.downcase == "/jobs/unapplied")
             @title = (params[:id] ? "Jobs at #{@company.name}" : "Jobs without applications")
             render 'filtered_index'
         end
