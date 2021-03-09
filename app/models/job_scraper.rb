@@ -239,7 +239,7 @@ class JobScraper
         # if US
         elsif contract_parent_div_element.length > 0
             contract_child_div_elements = contract_parent_div_element.css("div div")[1..-1]
-            contract = contract_child_div_elements.collect {|div| div.text.strip}.join(", ")
+            contract = contract_child_div_elements.collect { |div| div.text.strip }.join(", ")
         end
 
         description = page.css("div#jobDescriptionText").inner_html.strip
