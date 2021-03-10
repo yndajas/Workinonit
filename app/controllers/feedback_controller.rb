@@ -6,14 +6,14 @@ class FeedbackController < ApplicationController
     end
 
     def create
-        @application = Application.find(params[:id])
-        @application.feedback = params[:feedback]
+        @application = Application.find_by_id(params[:id])
+        application.update(feedback_params)
         @application.save
         redirect_to feedback_path(@application)
     end
 
     def show
-        @application = Application.find(params[:id])
+        @application = Application.find_by_id(params[:id])
         redirect_if_no_application_or_does_not_belong_to_user(feedback_index_path)
     end
 
@@ -47,7 +47,7 @@ class FeedbackController < ApplicationController
     end
 
     def edit
-        @application = Application.find(params[:id])
+        @application = Application.find_by_id(params[:id])
         redirect_if_no_application_or_does_not_belong_to_user(feedback_index_path)
     end
 
@@ -58,7 +58,7 @@ class FeedbackController < ApplicationController
     end
 
     def destroy
-        application = Application.find(params[:id])
+        application = Application.find_by_id(params[:id])
         application.update(feedback: nil) if application.user == current_user
         redirect_to feedback_index_path, flash: {type: 'success', content: "Feedback successfully deleted"}
     end
