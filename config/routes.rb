@@ -31,16 +31,26 @@ Rails.application.routes.draw do
   get 'jobs/:id/:slug/edit', to: 'jobs#edit', as: 'edit_job'
   patch 'jobs/:id/:slug', to: 'jobs#update'
   delete 'jobs/:id/:slug', to: 'jobs#destroy'
-  post '/jobs/filter', to: 'jobs#filter', as: 'filtered_jobs'
-  get '/jobs/unapplied', to: 'jobs#index', as: 'unapplied_jobs'
+  post '/obs/filter', to: 'jobs#filter', as: 'filtered_jobs'
+  get 'jobs/unapplied', to: 'jobs#index', as: 'unapplied_jobs'
 
   # jobs/applications
   get 'jobs/:id/:slug/apply', to: 'applications#new', as: 'new_application_by_job'
 
   # applications
   resources :applications
-  post '/applications/filter', to: 'applications#filter', as: 'filtered_applications'
-  get '/applications/status/:slug', to: 'applications#index', as: 'applications_by_status'
+  post 'applications/filter', to: 'applications#filter', as: 'filtered_applications'
+  get 'applications/status/:slug', to: 'applications#index', as: 'applications_by_status'
+
+  # feedback
+
+  resources :feedback, only: [:new, :create]
+  get 'feedback', to: 'feedback#index', as: 'feedback_index'
+  get 'applications/:id/feedback', to: 'feedback#show', as: 'feedback'
+  get 'applications/:id/feedback/edit', to: 'feedback#edit', as: 'edit_job'
+  patch 'applications/:id/feedback', to: 'feedback#update'
+  delete 'applications/:id/feedback', to: 'feedback#destroy'
+  post 'feedback/filter', to: 'feedback#filter', as: 'filtered_feedback'
 
   # companies
   resources :companies
