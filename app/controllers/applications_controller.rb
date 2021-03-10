@@ -94,6 +94,12 @@ class ApplicationsController < ApplicationController
         redirect_to application_path(application), flash: {type: 'success', content: "Application successfully updated"}
     end
 
+    def destroy
+        application = Application.find(params[:id])
+        application.destroy if application.user == current_user
+        redirect_to applications_path, flash: {type: 'success', content: "Application successfully deleted"}
+    end
+
     private
 
     def application_params
