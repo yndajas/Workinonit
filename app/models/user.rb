@@ -14,7 +14,7 @@ class User < ApplicationRecord
     end
 
     def companies_with_applications
-        Application.user(self).collect { |application| application.company }.uniq
+        self.applications.collect { |application| application.company }.uniq
     end
 
     def companies_with_applications_alphabetical
