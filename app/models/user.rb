@@ -20,4 +20,12 @@ class User < ApplicationRecord
     def companies_with_applications_alphabetical
         self.companies_with_applications.sort_by(&:name)
     end
+
+    def companies_with_feedback
+        self.applications.collect { |application| application.company if application.has_value_for?(:feedback) }.uniq
+    end
+
+    def companies_with_feedback_alphabetical
+        self.companies_with_feedback.sort_by(&:name)
+    end
 end
