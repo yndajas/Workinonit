@@ -38,14 +38,14 @@ class ApplicationsController < ApplicationController
     end
 
     def index
-        # get filtered and ordered company/ies and user jobs
+        # get filtered and ordered company/ies and applications
         # if here from /companies/:id/:slug/applications
         if params[:id]
             @company = Company.find_by_id(params[:id])
             
             if @company
                 @applications = Application.find_by_user_and_company_reverse_by_date(current_user, @company, :updated_at)
-                redirect_to companies_path, flash: {type: 'warning', content: "No saved applications found at company"} if @applications.length == 0
+                redirect_to company_path(@company), flash: {type: 'warning', content: "No saved applications found for company"} if @applications.length == 0
             else
                 redirect_to companies_path, flash: {type: 'warning', content: "Company not found"}
             end
