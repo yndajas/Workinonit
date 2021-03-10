@@ -29,4 +29,10 @@ class ApplicationController < ActionController::Base
             end
         end
     end
+
+    def redirect_if_no_application_or_does_not_belong_to_user(path)
+        unless @application.try(:user).try(:==, current_user)
+            redirect_to path, flash: {type: 'warning', content: "Application not found"}
+        end
+    end
 end
