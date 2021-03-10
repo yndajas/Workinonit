@@ -31,8 +31,8 @@ class ApplicationsController < ApplicationController
     end
 
     def show
-        @application = Application.find(params[:id])
-        redirect_if_no_application_or_does_not_belong_to_user
+        @application = Application.find_by_id(params[:id])
+        redirect_if_no_application_or_does_not_belong_to_user(applications_path)
 
         set_progress_and_dates_instance_variables
     end
@@ -71,17 +71,17 @@ class ApplicationsController < ApplicationController
 
     def filter
         if params[:company_id]
-            company = Company.find(params[:company_id])
+            company = Company.find_by_id(params[:company_id])
             redirect_to company_applications_path(company, company.slug)
         else
-            status = Status.find(params[:status_id])
+            status = Status.find_by_id(params[:status_id])
             redirect_to applications_by_status_path(status.slug)
         end
     end
 
     def edit
-        @application = Application.find(params[:id])
-        redirect_if_no_application_or_does_not_belong_to_user
+        @application = Application.find_by_id(params[:id])
+        redirect_if_no_application_or_does_not_belong_to_user(applications_path)
 
         @job = @application.job
         set_progress_and_dates_instance_variables
@@ -95,7 +95,7 @@ class ApplicationsController < ApplicationController
     end
 
     def destroy
-        application = Application.find(params[:id])
+        application = Application.find_by_id(params[:id])
         application.destroy if application.user == current_user
         redirect_to applications_path, flash: {type: 'success', content: "Application successfully deleted"}
     end
@@ -121,11 +121,5 @@ class ApplicationsController < ApplicationController
 
     def set_statuses
         @statuses = Status.all
-    end
-
-    def redirect_if_no_application_or_does_not_belong_to_user
-        unless @application.try(:user).try(:==, current_user)
-            redirect_to applications_path, flash: {type: 'warning', content: "Application not found"}
-        end
     end
 end
