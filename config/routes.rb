@@ -44,10 +44,9 @@ Rails.application.routes.draw do
 
   # feedback
 
-  resources :feedback, only: [:new, :create]
-  get 'feedback', to: 'feedback#index', as: 'feedback_index'
+  resources :feedback, only: [:new, :index, :create]
   get 'applications/:id/feedback', to: 'feedback#show', as: 'feedback'
-  get 'applications/:id/feedback/edit', to: 'feedback#edit', as: 'edit_job'
+  get 'applications/:id/feedback/edit', to: 'feedback#edit', as: 'edit_feedback'
   patch 'applications/:id/feedback', to: 'feedback#update'
   delete 'applications/:id/feedback', to: 'feedback#destroy'
   post 'feedback/filter', to: 'feedback#filter', as: 'filtered_feedback'
@@ -58,6 +57,7 @@ Rails.application.routes.draw do
   # companies nested routes/resources
   get 'companies/:id/:slug/jobs', to: 'jobs#index', as: 'company_jobs'
   get 'companies/:id/:slug/applications', to: 'applications#index', as: 'company_applications'
+  get 'companies/:id/:slug/feedback', to: 'feedback#index', as: 'company_feedback'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
