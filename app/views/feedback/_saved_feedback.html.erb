@@ -1,0 +1,47 @@
+<%= content_tag :div, id: 'accordion' do %>
+    <%= content_tag :div, class: 'card' do %>
+        <%= content_tag :div, class: 'card-header', id: 'heading_1' do %>
+            <%= content_tag :button, class: 'btn', :'data-toggle' => 'collapse', :'data-target' => '#collapse_1', :'aria-expanded' => 'true', :'aria-controls' => 'collapse_1' do %>
+                <%# heading one %>
+                <%= content_tag :h4, @applications.first.job_title %>
+                <%= content_tag :span, "(application updated on #{format_date(@applications.first.updated_at)})", class: 'secondary-text' %>
+            <% end %>
+        <% end %>
+
+        <%= content_tag :div, class: 'collapse show', id: 'collapse_1', :'aria-labelledby' => 'heading_1', :'data-parent' => '#accordion' do %>
+            <%= content_tag :div, class: 'card-body' do %>
+                <%# body one %>
+                <%= @applications.first.company_name %>
+                <%= content_tag :span, "★", class: 'star-divider' %>
+                <%= link_to "Feedback page", feedback_path(@applications.first) %>
+                <%= tag.hr %>
+                <%= content_tag :div, @applications.first.format_and_sanitize(:feedback) %>
+            <% end %>
+        <% end %>
+    <% end %>
+
+    <% if @applications.length > 1 %>
+        <% @applications.drop(1).each_with_index do |application, index| %>
+            <%= content_tag :div, class: 'card' do %>
+                <%= content_tag :div, class: 'card-header', id: "heading_#{index + 2}" do %>
+                    <%= content_tag :button, class: 'btn', :'data-toggle' => 'collapse', :'data-target' => "#collapse_#{index + 2}", :'aria-expanded' => 'true', :'aria-controls' => "collapse_#{index + 2}" do %>
+                        <%# heading %>
+                        <%= content_tag :h4, application.job_title %>
+                        <%= content_tag :span, "(application updated on #{format_date(application.updated_at)})", class: 'secondary-text' %>
+                    <% end %>
+                <% end %>
+
+                <%= content_tag :div, class: 'collapse', id: "collapse_#{index + 2}", :'aria-labelledby' => "heading_#{index + 2}", :'data-parent' => '#accordion' do %>
+                    <%= content_tag :div, class: 'card-body' do %>
+                        <%# body %>
+                        <%= application.company_name %>
+                        <%= content_tag :span, "★", class: 'star-divider' %>
+                        <%= link_to "Feedback page", feedback_path(application) %>
+                        <%= tag.hr %>
+                        <%= content_tag :div, application.format_and_sanitize(:feedback) %>
+                    <% end %>
+                <% end %>
+            <% end %>
+        <% end %>
+    <% end %>
+<% end %>
