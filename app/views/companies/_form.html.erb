@@ -1,0 +1,15 @@
+<%= form_for @user_company_information, url: company_path(@company, @company.slug), method: :patch, html: {id: 'user_company_information_form'} do |f| %>
+    <%= f.label :website %>
+    <%= tag.br %>
+    <%= f.url_field :website %>
+
+    <% 2.times do %><%= tag.br %><% end %>
+ 
+    <%= f.label :notes %>
+    <%= tag.br %>
+    <%= f.text_area :notes %>
+
+    <% 2.times do %><%= tag.br %><% end %>
+
+    <%= f.submit submit_text, disabled: 'disabled', class: 'btn btn-success' %>
+<% end %>
