@@ -80,6 +80,11 @@ footer {
     }
 }
 
+// Turbolinks progress bar
+div.turbolinks-progress-bar {
+    background-color: $base-accent;
+}  
+
 // nav
 nav {
     .navbar-brand h1 {
@@ -212,6 +217,31 @@ div {
         input {
             width: 100%;
         }
+    }
+}
+
+// accordion
+div#accordion div.card {
+    div.card-header  {
+        background-color: $base-dark;
+
+        button {
+            color: $base-light;
+
+            // used in /jobs/new
+            h3 {
+                margin: 0px;
+            }
+
+            // used in /feedback
+            h4 {
+                display: inline;
+            }
+        }
+    }
+
+    div.collapse {
+        background-color: $base-light;
     }
 }
 
