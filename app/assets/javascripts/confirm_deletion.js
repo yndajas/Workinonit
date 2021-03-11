@@ -18,6 +18,9 @@ $(document).ready(function(){
                     var message = "deleting an application cannot be undone.\n\nAre you sure you wish to delete this application?";
                     break;    
                 }
+            case "user_company_information":
+                var message = "deleting company information cannot be undone.\n\nAre you sure you wish to delete this company information?";
+                break;
             }
 
         return confirm(`Warning: ${message}`);
