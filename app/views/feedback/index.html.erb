@@ -1,0 +1,17 @@
+<% content_for :title, "Feedback" %>
+
+<%= link_to new_feedback_path do %><%= content_tag :button, "Add new feedback", type: 'button', class: 'btn btn-success' %><% end %>
+<% 2.times do %><%= tag.br %><% end %>
+<%= content_tag :h3, "Saved feedback" %>
+<% if @applications.length > 0 %>
+    <%= render 'saved_feedback' %>
+    <%= tag.hr %>
+    <%= tag.br %>
+    <%= form_tag filtered_feedback_path do %>
+        <%= select_tag :company_id, options_from_collection_for_select(@companies, :id, :name), required: 'required', include_blank: true %>
+        &nbsp;
+        <%= submit_tag "Filter by company", class: 'btn btn-primary' %>
+    <% end %>
+<% else %>
+    <%= content_tag :p, "You currently have no feedback saved!" %>
+<% end %>
