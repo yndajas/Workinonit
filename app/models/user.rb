@@ -22,7 +22,7 @@ class User < ApplicationRecord
     end
 
     def companies_with_feedback
-        self.applications.collect { |application| application.company if application.has_value_for?(:feedback) }.uniq
+        self.applications.collect { |application| application.company if application.has_value_for?(:feedback) }.compact.uniq
     end
 
     def companies_with_feedback_alphabetical
