@@ -1,0 +1,20 @@
+<% content_for :title, "Feedback for #{@application.job_title}" %>
+
+<%= link_to application_path(@application) do %><%= content_tag :button, "View application", type: 'button', class: 'btn btn-primary' %><% end %>
+<%= link_to edit_feedback_path(@application) do %><%= content_tag :button, "Edit feedback", type: 'button', class: 'btn btn-primary' %><% end %>
+<%= form_for @application, url: feedback_path(@application), method: :delete, html: {id: 'delete_record', class: 'edit_application application-action'} do |f| %>
+    <%= f.submit "Delete feedback", class: 'btn btn-danger' %>
+<% end %>
+
+<% 2.times do %><%= tag.br %><% end %>
+
+<%= content_tag :p do %>
+    <%= @application.company_name %>
+    <% if @application.has_value_for?(:location) %>
+        <%= content_tag :span, "★", class: 'star-divider' %> <%= @application.location %>
+    <% end %>
+<% end %>
+
+<%= tag.hr %>
+
+<%= content_tag :div, @application.format_and_sanitize(:feedback) %>
