@@ -3,8 +3,10 @@ $(document).ready(function(){
     var status_id_input = document.getElementById("application_status_id");
     var feedback_div = document.getElementById("feedback_container");
 
-    // update feedback visibility on page load
-    updateFeedbackVisibility(status_id_input, feedback_div);
+    // update feedback visibility on page load if the elements exist
+    if (status_id_input && feedback_div) {
+        updateFeedbackVisibility(status_id_input, feedback_div);
+    }
 
     // and then every time the application status input changes
     $("#application_status_id").change(function(e){
