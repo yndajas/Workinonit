@@ -27,20 +27,34 @@ class CompaniesController < ApplicationController
     end
 
     def edit
-
+        @company = Company.find_by_id(params[:id])
+        redirect_to companies_path, flash: {type: 'warning', content: "Company not found"} if !@company
+        @user_company_information = UserCompanyInformation.find_or_initialize_by(user_id: current_user.id, company_id: @company.id)
+        render 'new' if @user_company_information.new_record?
     end
 
     def update
+        company = Company.find_by_id(params[:id])
+        
+        user_company_information = UserCompanyInformation.find_or_initialize_by(user_id: current_user.id, company_id: company.id)
 
+        flash_end = user_company_information.new_record? ? "added" : "updated"
+
+        user_company_information.assign_attributes(user_company_information_params)
+        user_company_information.save
+
+        redirect_to company_path(company, company.slug), flash: {type: 'success', content: "Company information #{flash_end}"}
     end
 
     def destroy
-
+        company = Company.find_by_id(params[:id])
+        UserCompanyInformation.find_by(user_id: current_user.id, company_id: company.id).destroy
+        redirect_to company_path(company.id, company.slug), flash: {type: 'success', content: "Company information deleted"}
     end
 
-# the following actually interact with the CompanyInformation model
-# get 'companies/:id/:slug/edit', to: 'companies#edit', as: 'edit_company'
-# patch 'companies/:id/:slug', to: 'companies#update'
-# delete 'companies/:id/:slug', to: 'companies#destroy'
+    private
 
+    def user_company_information_params
+        params.require(:user_company_information).permit(:website, :notes)
+    end
 end
