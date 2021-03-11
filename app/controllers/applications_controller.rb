@@ -19,6 +19,7 @@ class ApplicationsController < ApplicationController
         # if here via /applications/new
         else
             @jobs = Job.find_by_user_and_unapplied_alphabetical(current_user)
+            redirect_to jobs_path, flash: {type: 'warning', content: "No jobs found"} if @jobs.length == 0
         end
 
         set_progress_and_dates_instance_variables                
