@@ -2,19 +2,20 @@ class FeedbackController < ApplicationController
     before_action :redirect_if_not_logged_in
 
     def new
-        @applications = Application.find_by_user_without_feedback_alphabetical(current_user)
+        @applications = Application.find_unsuccessful_by_user_without_feedback_alphabetical(current_user)
+        redirect_to applications_path, flash: {type: 'warning', content: "No unsuccessful applications without feedback found"} if @applications.length == 0
     end
 
     def create
-        @application = Application.find_by_id(params[:id])
-        application.update(feedback_params)
-        @application.save
+        @application = Application.find_by_id(feedback_params[:id])
+        @application.update(feedback: feedback_params[:feedback])
         redirect_to feedback_path(@application)
     end
 
     def show
         @application = Application.find_by_id(params[:id])
         redirect_if_no_application_or_does_not_belong_to_user(feedback_index_path)
+        redirect_if_no_feedback
     end
 
     def index
@@ -53,7 +54,7 @@ class FeedbackController < ApplicationController
 
     def update
         application = Application.find_by_id(params[:id])
-        application.update(feedback_params)
+        application.update(feedback: feedback_params[:feedback])
         redirect_to feedback_path(application), flash: {type: 'success', content: "Feedback successfully updated"}
     end
 
@@ -66,6 +67,12 @@ class FeedbackController < ApplicationController
     private
 
     def feedback_params
-        params.require(:application).permit(:job_id, :feedback)
+        params.require(:application).permit(:id, :feedback)
+    end
+
+    def redirect_if_no_feedback
+        unless @application.has_value_for?(:feedback)
+            redirect_to application_path(@application), flash: {type: 'warning', content: "Application has no feedback"}
+        end
     end
 end
