@@ -1,27 +1,29 @@
 <% content_for :title, @job.title %>
 
-<% if @application %>
-    <%= link_to application_path(@application) do %><%= content_tag :button, "Review application", type: 'button', class: 'btn btn-primary' %><% end %>
-<% elsif @user_job %>
-    <%= link_to new_application_by_job_path(@job, @job.slug) do %><%= content_tag :button, "Start application", type: 'button', class: 'btn btn-success' %><% end %>
-<% else %>
-    <%= form_tag jobs_path, class: 'job-action' do %>
-        <%= hidden_field_tag :job_id, @job.id %>
-        <%= submit_tag "Save job", class: 'btn btn-success' %>
+<% if logged_in? %>
+    <% if @application %>
+        <%= link_to application_path(@application) do %><%= content_tag :button, "Review application", type: 'button', class: 'btn btn-primary' %><% end %>
+    <% elsif @user_job %>
+        <%= link_to new_application_by_job_path(@job, @job.slug) do %><%= content_tag :button, "Start application", type: 'button', class: 'btn btn-success' %><% end %>
+    <% else %>
+        <%= form_tag jobs_path, class: 'job-action' do %>
+            <%= hidden_field_tag :job_id, @job.id %>
+            <%= submit_tag "Save job", class: 'btn btn-success' %>
+        <% end %>
     <% end %>
-<% end %>
 
-<% if @user_generated %>
-    <%= link_to edit_job_path(@job, @job.slug) do %><%= content_tag :button, "Edit job", type: 'button', class: 'btn btn-primary' %><% end %>
-<% end %>
-
-<% if @user_job %>
-    <%= form_for @job, method: :delete, html: {id: 'delete_record', class: 'edit_job job-action'} do |f| %>
-        <%= f.submit "Delete job", class: 'btn btn-danger' %>
+    <% if @user_generated %>
+        <%= link_to edit_job_path(@job, @job.slug) do %><%= content_tag :button, "Edit job", type: 'button', class: 'btn btn-primary' %><% end %>
     <% end %>
-<% end %>
 
-<% 2.times do %><%= tag.br %><% end %>
+    <% if @user_job %>
+        <%= form_for @job, method: :delete, html: {id: 'delete_record', class: 'edit_job job-action'} do |f| %>
+            <%= f.submit "Delete job", class: 'btn btn-danger' %>
+        <% end %>
+    <% end %>
+
+    <% 2.times do %><%= tag.br %><% end %>
+<% end %>
 
 <%= content_tag :p do %>
     <%= @job.company_name %>
