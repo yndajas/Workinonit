@@ -1,0 +1,28 @@
+<% content_for :title, "Update feedback" %>
+
+<%= form_for @application do |f| %>
+    <%= f.label :id, "Job" %>
+    <%= tag.br %>
+    <%= f.collection_select :id, [@application], :id, :job_title_and_company, {}, disabled: true %>
+
+    <% 2.times do %><%= tag.br %><% end %>
+
+    <%= f.label :feedback %>
+    <%= tag.br %>
+    <%= f.text_area :feedback %>
+
+    <% 2.times do %><%= tag.br %><% end %>
+
+    <%= f.submit "Update feedback", class: 'btn btn-success' %>
+<% end %>
+
+<%= tag.hr %>
+
+<%= content_tag :h3, "Delete feedback" %>
+<%= content_tag :p do %>
+    <%= content_tag :span, "Warning:", class: 'bold' %> deleting feedback cannot be undone.
+<% end %>
+
+<%= form_for @application, url: feedback_path(@application), method: :delete, html: {id: 'delete_record'} do |f| %>
+    <%= f.submit "Delete feedback", class: 'btn btn-danger' %>
+<% end %>
