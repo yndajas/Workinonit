@@ -1,0 +1,17 @@
+<% content_for :title, "New feedback" %>
+
+<%= form_tag feedback_index_path do %>
+    <%= label_tag :'id', "Application" %>
+    <%= tag.br %>
+    <%= select_tag :'application[id]', options_from_collection_for_select(@applications, :id, :job_title_and_company), required: 'required', include_blank: true %>
+
+    <% 2.times do %><%= tag.br %><% end %>
+
+    <%= label_tag :feedback %>
+    <%= tag.br %>
+    <%= text_area_tag :'application[feedback]' %>
+
+    <% 2.times do %><%= tag.br %><% end %>
+    
+    <%= submit_tag "Save feedback", class: 'btn btn-success' %>
+<% end %>
