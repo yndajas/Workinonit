@@ -1,0 +1,14 @@
+<% content_for :title, "Update company information" %>
+
+<%= render 'form', submit_text: "Update company information" %>
+
+<%= tag.hr %>
+
+<%= content_tag :h3, "Delete company information" %>
+<%= content_tag :p do %>
+    <%= content_tag :span, "Warning:", class: 'bold' %> deleting company information cannot be undone.
+<% end %>
+
+<%= form_for @user_company_information, url: company_path(@company, @company.slug), method: :delete, html: {id: 'delete_record'} do |f| %>
+    <%= f.submit "Delete company information", class: 'btn btn-danger' %>
+<% end %>
