@@ -31,7 +31,7 @@ Rails.application.routes.draw do
   get 'jobs/:id/:slug/edit', to: 'jobs#edit', as: 'edit_job'
   patch 'jobs/:id/:slug', to: 'jobs#update'
   delete 'jobs/:id/:slug', to: 'jobs#destroy'
-  post '/obs/filter', to: 'jobs#filter', as: 'filtered_jobs'
+  post 'jobs/filter', to: 'jobs#filter', as: 'filtered_jobs'
   get 'jobs/unapplied', to: 'jobs#index', as: 'unapplied_jobs'
 
   # jobs/applications
@@ -52,7 +52,13 @@ Rails.application.routes.draw do
   post 'feedback/filter', to: 'feedback#filter', as: 'filtered_feedback'
 
   # companies
-  resources :companies
+  resources :companies, only: [:index]
+  get 'companies/:id/:slug', to: 'companies#show', as: 'company'
+  # the following actually interact with the CompanyInformation model
+  get 'companies/:id/:slug/edit', to: 'companies#edit', as: 'edit_company'
+  patch 'companies/:id/:slug', to: 'companies#update'
+  delete 'companies/:id/:slug', to: 'companies#destroy'
+  post 'companies/filter', to: 'companies#filter', as: 'filtered_companies'  
 
   # companies nested routes/resources
   get 'companies/:id/:slug/jobs', to: 'jobs#index', as: 'company_jobs'
