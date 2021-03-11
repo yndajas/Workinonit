@@ -32,14 +32,18 @@ class Application < ApplicationRecord
         end.compact
     end
 
-    def self.find_by_user_without_feedback_alphabetical(user)
+    def self.find_unsuccessful_by_user_without_feedback_alphabetical(user)
         Application.user(user).collect do |application|
-            application if !application.has_value_for?(:feedback)
+            application if !application.has_value_for?(:feedback) && application.status_id == 6
         end.compact.sort_by(&:job_title)
     end
 
     def job_title
         self.job.title
+    end
+
+    def job_title_and_company
+        self.job.title_and_company
     end
 
     def job_slug
