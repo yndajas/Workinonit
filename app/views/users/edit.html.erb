@@ -40,7 +40,7 @@
 <% if current_user.random_password %>
     <%= content_tag :h3, "Set a password" %>
     <%= form_for current_user do |f| %>
-        <%= f.password_field :password, placeholder: "Password", required: 'required' %>
+        <%= password_field_tag :'user[new_password]', "", placeholder: "Password", required: 'required' %>
         <% 2.times do %><%= tag.br %><% end %>
         <%= f.submit "Set password", class: 'btn btn-success' %>
     <% end %>
