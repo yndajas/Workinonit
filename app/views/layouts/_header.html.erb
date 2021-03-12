@@ -1,0 +1,70 @@
+<%= content_tag :header do %>
+    <%= content_tag :nav, class: 'navbar navbar-expand-md navbar-dark' do %>
+        <%= content_tag :div, class: 'container' do %>
+            <%= link_to "/" do %>
+                <%= image_tag image_path('logo.png'), alt: "Workinonit logo, a red star with hammer and sickle", title: "Workinonit logo" %>
+            <% end %>
+            
+            <%= link_to "/", class: 'navbar-brand' do %>
+                <%= content_tag :h1, "Workinonit" %>
+            <% end %>
+            
+            <%= content_tag :button, :'aria-controls' => 'navbar', :'aria-expanded' => 'false', :'aria-label' => 'Toggle navigation', class: 'navbar-toggler', :'data-target' => '#navbar', :'data-toggle' => 'collapse', type: 'button' do %>
+                <%= content_tag :span, "", class: 'navbar-toggler-icon' %>
+            <% end %>
+            
+            <%= content_tag :div, class: 'collapse navbar-collapse', id: 'navbar' do %>
+                <%# top nav links if logged in %>
+                <% if logged_in? %>
+                    <%= content_tag :ul, class: 'navbar-nav mr-auto mt-2' do %>
+                        <%= content_tag :li, class: 'nav-item' do %>
+                            <%= link_to "Applications", '/applications', class: 'nav-link' %>
+                        <% end %>
+
+                        <%= content_tag :li, class: 'nav-item' do %>
+                            <%= link_to "Jobs", '/jobs', class: 'nav-link' %>
+                        <% end %>
+
+                        <%= content_tag :li, class: 'nav-item dropdown' do %>
+                            <%= link_to "More", '#', class: 'nav-link dropdown-toggle', id: 'navbarDropdown', role: 'button', :'data-toggle' => 'dropdown', :'aria-haspopup' => 'true', :'aria-expanded' => 'false' %>
+                                <%= content_tag :div, class: 'dropdown-menu', :'aria-labelledby' => 'navbarDropdown' do %>
+                                    <%= link_to "Feedback", '/feedback', class: 'dropdown-item' %>
+                                    <%= link_to "Companies", '/companies', class: 'dropdown-item' %>
+                                    <%= content_tag :div, "", class: 'dropdown-divider' %>
+                                    <%= link_to "About Workinonit", '/about', class: 'dropdown-item' %>
+                                <% end %>
+                        <% end %>
+                    <% end %>
+
+                    <%= content_tag :ul, class: 'navbar-nav ml-auto mt-2' do %>
+                        <%= content_tag :li, class: 'nav-item' do %>
+                            <%= link_to "Account", '/account', class: 'nav-link' %>
+                        <% end %>
+
+                        <%= content_tag :li, class: 'nav-item' do %>
+                            <%= link_to "Log out", session_path, method:'delete', class: 'nav-link' %>
+                        <% end %>
+                    <% end %>
+                
+                <%# top nav links if logged out %>
+                <% else %>
+                    <%= content_tag :ul, class: 'navbar-nav mr-auto mt-2' do %>
+                        <%= content_tag :li, class: 'nav-item' do %>
+                            <%= link_to "About", '/about', class: 'nav-link' %>
+                        <% end %>
+                    <% end %>
+
+                    <%= content_tag :ul, class: 'navbar-nav ml-auto mt-2' do %>
+                        <%= content_tag :li, class: 'nav-item' do %>
+                            <%= link_to "Register", register_path, class: 'nav-link' %>
+                        <% end %>
+
+                        <%= content_tag :li, class: 'nav-item' do %>
+                            <%= link_to "Log in", login_path, class: 'nav-link' %>
+                        <% end %>
+                    <% end %>
+                <% end %>
+            <% end %>
+        <% end %>
+    <% end %>
+<% end %>

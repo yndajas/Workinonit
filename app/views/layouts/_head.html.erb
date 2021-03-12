@@ -1,0 +1,20 @@
+<%= content_tag :title, "#{"#{yield :title} - " if !(yield :title).empty?}Workinonit" %>
+
+<%= csrf_meta_tags %>
+<%= csp_meta_tag %>
+
+<%# load Bootstrap stylesheet  %>
+<%= stylesheet_link_tag 'https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css', media: 'all' %>
+
+<%# load all app stylesheets %>
+<%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+<%# load app JavaScript files (and JQuery - needs loading before Bootstrap JavaScript) %>
+<%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+<%# load Bootstrap dependency JavaScript files %>
+<%= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js' %>
+<%= javascript_include_tag 'https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js' %>
+
+<%# load favicons %>
+<%= render 'layouts/favicon_meta' %>

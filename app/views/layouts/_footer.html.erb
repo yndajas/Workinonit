@@ -1,0 +1,32 @@
+<%= content_tag :footer do %>
+    <%= content_tag :nav, class: 'navbar navbar-dark' do %>
+        <%= content_tag :div, class: 'container d-flex justify-content-between' do %>
+            <%# email displayed if logged in %>
+            <% if logged_in? %>
+                <%= content_tag :ul, class: 'navbar-nav d-none d-lg-block' do %>
+                    <%= content_tag :li, class: 'nav-item' do %>
+                        <%= content_tag :span, class: 'navbar-text' do %>
+                            Logged in as <%= current_user.name %> (<%= current_user.email %>)
+                        <% end %>
+                    <% end %>
+                <% end %>
+            <% end %>
+
+            <%# Dilla %>
+            <%= content_tag :ul, class: 'navbar-nav d-none d-sm-block' do %>
+                <%= content_tag :li, class: 'nav-item' do %>
+                    <%= content_tag :button, "Play Dilla 🍩 Eat Donuts", type: 'button', class: 'navbar-text btn btn-light', id: 'dilla_button' %>
+                <% end %>
+            <% end %>
+
+            <%# copyright %>
+            <%= content_tag :ul, class: 'navbar-nav d-block' do %>
+                <%= content_tag :li, class: 'nav-item' do %>
+                    <%= content_tag :span, class: 'navbar-text' do %>
+                        © Ynda Jas <%= DateTime.now.strftime('%Y') %>
+                    <% end %>
+                <% end %>
+            <% end %>
+        <% end %>
+    <% end %>
+<% end %>
