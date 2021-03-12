@@ -53,9 +53,15 @@ class ApplicationsController < ApplicationController
         # if here from /applications/status/:slug
         elsif status_filter_request?
             slug = status_filter_slug
-            @status = Status.find_by_slug(slug)
-            @applications = Application.find_by_user_and_status_reverse_by_date(current_user, @status, :updated_at)
-            redirect_to applications_path, flash: {type: 'warning', content: "No saved applications with status \"#{@status.name.downcase}\""} if @applications.length == 0
+            if slug == "open"
+                @status_name = "open"
+                @applications = Application.find_by_user_and_open_reverse_by_date(current_user, :updated_at)
+            else
+                status = Status.find_by_slug(slug)
+                @status_name = status.name.downcase
+                @applications = Application.find_by_user_and_status_reverse_by_date(current_user, status, :updated_at)
+            end
+            redirect_to applications_path, flash: {type: 'warning', content: "No saved applications with status \"#{@status_name}\""} if @applications.length == 0
         # if here from /applications
         else
             @companies = current_user.companies_with_applications_alphabetical
@@ -65,7 +71,7 @@ class ApplicationsController < ApplicationController
 
         # if here from /companies/:id/:slug/applications or /applications/status/:slug, render special view (else default to regular index)
         if @applications.length > 0 && (params[:id] || status_filter_request?)
-            @title = (params[:id] ? "Applications for #{@company.name}" : "Applications: #{@status.name.downcase}")
+            @title = (params[:id] ? "Applications for #{@company.name}" : "Applications: #{@status_name}")
             render 'filtered_index'
         end
     end
