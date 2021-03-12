@@ -1,7 +1,53 @@
 <% content_for :title, "Dashboard" %>
 
-<p>Some placeholder content</p>
+<%= content_tag :h3, "Jobs" %>
 
-Number of saved jobs - link to new if none
+<%= content_tag :p do %>
+    You have
+    <% if @job_count > 0 %>
+        <%= @job_count %>
+        <%= link_to "saved #{"job".pluralize(@job_count)}", jobs_path %>.
+    <% else %>
+        no saved jobs.
+    <% end %>
+<% end %>
 
-Applications by status - link to new if none
+<%= link_to new_job_path do %><%= content_tag :button, "Add new job", type: 'button', class: 'btn btn-success' %><% end %>
+
+<% if @job_count > 0 %>
+    <%= tag.hr%>
+
+    <%= content_tag :h3, "Open applications" %>
+
+    <%= content_tag :p do %>
+        You have
+        <% if @open_applications_count > 0 %>
+            <%= @open_applications_count %>
+            <%= link_to "open #{"application".pluralize(@open_applications_count)}", applications_by_status_path("open") %>.
+        <% else %>
+            no open applications.
+        <% end %>
+    <% end %>
+
+    <% if @jobs_without_applications_count > 0 %>
+        <%= link_to new_application_path do %><%= content_tag :button, "Add new application", type: 'button', class: 'btn btn-success' %><% end %>
+    <% end %>
+
+    <%= tag.hr%>
+
+    <%= content_tag :h3, "Feedback" %>
+
+    <%= content_tag :p do %>
+        You have
+        <% if @feedback_count > 0 %>
+            <%= @feedback_count %>
+            <%= link_to "#{"piece".pluralize(@feedback_count)} of feedback", feedback_index_path %>.
+        <% else %>
+            no pieces of feedback.
+        <% end %>
+    <% end %>
+
+    <% if @applications_awaiting_feedback_count > 0 %>
+        <%= link_to new_feedback_path do %><%= content_tag :button, "Add new feedback", type: 'button', class: 'btn btn-success' %><% end %>
+    <% end %>
+<% end %>
