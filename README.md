@@ -84,3 +84,7 @@ Bug reports and pull requests are welcome on GitHub at [https://github.com/yndaj
 ## Licence
 
 This app is made available open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+## Credits
+
+The name Workinonit is a reference to the J Dilla song from his album Donuts. Click the "Play Dilla 🍩 Eat Donuts" in the footer of the app to play the track (and the rest of the album) from label Stones Throw's YouTube page. Also check out his work with Slum Village, A Tribe Called Quest, The Pharcyde, De La Soul, Eyrkah Badu, Busta Rhymes, Common and more - it's an education.
