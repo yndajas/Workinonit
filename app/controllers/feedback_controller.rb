@@ -25,18 +25,18 @@ class FeedbackController < ApplicationController
             @company = Company.find_by_id(params[:id])
             
             if @company
-                @applications = Application.find_by_user_and_company_reverse_by_date_with_feedback(current_user, @company, :updated_at)
-                redirect_to company_path(@company), flash: {type: 'warning', content: "No saved feedback found from company"} if @applications.length == 0
+                @applications_with_feedback = Application.find_by_user_and_company_reverse_by_date_with_feedback(current_user, @company, :updated_at)
+                redirect_to company_path(@company), flash: {type: 'warning', content: "No saved feedback found from company"} if @applications_with_feedback.length == 0
             else
                 redirect_to companies_path, flash: {type: 'warning', content: "Company not found"}
             end
         else
             @companies = current_user.companies_with_feedback_alphabetical
-            @applications = Application.find_by_user_reverse_by_date_with_feedback(current_user, :updated_at)
+            @applications_with_feedback = Application.find_by_user_reverse_by_date_with_feedback(current_user, :updated_at)
         end
 
         # if here from /companies/:id/:slug/feedback, render special view (else default to regular index)
-        if @applications.length > 0 && params[:id]
+        if @applications_with_feedback.length > 0 && params[:id]
             @title = "Feedback from #{@company.name}"
             render 'filtered_index'
         end

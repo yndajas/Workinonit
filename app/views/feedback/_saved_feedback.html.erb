@@ -3,25 +3,25 @@
         <%= content_tag :div, class: 'card-header', id: 'heading_1' do %>
             <%= content_tag :button, class: 'btn', :'data-toggle' => 'collapse', :'data-target' => '#collapse_1', :'aria-expanded' => 'true', :'aria-controls' => 'collapse_1' do %>
                 <%# heading one %>
-                <%= content_tag :h4, @applications.first.job_title %>
-                <%= content_tag :span, "(application updated on #{format_date(@applications.first.updated_at)})", class: 'secondary-text' %>
+                <%= content_tag :h4, @applications_with_feedback.first.job_title %>
+                <%= content_tag :span, "(application updated on #{format_date(@applications_with_feedback.first.updated_at)})", class: 'secondary-text' %>
             <% end %>
         <% end %>
 
         <%= content_tag :div, class: 'collapse show', id: 'collapse_1', :'aria-labelledby' => 'heading_1', :'data-parent' => '#accordion' do %>
             <%= content_tag :div, class: 'card-body' do %>
                 <%# body one %>
-                <%= @applications.first.company_name %>
+                <%= @applications_with_feedback.first.company_name %>
                 <%= content_tag :span, "★", class: 'star-divider' %>
-                <%= link_to "Feedback page", feedback_path(@applications.first) %>
+                <%= link_to "Feedback page", feedback_path(@applications_with_feedback.first) %>
                 <%= tag.hr %>
-                <%= content_tag :div, @applications.first.format_and_sanitize(:feedback) %>
+                <%= content_tag :div, @applications_with_feedback.first.format_and_sanitize(:feedback) %>
             <% end %>
         <% end %>
     <% end %>
 
-    <% if @applications.length > 1 %>
-        <% @applications.drop(1).each_with_index do |application, index| %>
+    <% if @applications_with_feedback.length > 1 %>
+        <% @applications_with_feedback.drop(1).each_with_index do |application, index| %>
             <%= content_tag :div, class: 'card' do %>
                 <%= content_tag :div, class: 'card-header', id: "heading_#{index + 2}" do %>
                     <%= content_tag :button, class: 'btn', :'data-toggle' => 'collapse', :'data-target' => "#collapse_#{index + 2}", :'aria-expanded' => 'true', :'aria-controls' => "collapse_#{index + 2}" do %>

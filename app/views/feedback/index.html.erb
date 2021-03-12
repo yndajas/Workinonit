@@ -3,7 +3,7 @@
 <%= link_to new_feedback_path do %><%= content_tag :button, "Add new feedback", type: 'button', class: 'btn btn-success' %><% end %>
 <% 2.times do %><%= tag.br %><% end %>
 <%= content_tag :h3, "Saved feedback" %>
-<% if @applications.length > 0 %>
+<% if @applications_with_feedback.length > 0 %>
     <%= render 'saved_feedback' %>
     <%= tag.hr %>
     <%= tag.br %>
