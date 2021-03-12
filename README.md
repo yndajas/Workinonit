@@ -73,6 +73,8 @@ Below is a breakdown of the information you can keep track of on Workinonit.
 - list of feedback
 
 ### Companies
+- website
+- notes
 - list of jobs
 - list of applications
 - list of feedback
