@@ -1,5 +1,5 @@
 Rails.application.config.middleware.use OmniAuth::Builder do
-    provider :facebook, Rails.application.credentials.facebook[:app_id], Rails.application.credentials.facebook[:app_secret]
-    provider :github, Rails.application.credentials.github[:client_id], Rails.application.credentials.github[:client_secret], scope: "user:email"
-    provider :google_oauth2, Rails.application.credentials.google[:client_id], Rails.application.credentials.google[:client_secret]
+    provider :facebook, ENV['FACEBOOK_ID'], ENV['FACEBOOK_SECRET']
+    provider :github, ENV['GITHUB_ID'], ENV['GITHUB_SECRET'], scope: "user:email"
+    provider :google_oauth2, ENV['GOOGLE_ID'], ENV['GOOGLE_SECRET']
 end
