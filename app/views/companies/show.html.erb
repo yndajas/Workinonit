@@ -1,0 +1,73 @@
+<% content_for :title, @company.name %>
+
+<%= link_to edit_company_path(@company, @company.slug) do %><%= content_tag :button, (@user_company_information ? "Edit" : "Add") + " notes/website", type: 'button', class: 'btn btn-primary' %><% end %>
+
+<% 2.times do %><%= tag.br %><% end %>
+
+<% if @user_company_information %>
+    <% if @user_company_information.has_value_for?(:website) %>
+        <%= link_to "Website", @user_company_information.website, target: '_blank' %>
+    <% end %>
+    <% if @user_company_information.has_value_for?(:notes) %>
+        <% 2.times do %><%= tag.br %><% end %>
+
+        <%= content_tag :h3, "Notes" %>
+        <%= @user_company_information.format_and_sanitize(:notes) %>
+    <% end %>
+    <%= tag.hr %>
+<% end %>
+
+<%= content_tag :h3, "Jobs" %>
+
+<%= content_tag :ul do %>
+    <% @user_jobs.each do |user_job| %>
+        <%= content_tag :li do %>
+            <%= content_tag :span, class: 'text' do %>
+                <%= link_to user_job.job_title, job_path(user_job.job, user_job.job_slug) %>
+                <%= content_tag :span, "(saved on #{format_date(user_job.created_at)})", class: 'secondary-text' %>
+            <% end %>
+        <% end %>
+    <% end %>
+<% end %>
+
+<% if @applications.length > 0 %>
+    <%= tag.hr %>
+
+    <%= content_tag :h3, "Applications" %>
+
+    <%= content_tag :ul do %>
+        <% @applications.each do |application| %>
+            <%= content_tag :li do %>
+                <%= content_tag :span, class: 'text' do %>
+                    <%= link_to application.job_title, application_path(application) %>
+                    <%= content_tag :span, "(updated on #{format_date(application.updated_at)})", class: 'secondary-text' %>
+                <% end %>
+            <% end %>
+        <% end %>
+    <% end %>
+<% end %>
+
+<% if @applications_with_feedback.length > 0 %>
+    <%= tag.hr %>
+
+    <%= content_tag :h3, "Feedback" %>
+
+    <%= content_tag :ul do %>
+        <% @applications_with_feedback.each do |application_with_feedback| %>
+            <%= content_tag :li do %>
+                <%= content_tag :span, class: 'text' do %>
+                    <%= link_to application_with_feedback.job_title, feedback_path(application_with_feedback) %>
+                    <%= content_tag :span, "(application updated on #{format_date(application_with_feedback.updated_at)})", class: 'secondary-text' %>
+                <% end %>
+            <% end %>
+        <% end %>
+    <% end %>
+<% end %>
+
+<%= tag.hr %>
+
+<%= form_tag filtered_companies_path(@company, @company.slug) do %>
+    <%= select_tag :filter, options_for_select(["Jobs", "Applications", "Feedback"]), required: 'required', include_blank: true %>
+    &nbsp;
+    <%= submit_tag "Filter", class: 'btn btn-primary' %>
+<% end %>
