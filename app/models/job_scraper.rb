@@ -255,7 +255,7 @@ class JobScraper
         page = show_page(provider, id)
 
         # get company name to be used in find_or_create_by
-        company_name = page.css("a.topcard__org-name-link").text.strip
+        company_name = page.css("span.topcard__flavor:not(.topcard__flavor--bullet)").text.strip
 
         # get remaining job attributes for creating new job associated with company
         title = page.css("h1.topcard__title").text.strip
