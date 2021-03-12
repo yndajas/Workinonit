@@ -1,9 +1,9 @@
 <% content_for :title, "Update feedback" %>
 
-<%= form_for @application do |f| %>
-    <%= f.label :id, "Job" %>
+<%= form_for @application, url: feedback_path(@application) do |f| %>
+    <%= f.label :id, "Application" %>
     <%= tag.br %>
-    <%= f.collection_select :id, [@application], :id, :job_title_and_company, {}, disabled: true %>
+    <%= select_tag :application, options_for_select([@application.job_title_and_company]), disabled: true %>
 
     <% 2.times do %><%= tag.br %><% end %>
 
