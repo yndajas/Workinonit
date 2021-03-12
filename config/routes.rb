@@ -58,7 +58,7 @@ Rails.application.routes.draw do
   get 'companies/:id/:slug/edit', to: 'companies#edit', as: 'edit_company'
   patch 'companies/:id/:slug', to: 'companies#update'
   delete 'companies/:id/:slug', to: 'companies#destroy'
-  post 'companies/filter', to: 'companies#filter', as: 'filtered_companies'  
+  post 'companies/:id/:slug/filter', to: 'companies#filter', as: 'filtered_companies'  
 
   # companies nested routes/resources
   get 'companies/:id/:slug/jobs', to: 'jobs#index', as: 'company_jobs'
