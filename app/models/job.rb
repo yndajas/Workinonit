@@ -11,6 +11,9 @@ class Job < ApplicationRecord
     has_many :users, through: :user_jobs
     has_many :applications
 
+    validates :title, length: {minimum: 1}, presence: true
+    validates :company_name, length: {minimum: 1}, presence: true
+
     scope :user, ->(user) {where(user_id: user.id)}
 
     def self.find_or_create_by_attributes_hash(attributes_hash)
