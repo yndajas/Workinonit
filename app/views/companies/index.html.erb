@@ -1,0 +1,13 @@
+<% content_for :title, "Companies" %>
+
+<%= content_tag :ul do %>
+    <% @companies_with_stats.each do |company_with_stats| %>
+        <%= content_tag :li do %>
+            <%= content_tag :span, class: 'text' do %>
+                <%= link_to company_with_stats[:company].name, company_path(company_with_stats[:company], company_with_stats[:company].slug) %>
+                <%= content_tag :span, "›", class: 'secondary-text' %>
+                <%= sanitize(company_with_stats[:count_text]) %>
+            <% end %>
+        <% end %>
+    <% end %>
+<% end %>
