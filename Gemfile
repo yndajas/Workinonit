@@ -64,6 +64,7 @@ group :development do
   # Workinonit gems
   gem 'pry' # open console with binding (when `binding.pry` is run)
   gem 'rails-erd' # entity relationship diagrams
+  gem 'seed_dump' # create seed file from current database
 end
 
 group :test do
