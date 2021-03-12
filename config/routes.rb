@@ -27,12 +27,12 @@ Rails.application.routes.draw do
   
   # jobs
   resources :jobs, only: [:new, :create, :index]
+  post 'jobs/filter', to: 'jobs#filter', as: 'filtered_jobs'
+  get 'jobs/unapplied', to: 'jobs#index', as: 'unapplied_jobs'
   get 'jobs/:id/:slug', to: 'jobs#show', as: 'job'
   get 'jobs/:id/:slug/edit', to: 'jobs#edit', as: 'edit_job'
   patch 'jobs/:id/:slug', to: 'jobs#update'
   delete 'jobs/:id/:slug', to: 'jobs#destroy'
-  post 'jobs/filter', to: 'jobs#filter', as: 'filtered_jobs'
-  get 'jobs/unapplied', to: 'jobs#index', as: 'unapplied_jobs'
 
   # jobs/applications
   get 'jobs/:id/:slug/apply', to: 'applications#new', as: 'new_application_by_job'
@@ -43,22 +43,21 @@ Rails.application.routes.draw do
   get 'applications/status/:slug', to: 'applications#index', as: 'applications_by_status'
 
   # feedback
-
   resources :feedback, only: [:new, :index, :create]
+  post 'feedback/filter', to: 'feedback#filter', as: 'filtered_feedback'
   get 'applications/:id/feedback', to: 'feedback#show', as: 'feedback'
   get 'applications/:id/feedback/edit', to: 'feedback#edit', as: 'edit_feedback'
   patch 'applications/:id/feedback', to: 'feedback#update'
   delete 'applications/:id/feedback', to: 'feedback#destroy'
-  post 'feedback/filter', to: 'feedback#filter', as: 'filtered_feedback'
 
   # companies
   resources :companies, only: [:index]
+  post 'companies/:id/:slug/filter', to: 'companies#filter', as: 'filtered_companies'
   get 'companies/:id/:slug', to: 'companies#show', as: 'company'
   # the following actually interact with the CompanyInformation model
   get 'companies/:id/:slug/edit', to: 'companies#edit', as: 'edit_company'
   patch 'companies/:id/:slug', to: 'companies#update'
   delete 'companies/:id/:slug', to: 'companies#destroy'
-  post 'companies/:id/:slug/filter', to: 'companies#filter', as: 'filtered_companies'  
 
   # companies nested routes/resources
   get 'companies/:id/:slug/jobs', to: 'jobs#index', as: 'company_jobs'
