@@ -2,9 +2,8 @@
     <%= f.label :job_id, "Job" %>
     <%= tag.br %>
     <% if @job %>
-        <%# <%= f.hidden_field :job_id, value: @job.id %>
-        <%= f.collection_select :job_id, [@job], :id, :title_and_company, {}, disabled: true %>
-        <%# <%= f.text_field :job_title, value: @job.title_and_company, readonly: true %>
+        <%= f.hidden_field :job_id, value: @job.id %>
+        <%= select_tag :job, options_for_select([@job.title]), disabled: true %>
     <% else %>
         <%= f.collection_select :job_id, @jobs, :id, :title_and_company, include_blank: true, required: 'required' %>
     <% end %>
