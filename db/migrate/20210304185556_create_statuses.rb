@@ -15,6 +15,7 @@ class CreateStatuses < ActiveRecord::Migration[5.2]
     Status.create(name: "Awaiting outcome", order: 5)
     Status.create(name: "Unsuccessful", order: 6)
     Status.create(name: "Offer received", order: 7)
-    Status.create(name: "Offer accepted", order: 8)
+    Status.create(name: "Offer rejected", order: 8)
+    Status.create(name: "Offer accepted", order: 9)
   end
 end
