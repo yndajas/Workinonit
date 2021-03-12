@@ -5,14 +5,14 @@ class CompaniesController < ApplicationController
         @company = Company.find_by_id(params[:id])
         redirect_to companies_path, flash: {type: 'warning', content: "Company not found"} if !@company
 
-        user_jobs = UserJob.find_by_user_and_company_reverse_by_date(current_user, @company, :created_at)
-        @jobs = user_jobs.collect { |user_job| user_job.job }
+        @user_company_information = UserCompanyInformation.find_by(user_id: current_user.id, company_id: @company.id)
+        @user_jobs = UserJob.find_by_user_and_company_reverse_by_date(current_user, @company, :created_at)
         @applications = Application.find_by_user_and_company_reverse_by_date(current_user, @company, :updated_at)
         @applications_with_feedback = Application.find_by_user_and_company_reverse_by_date_with_feedback(current_user, @company, :updated_at)    
     end
 
     def filter
-        redirect_to self.send("company_#{params[:filter]}_path", params[:id], params[:slug])
+        redirect_to self.send("company_#{params[:filter].downcase}_path", params[:id], params[:slug])
     end
 
     def index
@@ -20,9 +20,21 @@ class CompaniesController < ApplicationController
 
         @companies_with_stats = companies.collect do |company|
             job_count = UserJob.find_by_user_and_company_reverse_by_date(current_user, company, :created_at).length
+            count_text = ["#{helpers.link_to "#{job_count} #{"job".pluralize(job_count)}", company_jobs_path(company, company.slug)}"]
+
             application_count = Application.find_by_user_and_company_reverse_by_date(current_user, company, :updated_at).length
+            if application_count > 0
+                count_text << "#{helpers.link_to "#{application_count} application".pluralize(application_count), company_applications_path(company, company.slug)}"
+            end
+
             feedback_count = Application.find_by_user_and_company_reverse_by_date_with_feedback(current_user, company, :updated_at).length            
-            {company: company, job_count: job_count, application_count: application_count, feedback_count: feedback_count}
+            if feedback_count > 0
+                count_text << "#{helpers.link_to "#{feedback_count} #{"piece".pluralize(application_count)} of feedback", company_feedback_path(company, company.slug)}"
+            end
+
+            count_text = count_text.join(" #{helpers.content_tag :span, "×", class: 'secondary-text'} ")
+
+            {company: company, count_text: count_text}
         end
     end
 
