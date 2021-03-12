@@ -1,8 +1,69 @@
 <% content_for :title, "Account" %>
 <% content_for :main_align, 'center' %>
 
-<%# add edit email/password/name if account is not associated with a 'provider'/OAuth strategy - maybe update name should be allowed either way? %>
+<%= content_tag :h3, "Update name" %>
+<%= form_for current_user do |f| %>
+    <%= f.text_field :name, placeholder: "Name", required: 'required' %>
+    
+    <% 2.times do %><%= tag.br %><% end %>
+    
+    <%= f.submit "Update name", class: 'btn btn-success' %>
+<% end %>
 
+<%= tag.hr %>
+
+<%= content_tag :h3, "Update email" %>
+<%= form_for current_user do |f| %>
+    <%= f.label :new_email %>
+    <%= tag.br %>
+    <%= email_field_tag :'user[new_email]', "", placeholder: "New email", required: 'required' %>
+    <% 2.times do %><%= tag.br %><% end %>
+    <% if current_user.random_password %>
+        <%= content_tag :p do %>
+            <%= content_tag :span, "Warning:", class: 'bold' %> you will no longer be able to log in using Facebook, GitHub or Google accounts associated with your old email.
+            <%= tag.br %>
+            You can reauthenticate with accounts using your new email.
+        <% end %>
+    <% else %>
+        <%= f.label :current_password %>
+        <%= tag.br %>
+        <%= password_field_tag :'user[current_password]', "", placeholder: "Current password", required: 'required' %>
+
+        <% 2.times do %><%= tag.br %><% end %>
+    <% end %>
+
+    <%= f.submit "Update email", class: 'btn btn-success' %>
+<% end %>
+
+<%= tag.hr %>
+
+<% if current_user.random_password %>
+    <%= content_tag :h3, "Set a password" %>
+    <%= form_for current_user do |f| %>
+        <%= f.password_field :password, placeholder: "Password", required: 'required' %>
+        <% 2.times do %><%= tag.br %><% end %>
+        <%= f.submit "Set password", class: 'btn btn-success' %>
+    <% end %>
+<% else %>
+    <%= content_tag :h3, "Update password" %>
+    <%= form_for current_user do |f| %>
+        <%= f.label :new_password %>
+        <%= tag.br %>
+        <%= password_field_tag :'user[new_password]', "", placeholder: "New password", required: 'required' %>
+
+        <% 2.times do %><%= tag.br %><% end %>
+
+        <%= f.label :current_password %>
+        <%= tag.br %>
+        <%= password_field_tag :'user[current_password]', "", placeholder: "Current password", required: 'required' %>
+        
+        <% 2.times do %><%= tag.br %><% end %>
+        
+        <%= f.submit "Update password", class: 'btn btn-success' %>
+    <% end %>
+<% end %>
+
+<%= tag.hr %>
 
 <%= content_tag :h3, "Delete account" %>
 <%= content_tag :p do %>
