@@ -21,8 +21,15 @@ class JobsController < ApplicationController
 
         # if here from user manually entering job details on /jobs/new
         elsif params[:job]
-            job = Job.find_or_create_by_attributes_hash_with_user(job_params, current_user)
-            redirect_to job_path(job, job.slug)
+            @job = Job.find_or_create_by_attributes_hash_with_user(job_params, current_user)
+            if @job.valid?
+                redirect_to job_path(@job, @job.slug)
+            else
+                @countries = ProviderCountry.all
+                flash.now[:type] = 'danger'
+                flash.now[:content] = "Cannot save job without title and company"
+                render 'new'
+            end
         
         # if here from search results (save jobs) on /jobs/search/:country_code/:location/:keywords
         elsif params[:job_ids]
