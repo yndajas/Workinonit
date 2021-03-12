@@ -5,7 +5,7 @@
         <%= content_tag :li do %>
             <%= content_tag :span, class: 'text' do %>
                 <%= link_to company_with_stats[:company].name, company_path(company_with_stats[:company], company_with_stats[:company].slug) %>
-                <%= content_tag :span, "›", class: 'secondary-text' %>
+                <%= content_tag :span, "››", class: 'secondary-text' %>
                 <%= sanitize(company_with_stats[:count_text]) %>
             <% end %>
         <% end %>
