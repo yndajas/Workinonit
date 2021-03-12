@@ -20,6 +20,12 @@ class Application < ApplicationRecord
         end.compact
     end
 
+    def self.find_by_user_and_open_reverse_by_date(user, date)
+        self.find_by_user_reverse_by_date(user, date).collect do |application|
+            application if (1..5).to_a.<<(7).include?(application.status_id)
+        end.compact
+    end
+
     def self.find_by_user_reverse_by_date_with_feedback(user, date)
         self.find_by_user_reverse_by_date(user, date).collect do |application|
             application if application.has_value_for?(:feedback)
