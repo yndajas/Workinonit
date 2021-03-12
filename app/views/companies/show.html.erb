@@ -9,7 +9,7 @@
         <%= link_to "Website", @user_company_information.website, target: '_blank' %>
     <% end %>
     <% if @user_company_information.has_value_for?(:notes) %>
-        <% 2.times do %><%= tag.br %><% end %>
+        <% 2.times do %><%= tag.br %><% end if @user_company_information.has_value_for?(:website) %>
 
         <%= content_tag :h3, "Notes" %>
         <%= @user_company_information.format_and_sanitize(:notes) %>
