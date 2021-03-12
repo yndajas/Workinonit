@@ -46,16 +46,25 @@ class CompaniesController < ApplicationController
     end
 
     def update
-        company = Company.find_by_id(params[:id])
+        @company = Company.find_by_id(params[:id])
         
-        user_company_information = UserCompanyInformation.find_or_initialize_by(user_id: current_user.id, company_id: company.id)
+        @user_company_information = UserCompanyInformation.find_or_initialize_by(user_id: current_user.id, company_id: @company.id)
 
-        flash_end = user_company_information.new_record? ? "added" : "updated"
+        flash_end = @user_company_information.new_record? ? "added" : "updated"
 
-        user_company_information.assign_attributes(user_company_information_params)
-        user_company_information.save
+        @user_company_information.assign_attributes(user_company_information_params)
 
-        redirect_to company_path(company, company.slug), flash: {type: 'success', content: "Company information #{flash_end}"}
+        if @user_company_information.save
+            redirect_to company_path(@company, @company.slug), flash: {type: 'success', content: "Company information #{flash_end}"}
+        else
+            flash.now[:type] = 'danger'
+            flash.now[:content] = "Cannot save company information with no data"
+            if @user_company_information.new_record?
+                render 'new'
+            else
+                render 'edit'
+            end
+        end
     end
 
     def destroy
