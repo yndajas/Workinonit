@@ -303,6 +303,16 @@ div.job-description {
     }
 }
 
+// field with errors styling
+
+div.field_with_errors {
+    display: inline;
+
+    input[type=text], input[type=url], textarea {
+        border-color: $base-accent;
+    }
+}
+
 // basic font class styling
 .secondary-text {
     color: $base-secondary;
