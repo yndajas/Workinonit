@@ -21,6 +21,14 @@ class UserJob < ApplicationRecord
         self.user(user).job(job)[0]
     end
 
+    def job_title
+        self.job.title
+    end
+
+    def job_slug
+        self.job.slug
+    end
+
     def company
         self.job.company
     end
