@@ -1,4 +1,4 @@
-$(document).ready(function(){
+document.addEventListener("turbolinks:load", function(){
     $("#delete_record").submit(function(e){
         var model = e.target.className.replace("edit_", "").replace(/ .*/, "")
 

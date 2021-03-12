@@ -1,4 +1,4 @@
-$(document).ready(function(){
+document.addEventListener("turbolinks:load", function(){
     $("#dilla_button").click(function(e){
         // get the container
         var video_container = document.getElementById("video-container")

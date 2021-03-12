@@ -1,4 +1,4 @@
-$(function(){
+document.addEventListener("turbolinks:load", function(){
     $('#user_company_information_form').on('keyup change paste', 'input, textarea', function(){
         var website_element = website_element || document.querySelector("input[type=url]");
         var notes_element = notes_element || document.querySelector("textarea");

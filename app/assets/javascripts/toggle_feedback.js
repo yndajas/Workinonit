@@ -1,4 +1,4 @@
-$(document).ready(function(){
+document.addEventListener("turbolinks:load", function(){
     // get elements
     var status_id_input = document.getElementById("application_status_id");
     var feedback_div = document.getElementById("feedback_container");
