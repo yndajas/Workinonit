@@ -9,7 +9,7 @@ With Workinonit, you can:
 - keep track of your progress on job applications
 - save and review feedback from and notes on companies
 
-You can view a demo of the app over on YouTube: <a href="https://www.youtube.com/watch?v=nK35Tuxfkso" target="_blank" title="app demo on YouTube">youtube.com/watch?v=nK35Tuxfkso</a>. [PLACEHOLDER - TO BE AMENDED]
+You can view a demo of the app over on YouTube: <a href="https://www.youtube.com/watch?v=PYwX1QGj6os" target="_blank" title="app demo on YouTube">youtube.com/watch?v=PYwX1QGj6os</a>.
 
 ## Online use
 
