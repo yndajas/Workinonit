@@ -15,6 +15,8 @@ You can view a demo of the app over on YouTube: <a href="https://www.youtube.com
 
 The app is available to use for free at <a href="http://workinonit.yndajas.co">workinonit.yndajas.co</a> (link will redirect to Heroku)!
 
+Note that the scraping function works unpredictably using the online version - running the local version below is much less error-prone for this feature. 
+
 ## Local use
 
 You can run a copy of the app offline for local use. After cloning or downloading the repository, follow the instructions below.
