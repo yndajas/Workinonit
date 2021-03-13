@@ -38,14 +38,14 @@ class JobScraper
                     else
                         country_id = ProviderCountry.find_by(code: code).country_id
                     end
-                    scrape_indeed_job_page(page, country_id) || "Unable to scrape job - request denied"
+                    scrape_indeed_job_page(page, country_id) || "Unable to scrape job - request denied by provider"
                 when "LinkedIn"
-                    scrape_linkedin_job_page(page) || "Unable to scrape job - request denied"
+                    scrape_linkedin_job_page(page) || "Unable to scrape job - request denied by provider"
                 when "Reed"
-                    scrape_reed_job_page(page) || "Unable to scrape job - request denied"
+                    scrape_reed_job_page(page) || "Unable to scrape job - request denied by provider"
                 end
             else
-                "Unable to scrape job - page not found"
+                "Unable to scrape job - page not found or request denied by provider"
             end
         else
             "URL not recognised. Only indeed.com, linkedin.com and reed.co.uk URLs are supported"
