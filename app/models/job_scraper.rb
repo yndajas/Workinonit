@@ -45,7 +45,7 @@ class JobScraper
                     scrape_reed_job_page(page)
                 end
             else
-                "Unable to scrape job - page not found"
+                "Unable to scrape job - page not found or inaccessible"
             end
         else
             "URL not recognised. Only indeed.com, linkedin.com and reed.co.uk URLs are supported"
@@ -60,19 +60,25 @@ class JobScraper
         # get search URL
         url = indeed_search_url(keywords, location, country_id)
 
-        # open search page
-        search = Nokogiri::HTML(open(url))
+        page = valid_page(url)
 
-        # select jobs; limit to first 5
-        first_five_jobs = search.css("div.jobsearch-SerpJobCard")[0..4]
+        if page
+            # open search page
+            search = Nokogiri::HTML(open(url))
 
-        # iterate over jobs, collecting each job's attributes in a hash, then return an array of the hashes
-        first_five_jobs.collect do |job|
-            title = job.css("a.jobtitle").attribute("title").value
-            company = job.css("span.company").text.strip
-            id = job.attribute("data-jk").value
+            # select jobs; limit to first 5
+            first_five_jobs = search.css("div.jobsearch-SerpJobCard")[0..4]
 
-            {title: title, company: company, id: id}
+            # iterate over jobs, collecting each job's attributes in a hash, then return an array of the hashes
+            first_five_jobs.collect do |job|
+                title = job.css("a.jobtitle").attribute("title").value
+                company = job.css("span.company").text.strip
+                id = job.attribute("data-jk").value
+
+                {title: title, company: company, id: id}
+            end
+        else
+            []
         end
     end
 
@@ -80,19 +86,25 @@ class JobScraper
         # get search URL
         url = linkedin_search_url(keywords, location)
 
-        # open search page
-        search = Nokogiri::HTML(open(url))
+        page = valid_page(url)
 
-        # select jobs; limit to first 5
-        first_five_jobs = search.css("li.result-card")[0..4]
+        if page
+            # open search page
+            search = Nokogiri::HTML(open(url))
 
-        # iterate over jobs, collecting each job's attributes in a hash, then return an array of the hashes
-        first_five_jobs.collect do |job|
-            title = job.css("h3.result-card__title").text
-            company = job.css("h4.result-card__subtitle").text
-            id = job.attribute("data-id").value
+            # select jobs; limit to first 5
+            first_five_jobs = search.css("li.result-card")[0..4]
 
-            {title: title, company: company, id: id}
+            # iterate over jobs, collecting each job's attributes in a hash, then return an array of the hashes
+            first_five_jobs.collect do |job|
+                title = job.css("h3.result-card__title").text
+                company = job.css("h4.result-card__subtitle").text
+                id = job.attribute("data-id").value
+
+                {title: title, company: company, id: id}
+            end
+        else
+            []
         end
     end
 
@@ -100,20 +112,26 @@ class JobScraper
         # get search URL
         url = reed_search_url(keywords, location)
 
-        # open search page
-        search = Nokogiri::HTML(open(url))
+        page = valid_page(url)
 
-        # select jobs; limit to first 5
-        first_five_jobs = search.css("article.job-result")[0..4]
+        if page
+            # open search page
+            search = Nokogiri::HTML(open(url))
 
-        # iterate over jobs, collecting each job's attributes in a hash, then return an array of the hashes
-        first_five_jobs.collect do |job|
-            title_id = job.css("h3.title a")
-            title = title_id.attribute("title").value
-            id = title_id.attribute("data-id").value
-            company = job.css("a.gtmJobListingPostedBy").text
+            # select jobs; limit to first 5
+            first_five_jobs = search.css("article.job-result")[0..4]
 
-            {title: title, company: company, id: id}
+            # iterate over jobs, collecting each job's attributes in a hash, then return an array of the hashes
+            first_five_jobs.collect do |job|
+                title_id = job.css("h3.title a")
+                title = title_id.attribute("title").value
+                id = title_id.attribute("data-id").value
+                company = job.css("a.gtmJobListingPostedBy").text
+
+                {title: title, company: company, id: id}
+            end
+        else
+            []
         end
     end
 
@@ -154,7 +172,7 @@ class JobScraper
     end
 
     def self.valid_page(url)
-        begin 
+        begin
             Nokogiri::HTML(open(url))
         rescue
             false
