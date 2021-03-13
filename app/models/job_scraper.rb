@@ -10,11 +10,11 @@ class JobScraper
             hash[provider].collect do |id|
                 # scrape attrbutes and return hash for each; if provider is Indeed, pass in country ID
                 if provider == "Indeed"
-                    self.scrape_indeed_job(id, country_id)
+                    scrape_indeed_job(id, country_id)
                 else
                     self.send("scrape_#{provider.downcase}_job", id)
                 end
-            end
+            end.compact # get rid of nils if the job was unscrapable
         end.flatten # flatten resulting collection of attributes hashes and return 
     end
 
@@ -38,14 +38,14 @@ class JobScraper
                     else
                         country_id = ProviderCountry.find_by(code: code).country_id
                     end
-                    scrape_indeed_job_page(page, country_id)
+                    scrape_indeed_job_page(page, country_id) || "Unable to scrape job - request denied"
                 when "LinkedIn"
-                    scrape_linkedin_job_page(page)
+                    scrape_linkedin_job_page(page) || "Unable to scrape job - request denied"
                 when "Reed"
-                    scrape_reed_job_page(page)
+                    scrape_reed_job_page(page) || "Unable to scrape job - request denied"
                 end
             else
-                "Unable to scrape job - page not found or inaccessible"
+                "Unable to scrape job - page not found"
             end
         else
             "URL not recognised. Only indeed.com, linkedin.com and reed.co.uk URLs are supported"
@@ -225,69 +225,77 @@ class JobScraper
     def self.scrape_indeed_job(id, country_id = 59)
         provider = Provider.find_by(name: "Indeed")
 
-        page = show_page(provider, id, country_id: country_id)
+        page = valid_show_page(provider, id, country_id: country_id)
 
-        company_and_location_div_element = page.css("div.jobsearch-CompanyInfoWithoutHeaderImage div div")
+        if page
+            company_and_location_div_element = page.css("div.jobsearch-CompanyInfoWithoutHeaderImage div div")
 
-        # get company name to be used in find_or_create_by
-        company_name = company_and_location_div_element.css("div div.icl-u-lg-mr--sm.icl-u-xs-mr--xs").text.strip
+            # get company name to be used in find_or_create_by
+            company_name = company_and_location_div_element.css("div div.icl-u-lg-mr--sm.icl-u-xs-mr--xs").text.strip
 
-        # get remaining job attributes for creating new job associated with company
-        title = page.css("h1.jobsearch-JobInfoHeader-title").text
-        location = company_and_location_div_element.css("div.jobsearch-InlineCompanyRating + div").text.strip
+            # get remaining job attributes for creating new job associated with company
+            title = page.css("h1.jobsearch-JobInfoHeader-title").text
+            location = company_and_location_div_element.css("div.jobsearch-InlineCompanyRating + div").text.strip
 
-        # this seems unnecessary and doesn't work for US pages, so commenting out (including the corresponding parts of the if block below) but leaving it here for now
-        # salary_and_contract_div_element = page.css("div.jobsearch-JobMetadataHeader-item")
-        # if salary_and_contract_div_element.length > 0
-            # salary_span_element = salary_and_contract_div_element.css("span.icl-u-xs-mr--xs")
-            # contract_span_element = salary_and_contract_div_element.css("span.jobsearch-JobMetadataHeader-item")
-        # end
+            # this seems unnecessary and doesn't work for US pages, so commenting out (including the corresponding parts of the if block below) but leaving it here for now
+            # salary_and_contract_div_element = page.css("div.jobsearch-JobMetadataHeader-item")
+            # if salary_and_contract_div_element.length > 0
+                # salary_span_element = salary_and_contract_div_element.css("span.icl-u-xs-mr--xs")
+                # contract_span_element = salary_and_contract_div_element.css("span.jobsearch-JobMetadataHeader-item")
+            # end
 
-        salary_span_element = page.css("span.icl-u-xs-mr--xs")
-        salary = salary_span_element.text.strip if salary_span_element.length > 0
+            salary_span_element = page.css("span.icl-u-xs-mr--xs")
+            salary = salary_span_element.text.strip if salary_span_element.length > 0
+            
+            # UK and maybe all non-US versions of the site?
+            contract_span_element = page.css("span.jobsearch-JobMetadataHeader-item")
+            # US version
+            contract_parent_div_element = page.css("div.jobsearch-JobDescriptionSection-sectionItem:nth-child(3)")
+
+            # if UK/all non-US?
+            if contract_span_element.length > 0
+                contract = contract_span_element.text.gsub(" - ", "").strip
+            # if US
+            elsif contract_parent_div_element.length > 0
+                contract_child_div_elements = contract_parent_div_element.css("div div")[1..-1]
+                contract = contract_child_div_elements.collect { |div| div.text.strip }.join(", ")
+            end
+
+            description = page.css("div#jobDescriptionText").inner_html.strip
+            provider_job_id = id
+            provider_id = provider.id
         
-        # UK and maybe all non-US versions of the site?
-        contract_span_element = page.css("span.jobsearch-JobMetadataHeader-item")
-        # US version
-        contract_parent_div_element = page.css("div.jobsearch-JobDescriptionSection-sectionItem:nth-child(3)")
-
-        # if UK/all non-US?
-        if contract_span_element.length > 0
-            contract = contract_span_element.text.gsub(" - ", "").strip
-        # if US
-        elsif contract_parent_div_element.length > 0
-            contract_child_div_elements = contract_parent_div_element.css("div div")[1..-1]
-            contract = contract_child_div_elements.collect { |div| div.text.strip }.join(", ")
+            {company_name: company_name, title: title, location: location, salary: salary, contract: contract, description: description, provider_job_id: provider_job_id, provider_id: provider_id, country_id: country_id}
+        else
+            nil
         end
-
-        description = page.css("div#jobDescriptionText").inner_html.strip
-        provider_job_id = id
-        provider_id = provider.id
-    
-        {company_name: company_name, title: title, location: location, salary: salary, contract: contract, description: description, provider_job_id: provider_job_id, provider_id: provider_id, country_id: country_id}
     end
 
     def self.scrape_linkedin_job(id)
         provider = Provider.find_by(name: "LinkedIn")
 
-        page = show_page(provider, id)
+        page = valid_show_page(provider, id)
 
-        # get company name to be used in find_or_create_by
-        company_name = page.css("span.topcard__flavor:not(.topcard__flavor--bullet)").text.strip
+        if page
+            # get company name to be used in find_or_create_by
+            company_name = page.css("span.topcard__flavor:not(.topcard__flavor--bullet)").text.strip
 
-        # get remaining job attributes for creating new job associated with company
-        title = page.css("h1.topcard__title").text.strip
-        location = page.css("span.topcard__flavor.topcard__flavor--bullet").text.strip
+            # get remaining job attributes for creating new job associated with company
+            title = page.css("h1.topcard__title").text.strip
+            location = page.css("span.topcard__flavor.topcard__flavor--bullet").text.strip
 
-        salary_div_element = page.css("div.compensation__salary")
-        salary = salary_div_element.text.strip if salary_div_element.length > 0
+            salary_div_element = page.css("div.compensation__salary")
+            salary = salary_div_element.text.strip if salary_div_element.length > 0
 
-        contract = page.css("li.job-criteria__item:nth-child(2) span").text.strip
-        description = page.css("div.show-more-less-html__markup").inner_html.strip
-        provider_job_id = id
-        provider_id = provider.id
-    
-        {company_name: company_name, title: title, location: location, salary: salary, contract: contract, description: description, provider_job_id: provider_job_id, provider_id: provider_id}
+            contract = page.css("li.job-criteria__item:nth-child(2) span").text.strip
+            description = page.css("div.show-more-less-html__markup").inner_html.strip
+            provider_job_id = id
+            provider_id = provider.id
+        
+            {company_name: company_name, title: title, location: location, salary: salary, contract: contract, description: description, provider_job_id: provider_job_id, provider_id: provider_id}
+        else
+            nil
+        end
     end
 
     def self.scrape_reed_job(id)        
@@ -298,32 +306,36 @@ class JobScraper
         # the part of the path that contains the slug can actually contain
         # (seemingly) any text, so long as it contains something, so here "j/"
         # is used for all jobs in place of the slug for simplicity
-        page = show_page(provider, id, slug: "j/")
+        page = valid_show_page(provider, id, slug: "j/")
 
-        # get company name to be used in find_or_create_by
-        company_name = page.css("span[itemprop='hiringOrganization'] span[itemprop='name']").text.strip
+        if page
+            # get company name to be used in find_or_create_by
+            company_name = page.css("span[itemprop='hiringOrganization'] span[itemprop='name']").text.strip
 
-        # get remaining job attributes for creating new job associated with company
-        title = page.css("h1").text.strip
-        location = page.css("span[itemprop='addressLocality']").text.strip
-        salary = page.css("span[data-qa='salaryLbl']").text.strip
-        contract = page.css("span[itemprop='employmentType']").text.strip
-        description = page.css("span[itemprop='description']").inner_html.strip
+            # get remaining job attributes for creating new job associated with company
+            title = page.css("h1").text.strip
+            location = page.css("span[itemprop='addressLocality']").text.strip
+            salary = page.css("span[data-qa='salaryLbl']").text.strip
+            contract = page.css("span[itemprop='employmentType']").text.strip
+            description = page.css("span[itemprop='description']").inner_html.strip
 
-        # collect slug to create links in the same style as Reed, even though the value makes no difference to their routing
-        slug_link_element = page.css("div.description-container meta[itemprop='url']").attribute("content")
-        provider_job_slug = slug_link_element.value.gsub(/\/#{id}/, "").gsub(/.*\//, "")
-        
-        provider_job_id = id
-        provider_id = provider.id
+            # collect slug to create links in the same style as Reed, even though the value makes no difference to their routing
+            slug_link_element = page.css("div.description-container meta[itemprop='url']").attribute("content")
+            provider_job_slug = slug_link_element.value.gsub(/\/#{id}/, "").gsub(/.*\//, "")
+            
+            provider_job_id = id
+            provider_id = provider.id
 
-        {company_name: company_name, title: title, location: location, salary: salary, contract: contract, description: description, provider_job_slug: provider_job_slug, provider_job_id: provider_job_id, provider_id: provider_id}
+            {company_name: company_name, title: title, location: location, salary: salary, contract: contract, description: description, provider_job_slug: provider_job_slug, provider_job_id: provider_job_id, provider_id: provider_id}
+        else
+            nil
+        end
     end
 
-    def self.show_page(provider, id, slug: "", country_id: 59)
+    def self.valid_show_page(provider, id, slug: "", country_id: 59)
         base_show_url = provider.base_show_url_by_country(country_id)
         url = base_show_url + slug + id
-        Nokogiri::HTML(open(url))
+        valid_page(url)
     end
 
     def self.open(url)
