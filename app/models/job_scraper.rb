@@ -61,7 +61,7 @@ class JobScraper
         url = indeed_search_url(keywords, location, country_id)
 
         # open search page
-        search = Nokogiri::HTML(OpenURI.open_uri(url))
+        search = Nokogiri::HTML(open(url))
 
         # select jobs; limit to first 5
         first_five_jobs = search.css("div.jobsearch-SerpJobCard")[0..4]
@@ -81,7 +81,7 @@ class JobScraper
         url = linkedin_search_url(keywords, location)
 
         # open search page
-        search = Nokogiri::HTML(OpenURI.open_uri(url))
+        search = Nokogiri::HTML(open(url))
 
         # select jobs; limit to first 5
         first_five_jobs = search.css("li.result-card")[0..4]
@@ -101,7 +101,7 @@ class JobScraper
         url = reed_search_url(keywords, location)
 
         # open search page
-        search = Nokogiri::HTML(OpenURI.open_uri(url))
+        search = Nokogiri::HTML(open(url))
 
         # select jobs; limit to first 5
         first_five_jobs = search.css("article.job-result")[0..4]
@@ -155,7 +155,7 @@ class JobScraper
 
     def self.valid_page(url)
         begin 
-            Nokogiri::HTML(OpenURI.open_uri(url))
+            Nokogiri::HTML(open(url))
         rescue
             false
         end
@@ -305,6 +305,10 @@ class JobScraper
     def self.show_page(provider, id, slug: "", country_id: 59)
         base_show_url = provider.base_show_url_by_country(country_id)
         url = base_show_url + slug + id
-        Nokogiri::HTML(OpenURI.open_uri(url))
+        Nokogiri::HTML(open(url))
+    end
+
+    def self.open(url)
+        OpenURI.open_uri(url, "User-Agent" => "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36")
     end
 end
