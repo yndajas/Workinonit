@@ -1,9 +1,9 @@
 <%= favicon_link_tag image_path('favicon/apple-touch-icon.png'), rel: 'apple-touch-icon', type: 'image/png', sizes: '180x180' %>
 <%= favicon_link_tag image_path('favicon/favicon-32x32.png'), rel: 'icon', type: 'image/png', sizes: '32x32' %>
 <%= favicon_link_tag image_path('favicon/favicon-16x16.png'), rel: 'icon', type: 'image/png', sizes: '16x16' %>
-<link rel="manifest" href="<%= image_path('favicon/site.webmanifest.json.erb') %>">
+<link rel="manifest" href="<%= image_path('favicon/manifest.json') %>">
 <link rel="mask-icon" href="<%= image_path('favicon/safari-pinned-tab.svg') %>">
 <link rel="shortcut icon" href="<%= image_path('favicon/favicon.ico') %>">
 <%= tag.meta name: 'msapplication-TileColor', content: '#2d2d2d' %>
-<%= tag.meta name: 'msapplication-config', content: image_path('favicon/browserconfig.xml.erb') %>
+<%= tag.meta name: 'msapplication-config', content: image_path('favicon/browserconfig.xml') %>
 <%= tag.meta name: 'theme-color', content: '#2d2d2d' %>
