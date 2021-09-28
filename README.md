@@ -11,6 +11,8 @@ With Workinonit, you can:
 
 You can view a demo of the app over on YouTube: <a href="https://www.youtube.com/watch?v=PYwX1QGj6os" target="_blank" title="app demo on YouTube">youtube.com/watch?v=PYwX1QGj6os</a>.
 
+[![YouTube demo](https://img.youtube.com/vi/PYwX1QGj6os/maxresdefault.jpg)](http://www.youtube.com/watch?v=PYwX1QGj6os)
+
 ## Online use
 
 The app is available to use for free at <a href="http://workinonit.yndajas.co">workinonit.yndajas.co</a> (link will redirect to Heroku)!
