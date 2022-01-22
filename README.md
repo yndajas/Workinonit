@@ -85,7 +85,7 @@ Below is a breakdown of the information you can keep track of on Workinonit.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at [https://github.com/yndajas/Workinonit](https://github.com/yndajas/Workinonit).
+Bug reports and pull requests are welcome on GitHub at [github.com/yndajas/Workinonit](https://github.com/yndajas/Workinonit).
 
 ## Licence
 
